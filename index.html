@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Front-End & Firebase Full-Stack Developer Portfolio</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <header class="site-header">
+    <nav class="nav">
+      <a href="#hero" class="nav__logo">AMIGO<span>DEV</span></a>
+
+      <button class="nav__toggle" aria-label="Toggle navigation">
+        <span></span><span></span>
+      </button>
+
+      <div class="nav__links-wrapper">
+        <ul class="nav__links">
+          <li><a href="#about">About</a></li>
+          <li><a href="#skills">Skills</a></li>
+          <li><a href="#projects">Projects</a></li>
+          <li><a href="#case-study">Case Study</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+
+        <button class="theme-toggle" aria-label="Toggle color theme">
+          <span class="theme-toggle__icon theme-toggle__icon--dark">🌙</span>
+          <span class="theme-toggle__icon theme-toggle__icon--light">☀️</span>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Hero -->
+    <section id="hero" class="section hero">
+      <div class="hero__content reveal">
+        <p class="hero__eyebrow">Front-End & Firebase</p>
+
+        <h1 class="hero__title">Hi, I’m <span class="accent">Idris</span></h1>
+
+        <p class="hero__subtitle">
+          Front-End Developer specializing in Firebase-powered web applications
+        </p>
+
+        <p class="hero__tagline">
+          I build clean, responsive interfaces and production-ready web apps using
+          JavaScript and Firebase (Auth, Firestore, Storage).
+        </p>
+
+        <ul class="hero__quick-skills">
+          <li>HTML</li>
+          <li>CSS</li>
+          <li>JavaScript</li>
+          <li>Firebase</li>
+          <li>Firestore</li>
+          <li>Auth</li>
+        </ul>
+
+        <div class="hero__actions">
+          <a href="#projects" class="btn btn--primary">View Projects</a>
+          <a href="#contact" class="btn btn--ghost">Contact Me</a>
+        </div>
+
+        <div class="hero__meta">
+          <span>Available for freelance & remote roles</span>
+          <span class="dot"></span>
+          <span>Based in Lagos, Nigeria</span>
+        </div>
+      </div>
+
+      <div class="hero__visual reveal">
+        <div class="hero-card">
+          <div class="hero-card__header">
+            <span class="hero-dot hero-dot--red"></span>
+            <span class="hero-dot hero-dot--yellow"></span>
+            <span class="hero-dot hero-dot--green"></span>
+          </div>
+
+          <div class="hero-card__body">
+            <code>
+              <span class="code--comment">// firebase-powered ui</span><br />
+              const stack = ["HTML", "CSS", "JavaScript", "Firebase"];<br />
+              const focus = ["Clean UI", "Performance", "DX"];<br />
+              deploy(stack, focus);
+            </code>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- About -->
+    <section id="about" class="section section--alt">
+      <div class="section__header reveal">
+        <h2>About Me</h2>
+        <p class="section__subtitle">
+          Front-end craftsmanship meets Firebase-backed full-stack delivery.
+        </p>
+      </div>
+
+      <div class="about__content reveal">
+        <p>
+          I’m a front-end developer who also ships full-stack web apps using Firebase. I focus on
+          clean, accessible interfaces, smooth user flows, and fast-loading experiences that work on
+          any device.
+        </p>
+        <p>
+          On the back-end, I leverage Firebase Auth, Firestore, and Cloud Storage to build secure,
+          real-time applications without compromising on performance or developer experience.
+        </p>
+        <p>
+          From landing pages and dashboards to auth-driven SaaS tools, I design, build, and deploy
+          complete products to Firebase Hosting and the web.
+        </p>
+        <p>
+          I focus on building real projects with production-level features, not just demos.
+        </p>
+      </div>
+    </section>
+
+    <!-- Skills -->
+    <section id="skills" class="section">
+      <div class="section__header reveal">
+        <h2>Tech Stack</h2>
+        <p class="section__subtitle">
+          A focused, modern toolkit for building and shipping web products.
+        </p>
+      </div>
+
+      <div class="skills__grid">
+        <article class="skill-card reveal">
+          <h3>Frontend</h3>
+          <ul>
+            <li>HTML5 / Semantic Markup</li>
+            <li>CSS3 / Modern Layouts (Flexbox & Grid)</li>
+            <li>Vanilla JavaScript (ES6+)</li>
+            <li>Responsive & Mobile-First Design</li>
+            <li>Accessibility & UI/UX best practices</li>
+          </ul>
+        </article>
+
+        <article class="skill-card reveal">
+          <h3>Firebase & Backend</h3>
+          <ul>
+            <li>Firebase Authentication</li>
+            <li>Cloud Firestore (real-time & offline)</li>
+            <li>Firebase Storage for files & media</li>
+            <li>Firebase Hosting & custom domains</li>
+            <li>Cloud Functions integration (conceptual)</li>
+          </ul>
+        </article>
+
+        <article class="skill-card reveal">
+          <h3>Tools & Workflow</h3>
+          <ul>
+            <li>Git & GitHub</li>
+            <li>VS Code & modern dev tooling</li>
+            <li>REST APIs & JSON</li>
+            <li>Performance profiling & Lighthouse</li>
+            <li>Component-driven UI thinking</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <!-- Projects -->
+    <section id="projects" class="section section--alt">
+      <div class="section__header reveal">
+        <h2>Projects</h2>
+        <p class="section__subtitle">
+          Selected work featuring Firebase authentication, real-time data, and modern UI.
+        </p>
+      </div>
+
+      <div class="projects__grid">
+        <!-- Project 1: AMIGO -->
+        <article class="project-card reveal">
+          <span class="project-badge">FEATURED</span>
+
+          <div class="project-card__image">
+            <img src="images/amigo-preview.png" alt="AMIGO social app preview" loading="lazy" />
+          </div>
+
+          <div class="project-card__body">
+            <h3>AMIGO — Firebase Social Web App <span class="accent">(Featured)</span></h3>
+            <p>
+              A Facebook-style social web app with user profiles, real-time posts, and interactions—built
+              with clean UI and Firebase backend services.
+            </p>
+
+            <ul class="project-card__tags">
+              <li>HTML</li><li>CSS</li><li>JavaScript</li><li>Firebase Auth</li><li>Firestore</li><li>Storage</li>
+            </ul>
+
+            <div class="project-card__meta">
+              <span>Features:</span>
+              <p>
+                Signup/login, profile editing, image uploads, real-time feed, likes & comments, dark mode.
+              </p>
+            </div>
+          </div>
+
+          <div class="project-card__footer">
+            <a href="https://amigo-app-one.vercel.app/" class="btn btn--ghost btn--small" target="_blank" rel="noreferrer">
+              Live Demo
+            </a>
+            <a href="#amigo-case-study" class="btn btn--text btn--small">View Case Study</a>
+          </div>
+        </article>
+
+        <!-- Project 2: BIA JUPEB -->
+        <article class="project-card reveal">
+          <div class="project-card__image">
+            <img src="images/bia-jupeb-preview.png" alt="BIA JUPEB portal preview" loading="lazy" />
+          </div>
+
+          <div class="project-card__body">
+            <h3>BIA JUPEB Portal — Student Academic Interface</h3>
+            <p>
+              A clean, university-style portal built for JUPEB students, providing structured access to
+              academic information through a responsive and intuitive interface.
+            </p>
+
+            <ul class="project-card__tags">
+              <li>HTML</li>
+              <li>CSS</li>
+              <li>JavaScript</li>
+              <li>Portal UI</li>
+              <li>Education System</li>
+            </ul>
+
+            <div class="project-card__meta">
+              <span>Features:</span>
+              <p>
+                Student dashboard layout, admission and academic sections, responsive design,
+                admin-ready structure, and scalable UI for future backend integration.
+              </p>
+            </div>
+          </div>
+
+          <div class="project-card__footer">
+            <a href="https://biajupeb.com.ng/" class="btn btn--ghost btn--small" target="_blank" rel="noreferrer">
+              Live Demo
+            </a>
+            <a href="#contact" class="btn btn--text btn--small">Request Code</a>
+          </div>
+        </article>
+
+        <!-- Project 3: Haqslam -->
+        <article class="project-card reveal">
+          <div class="project-card__image">
+            <img src="images/haqslam-preview.png" alt="Haqslam community website preview" loading="lazy" />
+          </div>
+
+          <div class="project-card__body">
+            <h3>Haqslam — Community & Educational Website</h3>
+            <p>
+              A clean and responsive community-focused website built to provide easy access to educational
+              and religious content through a simple, user-friendly interface.
+            </p>
+
+            <ul class="project-card__tags">
+              <li>HTML</li>
+              <li>CSS</li>
+              <li>JavaScript</li>
+              <li>Responsive Design</li>
+              <li>Community Project</li>
+            </ul>
+
+            <div class="project-card__meta">
+              <span>Features:</span>
+              <p>
+                Mobile-first layout, clear navigation structure, accessible content presentation,
+                and scalable design ready for future Firebase integration.
+              </p>
+            </div>
+          </div>
+
+          <div class="project-card__footer">
+            <a href="https://haqslam.com.ng" class="btn btn--ghost btn--small" target="_blank" rel="noreferrer">
+              Live Site
+            </a>
+            <a href="#contact" class="btn btn--text btn--small">Request Code</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- Case Study -->
+    <section id="case-study" class="section">
+      <div class="section__header reveal">
+        <h2>Case Study: AMIGO Social Web App</h2>
+        <p class="section__subtitle">
+          A Firebase-powered social platform with real-time posts, profiles, and media uploads.
+        </p>
+      </div>
+
+      <div class="case-study" id="amigo-case-study">
+        <div class="case-study__column reveal">
+          <h3>Problem</h3>
+          <p>
+            I wanted to build a Facebook-style social web app where users can create accounts, update their
+            profiles, post content, and interact in real time—while keeping the UI clean and mobile-friendly.
+          </p>
+
+          <h3>Solution</h3>
+          <p>
+            I built AMIGO using Firebase for authentication and real-time data. Users can sign up, log in,
+            edit their profile, upload images, and view a live feed that updates instantly.
+          </p>
+
+          <h3>Highlights</h3>
+          <ul>
+            <li>Mobile-first UI inspired by modern social apps</li>
+            <li>Authentication-protected pages and user flows</li>
+            <li>Real-time feed updates using Firestore</li>
+          </ul>
+        </div>
+
+        <div class="case-study__column reveal">
+          <h3>Key Features</h3>
+          <ul>
+            <li>Firebase Auth (signup/login/logout)</li>
+            <li>User profiles (name, bio, photo)</li>
+            <li>Image uploads with Firebase Storage</li>
+            <li>Real-time posts + interactions (likes/comments)</li>
+            <li>Responsive layout + dark mode</li>
+          </ul>
+
+          <h3>Tech Stack</h3>
+          <ul class="case-study__tags">
+            <li>HTML</li>
+            <li>CSS</li>
+            <li>JavaScript</li>
+            <li>Firebase Auth</li>
+            <li>Cloud Firestore</li>
+            <li>Firebase Storage</li>
+            <li>Firebase Hosting / Vercel</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Why Work With Me -->
+    <section id="why" class="section section--alt">
+      <div class="section__header reveal">
+        <h2>Why Work With Me</h2>
+        <p class="section__subtitle">
+          A balance of design, performance, and Firebase expertise.
+        </p>
+      </div>
+
+      <div class="why__grid">
+        <article class="why-card reveal">
+          <h3>Clean, Maintainable Code</h3>
+          <p>
+            I write semantic HTML, modular CSS, and modern JavaScript that’s easy to extend, debug,
+            and hand over to teams.
+          </p>
+        </article>
+
+        <article class="why-card reveal">
+          <h3>Performance & Accessibility</h3>
+          <p>
+            I optimize for fast load times, responsive interactions, and accessible interfaces so
+            users of all abilities are supported.
+          </p>
+        </article>
+
+        <article class="why-card reveal">
+          <h3>Firebase-First Workflows</h3>
+          <p>
+            I design data models, security rules, and front-end flows around Firebase capabilities to
+            keep apps secure and scalable.
+          </p>
+        </article>
+
+        <article class="why-card reveal">
+          <h3>Mobile-First Mindset</h3>
+          <p>
+            Every layout starts from small screens and scales up, ensuring a consistent experience
+            from phones to desktops.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" class="section">
+      <div class="section__header reveal">
+        <h2>Contact</h2>
+        <p class="section__subtitle">
+          Let’s discuss your next project, prototype, or feature.
+        </p>
+      </div>
+
+      <div class="contact">
+        <div class="contact__info reveal">
+          <h3>Let’s build something</h3>
+          <p>
+            I’m open to freelance work, long-term contracts, and collaborations on Firebase-powered products.
+          </p>
+
+          <ul class="contact__list">
+            <li>
+              <span>Email:</span>
+              <a href="mailto:Olamidesamson841@gmail.com">Olamidesamson841@gmail.com</a>
+            </li>
+            <li>
+              <span>GitHub:</span>
+              <a href="https://github.com/Amigo-1234" target="_blank" rel="noreferrer">@Amigo-1234</a>
+            </li>
+            <li>
+              <span>LinkedIn:</span>
+              <a href="https://www.linkedin.com/in/muftau-idris-3221603a1?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app" target="_blank" rel="noreferrer">
+                @MuftauIdris
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <form id="contactForm" class="contact__form reveal" autocomplete="off">
+          <div class="form-row">
+            <div class="form-field">
+              <label for="name">Name</label>
+              <input id="name" type="text" name="name" placeholder="Your name" />
+            </div>
+
+            <div class="form-field">
+              <label for="email">Email</label>
+              <input id="email" type="email" name="email" placeholder="you@example.com" />
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label for="subject">Subject</label>
+            <input id="subject" type="text" name="subject" placeholder="Project idea, role, or question" />
+          </div>
+
+          <div class="form-field">
+            <label for="message">Message</label>
+            <textarea id="message" name="message" rows="4" placeholder="Share some details about what you’d like to build."></textarea>
+          </div>
+
+          <button id="sendBtn" type="submit" class="btn btn--primary btn--block">Send Message</button>
+
+          <p id="formStatus" class="form-note" aria-live="polite"></p>
+          <p class="form-note">I’ll get back to you within 1-2 business days.</p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="site-footer__inner">
+      <span>© <span id="year"></span> Idris. All rights reserved.</span>
+
+      <div class="site-footer__social">
+        <a class="social-icon" href="https://github.com/Amigo-1234" target="_blank" rel="noreferrer" aria-label="GitHub">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.207 11.387.6.113.793-.262.793-.583
+            0-.288-.012-1.243-.018-2.25-3.338.726-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.756
+            -1.333-1.756-1.09-.745.083-.73.083-.73 1.205.085 1.84 1.237 1.84 1.237
+            1.07 1.835 2.807 1.305 3.492.998.108-.776.418-1.305.762-1.605
+            -2.665-.304-5.466-1.332-5.466-5.93
+            0-1.31.468-2.38 1.236-3.22
+            -.124-.303-.536-1.523.116-3.176
+            0 0 1.008-.322 3.3 1.23
+            .957-.266 1.983-.399 3.003-.404
+            1.02.005 2.047.138 3.006.404
+            2.29-1.552 3.296-1.23 3.296-1.23
+            .653 1.653.241 2.873.118 3.176
+            .77.84 1.235 1.91 1.235 3.22
+            0 4.61-2.804 5.624-5.475 5.92
+            .43.37.823 1.1.823 2.22
+            0 1.606-.014 2.898-.014 3.293
+            0 .322.19.699.8.58C20.565 21.796 24 17.297 24 12
+            24 5.37 18.627 0 12 0z"/>
+          </svg>
+        </a>
+
+        <a class="social-icon" href="https://www.linkedin.com/in/muftau-idris-3221603a1?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app" target="_blank" rel="noreferrer" aria-label="LinkedIn">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037
+            -1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046
+            c.477-.9 1.637-1.85 3.37-1.85
+            3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433
+            c-1.144 0-2.063-.926-2.063-2.065
+            0-1.138.92-2.063 2.063-2.063
+            1.14 0 2.064.925 2.064 2.063
+            0 1.139-.925 2.065-2.064 2.065zM6.781 20.452H3.891V9h2.89v11.452zM22.225
+            0H1.771C.792 0 0 .774 0 1.727v20.545
+            C0 23.227.792 24 1.771 24h20.451
+            C23.2 24 24 23.227 24 22.273V1.727
+            C24 .774 23.2 0 22.225 0z"/>
+          </svg>
+        </a>
+
+        <a class="social-backtop" href="#hero">Back to top</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <script type="module" src="script.js"></script>
+</body>
+</html>
