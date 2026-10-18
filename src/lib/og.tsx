@@ -73,7 +73,19 @@ export function OgFrame({
           filter: "blur(90px)",
         }}
       />
-      <div style={{ position: "absolute", inset: 40, border: "1px solid rgba(236,235,230,0.16)", display: "flex", flexDirection: "column", padding: 56 }}>
+      <div
+        style={{
+          position: "absolute",
+          left: 40,
+          top: 40,
+          width: 1120,
+          height: 550,
+          border: "1px solid rgba(236,235,230,0.16)",
+          display: "flex",
+          flexDirection: "column",
+          padding: 48,
+        }}
+      >
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", fontFamily: "Mono", fontSize: 20, letterSpacing: 4 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
             <svg width="40" height="40" viewBox="0 0 48 48">
@@ -90,17 +102,17 @@ export function OgFrame({
           <img
             src={portrait}
             alt=""
-            width={300}
-            height={375}
-            style={{ position: "absolute", right: 56, top: 96, borderRadius: 24, border: "1px solid rgba(236,235,230,0.25)", objectFit: "cover" }}
+            width={272}
+            height={340}
+            style={{ position: "absolute", right: 48, top: 96, borderRadius: 24, border: "1px solid rgba(236,235,230,0.25)", objectFit: "cover" }}
           />
         )}
-        <div style={{ display: "flex", flexDirection: "column", marginTop: "auto", ...(portrait ? { maxWidth: 700 } : {}) }}>
+        <div style={{ display: "flex", flexDirection: "column", marginTop: "auto", ...(portrait ? { maxWidth: 680 } : {}) }}>
           <div style={{ display: "flex", flexWrap: "wrap", fontFamily: "Serif", fontSize: 104, lineHeight: 1, letterSpacing: -2 }}>
             <span>{title}</span>
             {italic && <span style={{ fontStyle: "italic", color: ACCENT, marginLeft: 24 }}>{italic}</span>}
           </div>
-          <div style={{ marginTop: 24, fontSize: 30, color: MUTED, maxWidth: 900, lineHeight: 1.35 }}>{subtitle}</div>
+          <div style={{ marginTop: 24, fontSize: 30, color: MUTED, maxWidth: portrait ? 680 : 900, lineHeight: 1.35 }}>{subtitle}</div>
         </div>
         <div
           style={{

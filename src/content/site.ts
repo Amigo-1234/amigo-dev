@@ -27,9 +27,9 @@ export const site = {
   /** Portrait supplied by the owner. Set to null to show the designed fallback instead. */
   portrait: {
     image: portraitImage,
-    alt: "Muftau Idris in an FC Barcelona shirt, seated in a stand in front of a football pitch mural.",
+    alt: "Muftau Idris in a black turtleneck, chin resting on his hand, at a desk in a warmly lit workspace.",
     /** Where the face sits, for responsive cropping (CSS object-position). */
-    focus: "50% 32%",
+    focus: "50% 30%",
   } as { image: typeof portraitImage; alt: string; focus: string } | null,
 } as const;
 
