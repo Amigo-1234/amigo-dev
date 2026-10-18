@@ -33,6 +33,7 @@ const pages: Item[] = [
   { id: "about", group: "Pages", label: "About me", keywords: "story languages interests journey", href: "/about" },
   { id: "services", group: "Pages", label: "Services", keywords: "hire freelance client", href: "/#services" },
   { id: "contact", group: "Pages", label: "Contact", keywords: "email message hire", href: "/contact" },
+  { id: "play", group: "Pages", label: "Play DEBUG.EXE", keywords: "game arcade bugs fun", href: "/play" },
 ];
 
 const actions: Item[] = [

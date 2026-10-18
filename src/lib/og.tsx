@@ -11,10 +11,18 @@ const MUTED = "#a6a59e";
 const SUBTLE = "#75746e";
 const ACCENT = "#f26b3a";
 
-/** The owner's portrait as a data URL, for the main social preview. */
-export async function ogPortrait() {
-  const data = await readFile(join(process.cwd(), "src/fonts/og/portrait.jpg"));
-  return `data:image/jpeg;base64,${data.toString("base64")}`;
+/**
+ * The owner's portrait as a data URL for the main social preview, read from
+ * src/assets/portrait/og.jpg (a JPEG, since the renderer can't read WebP).
+ * Returns undefined when there is no file, and the preview is laid out without it.
+ */
+export async function ogPortrait(): Promise<string | undefined> {
+  try {
+    const data = await readFile(join(process.cwd(), "src/assets/portrait/og.jpg"));
+    return `data:image/jpeg;base64,${data.toString("base64")}`;
+  } catch {
+    return undefined;
+  }
 }
 
 export async function ogFonts() {

@@ -28,11 +28,12 @@
   --shadow: 0 1px 0 rgb(255 255 255 / 0.04) inset, 0 24px 60px -24px rgb(0 0 0 / 0.7);
   --ok: #7fc8a0;
   --warn: #e7b366;
-  --glass-bg: rgb(20 20 23 / 0.58);
-  --glass-bg-strong: rgb(20 20 23 / 0.78);
-  --glass-border: rgb(236 235 230 / 0.12);
-  --glass-highlight: rgb(255 255 255 / 0.07);
-  --glass-shadow: 0 1px 0 rgb(255 255 255 / 0.06) inset, 0 20px 50px -20px rgb(0 0 0 / 0.75);
+  --glass-bg: rgb(19 19 22 / 0.72);
+  --glass-bg-strong: rgb(19 19 22 / 0.9);
+  --glass-border: rgb(236 235 230 / 0.13);
+  --glass-highlight: rgb(255 255 255 / 0.06);
+  --glass-shadow: 0 1px 0 rgb(255 255 255 / 0.05) inset, 0 18px 40px -22px rgb(0 0 0 / 0.8);
+  --header-bg: rgb(11 11 12 / 0.9);
 }
 
 [data-theme="light"] {
@@ -54,11 +55,12 @@
   --shadow: 0 1px 0 rgb(255 255 255 / 0.6) inset, 0 24px 50px -28px rgb(60 40 20 / 0.35);
   --ok: #2f7a52;
   --warn: #93600f;
-  --glass-bg: rgb(251 249 244 / 0.62);
-  --glass-bg-strong: rgb(251 249 244 / 0.86);
-  --glass-border: rgb(21 21 19 / 0.1);
-  --glass-highlight: rgb(255 255 255 / 0.7);
-  --glass-shadow: 0 1px 0 rgb(255 255 255 / 0.8) inset, 0 20px 45px -24px rgb(60 40 20 / 0.32);
+  --glass-bg: rgb(251 249 244 / 0.78);
+  --glass-bg-strong: rgb(251 249 244 / 0.93);
+  --glass-border: rgb(21 21 19 / 0.11);
+  --glass-highlight: rgb(255 255 255 / 0.65);
+  --glass-shadow: 0 1px 0 rgb(255 255 255 / 0.8) inset, 0 16px 36px -24px rgb(60 40 20 / 0.35);
+  --header-bg: rgb(244 241 234 / 0.92);
 }
 
 @theme inline {
@@ -262,8 +264,62 @@
       background:
         linear-gradient(180deg, var(--glass-highlight), transparent 38%),
         var(--glass-bg);
-      -webkit-backdrop-filter: blur(18px) saturate(1.4);
-      backdrop-filter: blur(18px) saturate(1.4);
+      -webkit-backdrop-filter: blur(16px) saturate(1.3);
+      backdrop-filter: blur(16px) saturate(1.3);
+    }
+  }
+
+  /* Phones: lighter blur (cheaper to composite while scrolling). */
+  @media (max-width: 767px) {
+    .glass {
+      -webkit-backdrop-filter: blur(10px) saturate(1.2);
+      backdrop-filter: blur(10px) saturate(1.2);
+    }
+  }
+
+  /*
+   * Header background. The bar never changes size; this layer only fades.
+   * Phones: a full-width, nearly opaque bar that is always present, so
+   * content never shows through or around it. Larger screens: a floating
+   * glass pill that appears once the page has scrolled.
+   */
+  .header-bg {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: var(--header-bg);
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.3s ease, opacity 0.35s ease, transform 0.35s var(--ease-out-expo);
+  }
+
+  @supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .header-bg {
+      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px);
+    }
+  }
+
+  .site-header[data-scrolled] .header-bg {
+    border-color: var(--line);
+  }
+
+  @media (min-width: 768px) {
+    .header-bg {
+      inset: 0.5rem 0.75rem;
+      border: 1px solid var(--glass-border);
+      border-radius: 9999px;
+      background:
+        linear-gradient(180deg, var(--glass-highlight), transparent 45%),
+        var(--glass-bg-strong);
+      box-shadow: var(--glass-shadow);
+      opacity: 0;
+      transform: translateY(-4px) scale(0.99);
+    }
+
+    .site-header[data-scrolled] .header-bg {
+      border-color: var(--glass-border);
+      opacity: 1;
+      transform: none;
     }
   }
 
@@ -324,6 +380,48 @@
     transform: translateX(2.5px);
   }
 
+  /* DEBUG.EXE */
+  .game-scanlines {
+    background: repeating-linear-gradient(to bottom, rgb(255 255 255 / 0.025) 0 1px, transparent 1px 3px);
+    box-shadow: inset 0 0 60px rgb(0 0 0 / 0.55);
+  }
+
+  .game-btn {
+    display: grid;
+    place-items: center;
+    height: 4rem;
+    border-radius: 1rem;
+    border: 1px solid var(--glass-border);
+    background: var(--surface-strong);
+    color: var(--fg);
+    font-family: var(--font-mono);
+    font-size: 1.25rem;
+    font-weight: 600;
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    transition: background-color 0.1s, transform 0.1s;
+  }
+
+  .game-btn:active {
+    background: var(--accent-soft);
+    transform: scale(0.97);
+  }
+
+  .game-btn-fire {
+    background: var(--accent);
+    color: var(--accent-fg);
+    border-color: transparent;
+    font-size: 1rem;
+    letter-spacing: 0.14em;
+  }
+
+  .game-btn-fire:active {
+    background: var(--accent);
+    filter: brightness(1.1);
+  }
+
   /* Long-form text in case studies. */
   .prose-case p {
     color: var(--fg-muted);
@@ -373,6 +471,10 @@
   .draw [data-fade] {
     animation: fade 0.8s ease-out both;
     animation-delay: calc(var(--d, 0) * 1ms + 600ms);
+  }
+
+  .portrait-sweep {
+    animation: sweep 1.8s var(--ease-in-out-quart) 0.6s 1 both;
   }
 
   .float-slow {
@@ -452,6 +554,15 @@ html:not(.js) .js-only {
   }
 }
 
+@keyframes sweep {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(400%);
+  }
+}
+
 @keyframes float {
   0%,
   100% {
@@ -480,6 +591,13 @@ html:not(.js) .js-only {
   to {
     transform: translate3d(6%, 5%, 0) scale(1.12);
   }
+}
+
+/* Keep the page still behind the open mobile menu (iOS scrolls through modals). */
+html.menu-open,
+html.menu-open body {
+  overflow: hidden;
+  overscroll-behavior: none;
 }
 
 /* Easter egg: the Konami code shows the page as a construction drawing. */

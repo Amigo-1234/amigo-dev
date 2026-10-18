@@ -120,8 +120,8 @@ export default function AboutPage() {
             </dl>
           </div>
 
-          <div className="rise mx-auto w-full max-w-[24rem] lg:col-span-5 lg:mt-24 lg:max-w-none" style={{ "--i": 2 } as React.CSSProperties}>
-            <Portrait variant="about" priority />
+          <div className="rise mx-auto w-full max-w-[20rem] lg:col-span-5 lg:mr-0 lg:mt-24 lg:max-w-[22rem]" style={{ "--i": 2 } as React.CSSProperties}>
+            <Portrait priority />
           </div>
         </div>
       </header>

@@ -29,10 +29,7 @@ export function HeroMotion({ children, className }: { children: React.ReactNode;
         gsap.set(q("[data-hero]"), { opacity: 1 });
         gsap.set(q("[data-hero-line]"), { yPercent: 110, rotate: 2.5 });
         gsap.set(q("[data-hero-fade]"), { opacity: 0, y: 24 });
-        gsap.set(q("[data-portrait-frame]"), { clipPath: "inset(100% 0% 0% 0% round 1.75rem)" });
-        gsap.set(q("[data-portrait-image]"), { scale: 1.18 });
-        gsap.set(q("[data-portrait-plate]"), { opacity: 0, x: -14, y: 14 });
-        gsap.set(q("[data-portrait-chip]"), { opacity: 0, y: 12 });
+        gsap.set(q("[data-hero-portrait]"), { opacity: 0, y: 28, scale: 0.97 });
         root.classList.add("gsap");
 
         const label = q("[data-hero-label]")[0];
@@ -40,10 +37,7 @@ export function HeroMotion({ children, className }: { children: React.ReactNode;
           tl.to(label, { duration: 1, ease: "none", scrambleText: { text: label.textContent ?? "", chars: "01/<>—_", speed: 0.6 } }, 0);
         }
         tl.to(q("[data-hero-line]"), { yPercent: 0, rotate: 0, stagger: 0.1, duration: 1.3 }, 0.1)
-          .to(q("[data-portrait-frame]"), { clipPath: "inset(0% 0% 0% 0% round 1.75rem)", duration: 1.4, ease: "expo.inOut" }, 0.15)
-          .to(q("[data-portrait-image]"), { scale: 1, duration: 1.8 }, 0.25)
-          .to(q("[data-portrait-plate]"), { opacity: 1, x: 0, y: 0 }, 0.7)
-          .to(q("[data-portrait-chip]"), { opacity: 1, y: 0, stagger: 0.12, duration: 0.9 }, 1)
+          .to(q("[data-hero-portrait]"), { opacity: 1, y: 0, scale: 1, duration: 1.4 }, 0.35)
           .to(q("[data-hero-fade]"), { opacity: 1, y: 0, stagger: 0.09 }, 0.55);
       });
 

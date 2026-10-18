@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 
 import { nav, site } from "@/content/site";
 import { cn } from "@/lib/cn";
@@ -18,14 +18,21 @@ function isActive(pathname: string, href: string) {
 
 export function SiteHeader() {
   const pathname = usePathname();
-  const [scrolled, setScrolled] = useState(false);
+  const headerRef = useRef<HTMLElement>(null);
+  const sentinelRef = useRef<HTMLDivElement>(null);
   const dialogRef = useRef<HTMLDialogElement>(null);
 
+  // Scroll state without a scroll handler: when a marker at the very top of
+  // the page leaves the viewport, the header gets [data-scrolled]. Only CSS
+  // reacts to it (opacity and colour), so scrolling never re-renders React or
+  // triggers layout.
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 12);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    const sentinel = sentinelRef.current;
+    const header = headerRef.current;
+    if (!sentinel || !header) return;
+    const observer = new IntersectionObserver(([entry]) => header.toggleAttribute("data-scrolled", !entry.isIntersecting));
+    observer.observe(sentinel);
+    return () => observer.disconnect();
   }, []);
 
   // Close the mobile menu after navigation.
@@ -34,22 +41,18 @@ export function SiteHeader() {
   }, [pathname]);
 
   return (
-    // The header box keeps one height; only the bar inside moves, so the page never shifts.
-    <header className="sticky top-0 z-40 h-16 md:h-[4.5rem]">
-      <div
-        className={cn(
-          "mx-auto flex items-center justify-between gap-4 border transition-[max-width,height,padding,border-radius,background-color,border-color,box-shadow,transform] duration-500 ease-[var(--ease-out-expo)]",
-          scrolled
-            ? "glass h-14 max-w-[min(62rem,calc(100%-1rem))] translate-y-2.5 rounded-full pl-4 pr-2 sm:pl-5"
-            : "h-16 max-w-[84rem] rounded-none border-transparent px-4 sm:px-7 md:h-[4.5rem] lg:px-10",
-        )}
-      >
-        <Link href="/" className="group -m-2 flex items-center gap-3 rounded-sm p-2">
-          <Wordmark compact={scrolled} />
-          <span className="sr-only">, home</span>
-        </Link>
+    <>
+      <div ref={sentinelRef} aria-hidden="true" className="pointer-events-none absolute left-0 top-0 h-4 w-px" />
+      {/* The bar's size never changes; only its background layer fades. */}
+      <header ref={headerRef} className="site-header sticky top-0 z-40">
+        <div className="relative mx-auto flex h-16 max-w-[84rem] items-center justify-between gap-4 px-4 sm:px-7 md:h-[4.5rem] lg:px-10">
+          <div aria-hidden="true" className="header-bg" />
+          <Link href="/" className="group relative -m-2 flex items-center gap-3 rounded-sm p-2">
+            <Wordmark />
+            <span className="sr-only">, home</span>
+          </Link>
 
-        <nav aria-label="Main" className="hidden md:block">
+          <nav aria-label="Main" className="relative hidden md:block">
           <ul className="flex items-center gap-1">
             {nav.map((item) => {
               const active = isActive(pathname, item.href);
@@ -75,7 +78,7 @@ export function SiteHeader() {
           </ul>
         </nav>
 
-        <div className="flex items-center gap-2">
+          <div className="relative flex items-center gap-2">
           <button
             type="button"
             onClick={openCommandMenu}
@@ -91,7 +94,11 @@ export function SiteHeader() {
           <ThemeToggle />
           <button
             type="button"
-            onClick={() => dialogRef.current?.showModal()}
+            onClick={() => {
+              dialogRef.current?.showModal();
+              // iOS keeps scrolling the page behind a modal; lock it while open.
+              document.documentElement.classList.add("menu-open");
+            }}
             aria-haspopup="dialog"
             className="inline-flex h-10 items-center gap-2 rounded-full border border-line px-4 text-sm text-fg transition-colors hover:border-line-strong md:hidden"
           >
@@ -100,11 +107,12 @@ export function SiteHeader() {
               <path d="M2 5.5h12M2 10.5h12" stroke="currentColor" strokeWidth="1.5" />
             </svg>
           </button>
+          </div>
         </div>
-      </div>
 
-      <MobileMenu dialogRef={dialogRef} pathname={pathname} />
-    </header>
+        <MobileMenu dialogRef={dialogRef} pathname={pathname} />
+      </header>
+    </>
   );
 }
 
@@ -121,6 +129,7 @@ function MobileMenu({
     <dialog
       ref={dialogRef}
       aria-label="Site menu"
+      onClose={() => document.documentElement.classList.remove("menu-open")}
       className="m-0 h-dvh max-h-none w-full max-w-none bg-ink p-0 text-fg backdrop:bg-ink/60 open:flex open:flex-col md:hidden [&[open]]:animate-[page-enter_0.45s_var(--ease-out-expo)_both]"
       onClick={(e) => {
         if (e.target === e.currentTarget) close();

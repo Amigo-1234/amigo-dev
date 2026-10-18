@@ -35,7 +35,7 @@ export function SiteFooter() {
           <div>
             <p className="label">Index</p>
             <ul className="mt-4 space-y-2.5">
-              {[{ href: "/", label: "Home" }, ...nav].map((item) => (
+              {[{ href: "/", label: "Home" }, ...nav, { href: "/play", label: "Play DEBUG.EXE" }].map((item) => (
                 <li key={item.href}>
                   <Link href={item.href} className="link-underline text-fg-muted hover:text-fg">
                     {item.label}

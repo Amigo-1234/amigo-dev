@@ -1,4 +1,4 @@
-import portraitImage from "@/assets/portrait/muftau-idris.webp";
+import type { StaticImageData } from "next/image";
 
 /**
  * Site-wide facts. Everything here is public and was confirmed by the owner
@@ -24,13 +24,12 @@ export const site = {
   },
   /** Path to a verified CV in /public. The CV button only appears when this is set. */
   resume: null as string | null,
-  /** Portrait supplied by the owner. Set to null to show the designed fallback instead. */
-  portrait: {
-    image: portraitImage,
-    alt: "Muftau Idris in a black turtleneck, chin resting on his hand, at a desk in a warmly lit workspace.",
-    /** Where the face sits, for responsive cropping (CSS object-position). */
-    focus: "50% 30%",
-  } as { image: typeof portraitImage; alt: string; focus: string } | null,
+  /**
+   * Portrait supplied by the owner. While null, a branded card is shown in its
+   * place. To add one: put the image in src/assets/portrait/, import it here
+   * and set { image, alt, focus } (focus is a CSS object-position, e.g. "50% 30%").
+   */
+  portrait: null as { image: StaticImageData; alt: string; focus: string } | null,
 } as const;
 
 export const nav = [

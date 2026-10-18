@@ -30,6 +30,7 @@ const COMMANDS: { name: string; description: string; hidden?: boolean }[] = [
   { name: "skills", description: "what I work with" },
   { name: "contact", description: "how to reach me" },
   { name: "hire", description: "go to the contact form" },
+  { name: "play", description: "launch DEBUG.EXE" },
   { name: "theme", description: "switch light/dark" },
   { name: "date", description: "my local time" },
   { name: "clear", description: "clear the screen" },
@@ -43,7 +44,7 @@ const COMMANDS: { name: string; description: string; hidden?: boolean }[] = [
   { name: "exit", description: "", hidden: true },
 ];
 
-const PAGES: Record<string, string> = { home: "/", about: "/about", projects: "/projects", work: "/projects", contact: "/contact" };
+const PAGES: Record<string, string> = { home: "/", about: "/about", projects: "/projects", work: "/projects", contact: "/contact", play: "/play" };
 
 const timeFormat = new Intl.DateTimeFormat("en-GB", { timeZone: site.timeZone, weekday: "long", hour: "2-digit", minute: "2-digit" });
 
@@ -197,6 +198,10 @@ export function Terminal({ data }: { data: TerminalData }) {
       case "hire":
         print("output", "opening the contact form … good choice.");
         router.push("/contact");
+        break;
+      case "play":
+        print("output", "launching DEBUG.EXE … mind the heisenbugs.");
+        router.push("/play");
         break;
       case "theme":
         toggleTheme();

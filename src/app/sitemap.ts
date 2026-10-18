@@ -5,7 +5,7 @@ import { site } from "@/content/site";
 import { posts } from "@/content/writing";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const pages = ["", "/projects", "/about", "/contact"].map((path) => ({
+  const pages = ["", "/projects", "/about", "/contact", "/play"].map((path) => ({
     url: `${site.url}${path}`,
     changeFrequency: "monthly" as const,
     priority: path === "" ? 1 : 0.8,

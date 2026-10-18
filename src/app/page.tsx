@@ -1,6 +1,10 @@
+import Image from "next/image";
 import Link from "next/link";
 
+import { ArcadeCard } from "@/components/arcade-card";
+import { Monogram } from "@/components/brand";
 import { HeroMotion } from "@/components/hero-motion";
+import { LocalTime } from "@/components/local-time";
 import { Portrait } from "@/components/portrait";
 import { FeaturedProject, ProjectCard } from "@/components/project-cards";
 import { SystemExplorer } from "@/components/system-explorer";
@@ -91,15 +95,15 @@ function Hero() {
         className="glow-drift absolute -top-40 right-[-10%] -z-10 size-[42rem] rounded-full bg-accent opacity-[0.07] blur-[120px]"
       />
 
-      <div className="shell grid items-center gap-14 pb-16 pt-10 md:pt-16 lg:grid-cols-12 lg:gap-10 lg:pb-24">
-        <div className="lg:col-span-7">
+      <div className="shell grid items-center gap-10 pb-10 pt-8 sm:pt-12 lg:grid-cols-12 lg:gap-10 lg:pb-20 lg:pt-16">
+        <div className="lg:col-span-8">
           <p data-hero className="label flex flex-wrap items-center gap-x-3 gap-y-1">
             <span className="text-fg">{site.name}</span>
             <span aria-hidden="true" className="h-px w-6 bg-line-strong" />
             <span data-hero-label>{site.role}</span>
           </p>
 
-          <h1 id="hero-title" className="mt-7 font-serif text-display">
+          <h1 id="hero-title" className="mt-5 font-serif text-display sm:mt-7">
             {lines.map((line, i) => (
               // Each line is masked so it can rise from below its own baseline.
               <span key={i} className="-mb-[0.12em] block overflow-hidden pb-[0.12em]">
@@ -110,17 +114,19 @@ function Hero() {
             ))}
           </h1>
 
-          <p data-hero data-hero-fade className="mt-8 max-w-xl text-lg leading-relaxed text-fg-muted md:text-xl">
+          <p data-hero data-hero-fade className="mt-5 max-w-xl text-[1.0625rem] leading-relaxed text-fg-muted sm:mt-8 md:text-xl">
             I build modern web applications, design the databases and permissions behind them, deploy them and keep them
             running — for schools, businesses and communities in Nigeria.
           </p>
 
-          <div data-hero data-hero-fade className="mt-10 flex flex-wrap items-center gap-3">
-            <ButtonLink href="/projects">Explore my work</ButtonLink>
-            <ButtonLink href="/about" variant="outline">
+          <div data-hero data-hero-fade className="mt-7 grid grid-cols-1 gap-2.5 min-[375px]:grid-cols-[1.2fr_1fr] sm:mt-10 sm:flex sm:flex-wrap sm:items-center sm:gap-3">
+            <ButtonLink href="/projects" className="whitespace-nowrap px-4 sm:px-6">
+              Explore my work
+            </ButtonLink>
+            <ButtonLink href="/about" variant="outline" className="whitespace-nowrap px-4 sm:px-6">
               About me
             </ButtonLink>
-            <ButtonLink href="/contact" variant="ghost">
+            <ButtonLink href="/contact" variant="ghost" className="justify-self-start px-0 min-[375px]:col-span-2 sm:px-3">
               Get in touch
             </ButtonLink>
             {site.resume && (
@@ -131,14 +137,20 @@ function Hero() {
           </div>
         </div>
 
-        <div data-hero className="mx-auto w-full max-w-[22rem] sm:max-w-[26rem] lg:col-span-5 lg:max-w-none lg:pl-6">
-          <Portrait variant="hero" priority />
+        {/* Large screens: an editorial portrait card beside the headline */}
+        <div data-hero data-hero-portrait className="hidden w-full max-w-[20rem] justify-self-end lg:col-span-4 lg:block">
+          <Portrait priority size="sm" />
         </div>
       </div>
 
+      {/* Phones and tablets: a compact identity strip instead of a large photo */}
+      <div className="shell lg:hidden">
+        <IdentityStrip />
+      </div>
+
       {/* Title block, as on an engineering drawing */}
-      <div className="shell pb-6">
-        <dl data-hero data-hero-fade className="grid grid-cols-2 border border-line text-sm md:grid-cols-4">
+      <div className="shell pb-6 pt-4 lg:pt-0">
+        <dl data-hero data-hero-fade className="grid grid-cols-2 border border-line text-[0.8125rem] sm:text-sm md:grid-cols-4">
           {[
             ["Discipline", site.disciplines.join(" · ")],
             ["Studying", "Mechanical Engineering, EKSU"],
@@ -147,10 +159,10 @@ function Hero() {
           ].map(([term, value], i) => (
             <div
               key={term}
-              className={`border-line px-4 py-3.5 ${i % 2 === 0 ? "border-r" : "md:border-r"} ${i < 2 ? "border-b md:border-b-0" : ""} ${i === 3 ? "md:border-r-0" : ""}`}
+              className={`border-line px-3 py-2.5 sm:px-4 sm:py-3.5 ${i % 2 === 0 ? "border-r" : "md:border-r"} ${i < 2 ? "border-b md:border-b-0" : ""} ${i === 3 ? "md:border-r-0" : ""}`}
             >
               <dt className="label">{term}</dt>
-              <dd className="mt-1.5 text-fg">{value}</dd>
+              <dd className="mt-1 text-fg sm:mt-1.5">{value}</dd>
             </div>
           ))}
         </dl>
@@ -159,10 +171,36 @@ function Hero() {
   );
 }
 
+function IdentityStrip() {
+  const portrait = site.portrait;
+  return (
+    <div className="glass flex items-center gap-3.5 rounded-2xl p-2.5 pr-4">
+      <span className="relative grid size-14 shrink-0 place-items-center overflow-hidden rounded-xl bg-ink-sunken">
+        {portrait ? (
+          <Image src={portrait.image} alt={portrait.alt} fill sizes="56px" className="object-cover" style={{ objectPosition: portrait.focus }} />
+        ) : (
+          <>
+            <span aria-hidden="true" className="grid-paper absolute inset-0" />
+            <Monogram className="relative size-8 text-fg" />
+          </>
+        )}
+      </span>
+      <span className="min-w-0 flex-1">
+        <span className="block font-serif text-xl leading-none">{site.name}</span>
+        <span className="mt-1 block truncate text-xs text-fg-muted">Full-stack developer · AMIGODEV</span>
+      </span>
+      <span className="shrink-0 text-right font-mono text-[0.625rem] tracking-wide text-fg-muted">
+        <span className="block">Nigeria</span>
+        <LocalTime />
+      </span>
+    </div>
+  );
+}
+
 function SystemSection() {
   const projectNames = Object.fromEntries(projects.map((p) => [p.slug, p.name]));
   return (
-    <section aria-labelledby="system-heading" className="shell pt-24 md:pt-36">
+    <section aria-labelledby="system-heading" className="shell pt-20 md:pt-36">
       <SectionHeading
         index="01"
         label="How I build"
@@ -218,6 +256,7 @@ function Console() {
             So do I. Ask it about my projects and skills, or open a case study without touching the mouse. There are a
             few things in there I didn&apos;t list.
           </p>
+          <ArcadeCard />
         </div>
         <div className="reveal relative isolate min-w-0 lg:col-span-7">
           <div aria-hidden="true" className="absolute bottom-4 left-0 -z-10 size-56 sm:-left-8 rounded-full bg-accent opacity-20 blur-3xl" />

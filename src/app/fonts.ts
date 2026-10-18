@@ -1,10 +1,23 @@
 import localFont from "next/font/local";
 
-export { GeistSans } from "geist/font/sans";
+/*
+ * Self-hosted fonts, subset to the characters the site uses (Latin plus
+ * punctuation and arrows) to keep the first paint fast on mobile. Geist and
+ * Geist Mono keep their variable weight axis. Regenerate the subsets with
+ * pyftsubset if the site starts using new characters.
+ */
+
+export const GeistSans = localFont({
+  src: "../fonts/Geist-Variable-latin.woff2",
+  variable: "--font-geist-sans",
+  weight: "100 900",
+  display: "swap",
+  fallback: ["ui-sans-serif", "system-ui", "sans-serif"],
+});
 
 /* Mono is only used for small labels, so it is not preloaded. */
 export const GeistMono = localFont({
-  src: "../../node_modules/geist/dist/fonts/geist-mono/GeistMono-Variable.woff2",
+  src: "../fonts/GeistMono-Variable-latin.woff2",
   variable: "--font-geist-mono",
   weight: "100 900",
   display: "swap",

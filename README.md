@@ -7,7 +7,9 @@ Production: https://amigo-dev.vercel.app
 
 - Next.js 16 (App Router, static generation) · React 19 · TypeScript (strict)
 - Tailwind CSS 4 with a small token set in `src/app/globals.css`
-- Instrument Serif, Geist and Geist Mono, self-hosted through `next/font`
+- Instrument Serif, Geist and Geist Mono, self-hosted through `next/font`; Geist and Geist Mono are
+  subset to the characters the site uses (`src/fonts/*-latin.woff2`, made with `pyftsubset` from the
+  `geist` dev dependency) to keep the first paint fast on phones
 - GSAP (with ScrollTrigger and ScrambleText) for motion, loaded on demand: the desktop hero intro
   loads it right away, everything else on the visitor's first interaction (`src/lib/gsap.ts`).
   All motion respects `prefers-reduced-motion`, and nothing is hidden when JavaScript is unavailable
@@ -32,7 +34,8 @@ npm run build      # production build
 | `src/content/profile.ts` | Story, skills (with evidence), journey, services, AI workflow, languages, interests |
 | `src/content/writing.ts` | Technical articles. Empty for now; `/writing` returns 404 until a post exists |
 | `src/assets/projects/` | Screenshots, captured from local builds of each project's repository |
-| `src/assets/portrait/` | The owner's portrait (set or remove it in `site.ts`; a designed fallback shows without it) |
+| `src/assets/portrait/` | Place for the owner's portrait. Until one is set in `site.ts`, a branded card shows instead |
+| `src/game/` | DEBUG.EXE: engine, sprites and React wrapper, loaded only on `/play` |
 | `public/brand/` | AMIGODEV monogram and wordmark as standalone SVGs (outlined text, ink and paper versions, app tile) |
 | `src/components/` | Header, footer, command menu, theme, cards, contact form, portrait, layer explorer, terminal, motion layer |
 | `src/app/` | Routes, metadata, sitemap, robots, manifest and Open Graph images |
@@ -45,6 +48,9 @@ npm run build      # production build
 - **Add a CV:** put the PDF in `public/` and set `resume` in `src/content/site.ts`; the hero shows a
   Résumé button only when this is set.
 - **Publish an article:** append to `posts` in `src/content/writing.ts`.
+- **Add the portrait:** put the image in `src/assets/portrait/`, import it in `src/content/site.ts`
+  and set `portrait: { image, alt, focus }`. For the social preview, also add a JPEG copy at
+  `src/assets/portrait/og.jpg`.
 
 Content rule: only publish what can be verified. Project copy was checked against each project's
 repository; planned features are listed as planned.
@@ -65,6 +71,14 @@ the accent colour. Its geometry lives in `src/components/brand.tsx` (`MONOGRAM_I
 - The terminal (`terminal.tsx`) matches input against a fixed list of commands; nothing typed is
   evaluated. It loads after the page is interactive.
 - Easter eggs: a few undocumented terminal commands, a console note, and the Konami code.
+
+## DEBUG.EXE (`/play`)
+
+A small canvas arcade game: defend the production server from incoming bugs. No game engine — the
+engine (`src/game/engine.ts`) is plain TypeScript drawing pixel sprites (`sprites.ts`) to a canvas.
+The game code is lazy-loaded on `/play` only. Keyboard (arrows/WASD, Space, P) and touch (drag the
+playfield, or the on-screen buttons) are supported; it pauses when the tab is hidden, honours reduced
+motion, and keeps the personal best in `localStorage` only.
 
 ## Contact form
 
