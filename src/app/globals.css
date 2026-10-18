@@ -1,0 +1,390 @@
+@import "tailwindcss";
+
+/* Theme is set on <html data-theme> before first paint (see ThemeScript). */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+/* ------------------------------------------------------------------ */
+/* Tokens                                                              */
+/* ------------------------------------------------------------------ */
+
+:root,
+[data-theme="dark"] {
+  color-scheme: dark;
+  --ink: #0b0b0c;
+  --ink-raised: #121214;
+  --ink-sunken: #08080a;
+  --paper: #ecebe6;
+  --fg: #ecebe6;
+  --fg-muted: #a6a59e;
+  --fg-subtle: #858479;
+  --line: rgb(236 235 230 / 0.09);
+  --line-strong: rgb(236 235 230 / 0.18);
+  --surface: rgb(236 235 230 / 0.035);
+  --surface-strong: rgb(236 235 230 / 0.06);
+  --accent: #f26b3a;
+  --accent-fg: #0b0b0c;
+  --accent-soft: rgb(242 107 58 / 0.14);
+  --grid: rgb(236 235 230 / 0.045);
+  --shadow: 0 1px 0 rgb(255 255 255 / 0.04) inset, 0 24px 60px -24px rgb(0 0 0 / 0.7);
+  --ok: #7fc8a0;
+  --warn: #e7b366;
+}
+
+[data-theme="light"] {
+  color-scheme: light;
+  --ink: #f4f1ea;
+  --ink-raised: #fbf9f4;
+  --ink-sunken: #ebe7dd;
+  --fg: #151513;
+  --fg-muted: #57554f;
+  --fg-subtle: #69665f;
+  --line: rgb(21 21 19 / 0.1);
+  --line-strong: rgb(21 21 19 / 0.2);
+  --surface: rgb(21 21 19 / 0.025);
+  --surface-strong: rgb(21 21 19 / 0.05);
+  --accent: #b83f17;
+  --accent-fg: #fbf9f4;
+  --accent-soft: rgb(184 63 23 / 0.1);
+  --grid: rgb(21 21 19 / 0.05);
+  --shadow: 0 1px 0 rgb(255 255 255 / 0.6) inset, 0 24px 50px -28px rgb(60 40 20 / 0.35);
+  --ok: #2f7a52;
+  --warn: #93600f;
+}
+
+@theme inline {
+  --color-ink: var(--ink);
+  --color-ink-raised: var(--ink-raised);
+  --color-ink-sunken: var(--ink-sunken);
+  --color-fg: var(--fg);
+  --color-fg-muted: var(--fg-muted);
+  --color-fg-subtle: var(--fg-subtle);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-surface: var(--surface);
+  --color-surface-strong: var(--surface-strong);
+  --color-accent: var(--accent);
+  --color-accent-fg: var(--accent-fg);
+  --color-accent-soft: var(--accent-soft);
+  --color-ok: var(--ok);
+  --color-warn: var(--warn);
+
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, "SFMono-Regular", monospace;
+  --font-serif: var(--font-instrument-serif), "Iowan Old Style", Georgia, serif;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out-quart: cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+@theme {
+  --breakpoint-xs: 26rem;
+  --text-display: clamp(3.1rem, 1.6rem + 6.6vw, 8.25rem);
+  --text-display--line-height: 0.92;
+  --text-display--letter-spacing: -0.025em;
+  --text-headline: clamp(2.35rem, 1.5rem + 3.6vw, 4.75rem);
+  --text-headline--line-height: 0.98;
+  --text-headline--letter-spacing: -0.02em;
+  --text-title: clamp(1.75rem, 1.35rem + 1.6vw, 2.75rem);
+  --text-title--line-height: 1.05;
+  --text-title--letter-spacing: -0.015em;
+}
+
+/* ------------------------------------------------------------------ */
+/* Base                                                                */
+/* ------------------------------------------------------------------ */
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    scroll-padding-top: 5.5rem;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+
+  body {
+    background-color: var(--ink);
+    color: var(--fg);
+    font-family: var(--font-sans);
+    font-feature-settings: "ss01", "cv11";
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    overflow-x: clip;
+  }
+
+  ::selection {
+    background: var(--accent);
+    color: var(--accent-fg);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  [hidden] {
+    display: none !important;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Components                                                          */
+/* ------------------------------------------------------------------ */
+
+@layer components {
+  /* Container with a 16px gutter on phones. */
+  .shell {
+    width: 100%;
+    max-width: 84rem;
+    margin-inline: auto;
+    padding-inline: 1rem;
+  }
+
+  @media (min-width: 40rem) {
+    .shell {
+      padding-inline: 1.75rem;
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .shell {
+      padding-inline: 2.5rem;
+    }
+  }
+
+  /* Technical-drawing label: small, monospaced, tracked. */
+  .label {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    line-height: 1.4;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--fg-subtle);
+  }
+
+  /* Blueprint grid that fades at the edges. */
+  .grid-paper {
+    background-image:
+      linear-gradient(to right, var(--grid) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--grid) 1px, transparent 1px);
+    background-size: 2.5rem 2.5rem;
+    background-position: -1px -1px;
+  }
+
+  .fade-edges {
+    mask-image: radial-gradient(ellipse 75% 70% at 50% 40%, #000 35%, transparent 100%);
+  }
+
+  /* Corner registration marks, drawn with gradients on a positioned box. */
+  .ticks {
+    --tick: var(--line-strong);
+    --tick-size: 10px;
+    background:
+      linear-gradient(var(--tick), var(--tick)) top left / var(--tick-size) 1px no-repeat,
+      linear-gradient(var(--tick), var(--tick)) top left / 1px var(--tick-size) no-repeat,
+      linear-gradient(var(--tick), var(--tick)) top right / var(--tick-size) 1px no-repeat,
+      linear-gradient(var(--tick), var(--tick)) top right / 1px var(--tick-size) no-repeat,
+      linear-gradient(var(--tick), var(--tick)) bottom left / var(--tick-size) 1px no-repeat,
+      linear-gradient(var(--tick), var(--tick)) bottom left / 1px var(--tick-size) no-repeat,
+      linear-gradient(var(--tick), var(--tick)) bottom right / var(--tick-size) 1px no-repeat,
+      linear-gradient(var(--tick), var(--tick)) bottom right / 1px var(--tick-size) no-repeat;
+  }
+
+  .link-underline {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-size: 0% 1px;
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    transition: background-size 0.4s var(--ease-out-expo);
+  }
+
+  .link-underline:hover,
+  .link-underline:focus-visible {
+    background-size: 100% 1px;
+  }
+
+  .skip-link {
+    position: absolute;
+    left: 1rem;
+    top: -4rem;
+    z-index: 100;
+    padding: 0.75rem 1rem;
+    background: var(--accent);
+    color: var(--accent-fg);
+    font-weight: 500;
+    border-radius: 0.375rem;
+    transition: top 0.2s;
+  }
+
+  .skip-link:focus {
+    top: 1rem;
+  }
+
+  /* Long-form text in case studies. */
+  .prose-case p {
+    color: var(--fg-muted);
+    font-size: 1.0625rem;
+    line-height: 1.7;
+  }
+
+  .prose-case p + p {
+    margin-top: 1.1em;
+  }
+
+  .prose-case strong {
+    color: var(--fg);
+    font-weight: 500;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Motion                                                              */
+/* ------------------------------------------------------------------ */
+
+/*
+ * Content is always visible by default. Animations only run where the
+ * browser supports them and the visitor has not asked for reduced motion,
+ * and none of them depend on JavaScript.
+ */
+@media (prefers-reduced-motion: no-preference) {
+  .rise {
+    animation: rise 0.9s var(--ease-out-expo) both;
+    animation-delay: calc(var(--i, 0) * 80ms + 60ms);
+  }
+
+  @supports (animation-timeline: view()) {
+    .reveal {
+      animation: reveal linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 55%;
+    }
+  }
+
+  /* Elements opt in with data-draw and pathLength="1". */
+  .draw [data-draw] {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    animation: draw 1.4s var(--ease-in-out-quart) forwards;
+    animation-delay: calc(var(--d, 0) * 1ms + 200ms);
+  }
+
+  .draw [data-fade] {
+    animation: fade 0.8s ease-out both;
+    animation-delay: calc(var(--d, 0) * 1ms + 600ms);
+  }
+
+  .float-slow {
+    animation: float 9s ease-in-out infinite;
+  }
+
+  .page-enter {
+    animation: page-enter 0.55s var(--ease-out-expo) both;
+  }
+
+  .glow-drift {
+    animation: drift 18s ease-in-out infinite alternate;
+  }
+}
+
+/* Starts just above zero so the browser still counts the hero as painted (LCP). */
+@keyframes rise {
+  from {
+    opacity: 0.01;
+    transform: translateY(0.6em);
+    filter: blur(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
+
+@keyframes reveal {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes page-enter {
+  from {
+    opacity: 0.01;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes drift {
+  from {
+    transform: translate3d(-6%, -4%, 0) scale(1);
+  }
+  to {
+    transform: translate3d(6%, 5%, 0) scale(1.12);
+  }
+}
+
+@media print {
+  .reveal,
+  .rise,
+  .page-enter {
+    animation: none !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
