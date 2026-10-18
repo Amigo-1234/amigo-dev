@@ -148,7 +148,7 @@ export function CommandMenu({ projects }: { projects: ProjectEntry[] }) {
     <dialog
       ref={dialogRef}
       aria-label="Search and quick actions"
-      className="mx-auto mt-[12vh] w-[min(36rem,calc(100%-2rem))] overflow-hidden rounded-2xl border border-line-strong bg-ink-raised p-0 text-fg shadow-[var(--shadow)] backdrop:bg-ink/70 backdrop:backdrop-blur-sm [&[open]]:animate-[page-enter_0.3s_var(--ease-out-expo)_both]"
+      className="glass mx-auto mt-[12vh] w-[min(36rem,calc(100%-2rem))] overflow-hidden rounded-2xl p-0 text-fg backdrop:bg-ink/70 backdrop:backdrop-blur-sm [&[open]]:animate-[page-enter_0.3s_var(--ease-out-expo)_both]"
       onClick={(e) => {
         if (e.target === e.currentTarget) close();
       }}

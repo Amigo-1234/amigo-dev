@@ -1,6 +1,8 @@
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 
+import { MONOGRAM_BAR, MONOGRAM_INK } from "@/components/brand";
+
 export const ogSize = { width: 1200, height: 630 };
 
 const INK = "#0b0b0c";
@@ -8,6 +10,12 @@ const FG = "#ecebe6";
 const MUTED = "#a6a59e";
 const SUBTLE = "#75746e";
 const ACCENT = "#f26b3a";
+
+/** The owner's portrait as a data URL, for the main social preview. */
+export async function ogPortrait() {
+  const data = await readFile(join(process.cwd(), "src/fonts/og/portrait.jpg"));
+  return `data:image/jpeg;base64,${data.toString("base64")}`;
+}
 
 export async function ogFonts() {
   const dir = join(process.cwd(), "src/fonts/og");
@@ -33,6 +41,7 @@ export function OgFrame({
   subtitle,
   footer,
   tint = ACCENT,
+  portrait,
 }: {
   eyebrow: string;
   title: string;
@@ -40,6 +49,7 @@ export function OgFrame({
   subtitle: string;
   footer: string;
   tint?: string;
+  portrait?: string;
 }) {
   const lines = Array.from({ length: 16 }, (_, i) => i);
   return (
@@ -65,13 +75,27 @@ export function OgFrame({
       />
       <div style={{ position: "absolute", inset: 40, border: "1px solid rgba(236,235,230,0.16)", display: "flex", flexDirection: "column", padding: 56 }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", fontFamily: "Mono", fontSize: 20, letterSpacing: 4 }}>
-          <div style={{ display: "flex" }}>
-            <span>AMIGO</span>
-            <span style={{ color: ACCENT }}>DEV</span>
+          <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+            <svg width="40" height="40" viewBox="0 0 48 48">
+              <path fill={FG} fillRule="evenodd" d={MONOGRAM_INK} />
+              <path fill={ACCENT} d={MONOGRAM_BAR} />
+            </svg>
+            <span style={{ fontFamily: "Sans", fontSize: 22, letterSpacing: 4 }}>AMIGO</span>
+            <span style={{ fontFamily: "Sans", fontSize: 22, letterSpacing: 4, color: ACCENT, marginLeft: -10 }}>DEV</span>
           </div>
           <span style={{ color: SUBTLE, fontSize: 16 }}>{eyebrow.toUpperCase()}</span>
         </div>
-        <div style={{ display: "flex", flexDirection: "column", marginTop: "auto" }}>
+        {portrait && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={portrait}
+            alt=""
+            width={300}
+            height={375}
+            style={{ position: "absolute", right: 56, top: 96, borderRadius: 24, border: "1px solid rgba(236,235,230,0.25)", objectFit: "cover" }}
+          />
+        )}
+        <div style={{ display: "flex", flexDirection: "column", marginTop: "auto", ...(portrait ? { maxWidth: 700 } : {}) }}>
           <div style={{ display: "flex", flexWrap: "wrap", fontFamily: "Serif", fontSize: 104, lineHeight: 1, letterSpacing: -2 }}>
             <span>{title}</span>
             {italic && <span style={{ fontStyle: "italic", color: ACCENT, marginLeft: 24 }}>{italic}</span>}

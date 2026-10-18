@@ -1,3 +1,5 @@
+import portraitImage from "@/assets/portrait/muftau-idris.webp";
+
 /**
  * Site-wide facts. Everything here is public and was confirmed by the owner
  * or carried over from the previous portfolio. Leave a field `null` rather
@@ -22,6 +24,13 @@ export const site = {
   },
   /** Path to a verified CV in /public. The CV button only appears when this is set. */
   resume: null as string | null,
+  /** Portrait supplied by the owner. Set to null to show the designed fallback instead. */
+  portrait: {
+    image: portraitImage,
+    alt: "Muftau Idris in an FC Barcelona shirt, seated in a stand in front of a football pitch mural.",
+    /** Where the face sits, for responsive cropping (CSS object-position). */
+    focus: "50% 32%",
+  } as { image: typeof portraitImage; alt: string; focus: string } | null,
 } as const;
 
 export const nav = [

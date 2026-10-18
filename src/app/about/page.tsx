@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 
+import { Portrait } from "@/components/portrait";
 import { ButtonLink, JsonLd, SectionHeading } from "@/components/ui";
 import { aiWorkflow, interests, journey, languages, story } from "@/content/profile";
 import { site } from "@/content/site";
@@ -89,13 +90,14 @@ export default function AboutPage() {
             nationality: "Nigerian",
             affiliation: { "@type": "CollegeOrUniversity", name: "Ekiti State University" },
             sameAs: [site.social.github, site.social.linkedin],
+            ...(site.portrait ? { image: `${site.url}${site.portrait.image.src}` } : {}),
           },
         }}
       />
 
       <header className="relative isolate overflow-hidden">
         <div aria-hidden="true" className="grid-paper fade-edges absolute inset-0 -z-10" />
-        <div className="shell grid gap-12 pt-12 md:pt-20 lg:grid-cols-12">
+        <div className="shell grid items-start gap-14 pt-12 md:pt-20 lg:grid-cols-12 lg:gap-10">
           <div className="lg:col-span-7">
             <p className="label">About · Sheet 02</p>
             <h1 className="mt-6 font-serif text-display">
@@ -107,16 +109,20 @@ export default function AboutPage() {
                 ships <em className="text-accent">software.</em>
               </span>
             </h1>
+
+            <dl className="rise mt-12 border border-line text-sm" style={{ "--i": 3 } as React.CSSProperties}>
+              {facts.map(([term, value]) => (
+                <div key={term} className="grid grid-cols-[7rem_1fr] border-b border-line last:border-b-0">
+                  <dt className="label border-r border-line px-4 py-3">{term}</dt>
+                  <dd className="px-4 py-3 text-fg">{value}</dd>
+                </div>
+              ))}
+            </dl>
           </div>
 
-          <dl className="rise self-end border border-line text-sm lg:col-span-5" style={{ "--i": 3 } as React.CSSProperties}>
-            {facts.map(([term, value]) => (
-              <div key={term} className="grid grid-cols-[7rem_1fr] border-b border-line last:border-b-0">
-                <dt className="label border-r border-line px-4 py-3">{term}</dt>
-                <dd className="px-4 py-3 text-fg">{value}</dd>
-              </div>
-            ))}
-          </dl>
+          <div className="rise mx-auto w-full max-w-[24rem] lg:col-span-5 lg:mt-24 lg:max-w-none" style={{ "--i": 2 } as React.CSSProperties}>
+            <Portrait variant="about" priority />
+          </div>
         </div>
       </header>
 

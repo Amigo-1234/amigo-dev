@@ -1,7 +1,10 @@
 import Link from "next/link";
 
+import { HeroMotion } from "@/components/hero-motion";
+import { Portrait } from "@/components/portrait";
 import { FeaturedProject, ProjectCard } from "@/components/project-cards";
-import { SystemDrawing } from "@/components/system-drawing";
+import { SystemExplorer } from "@/components/system-explorer";
+import { TerminalLazy } from "@/components/terminal-lazy";
 import { ButtonLink, JsonLd, SectionHeading } from "@/components/ui";
 import { projects, toCard } from "@/content/projects";
 import { aiWorkflow, exploring, journey, learning, services, skills } from "@/content/profile";
@@ -24,15 +27,17 @@ export default function HomePage() {
           description: site.description,
           email: `mailto:${site.email}`,
           sameAs: [site.social.github, site.social.linkedin],
+          ...(site.portrait ? { image: `${site.url}${site.portrait.image.src}` } : {}),
           affiliation: { "@type": "CollegeOrUniversity", name: "Ekiti State University" },
           knowsAbout: ["Web development", "Next.js", "TypeScript", "PostgreSQL", "Supabase", "Firebase", "Vercel"],
         }}
       />
       <Hero />
+      <SystemSection />
 
-      <section aria-labelledby="work-heading" className="shell pt-24 md:pt-36">
+      <section aria-labelledby="work-heading" className="shell pt-28 md:pt-40">
         <SectionHeading
-          index="01"
+          index="02"
           label="Selected work"
           id="work-heading"
           title={
@@ -65,8 +70,10 @@ export default function HomePage() {
         </div>
       </section>
 
+      <Interlude />
       <Capabilities />
       <Journey />
+      <Console />
       <WorkingWithAI />
       <Services />
       <Exploring />
@@ -75,40 +82,40 @@ export default function HomePage() {
 }
 
 function Hero() {
+  const lines: React.ReactNode[] = ["Engineering ideas", "into systems", <>that <em className="text-accent">hold up.</em></>];
   return (
-    <section aria-labelledby="hero-title" className="relative isolate overflow-hidden">
+    <HeroMotion className="relative isolate overflow-hidden">
       <div aria-hidden="true" className="grid-paper fade-edges absolute inset-0 -z-10" />
       <div
         aria-hidden="true"
         className="glow-drift absolute -top-40 right-[-10%] -z-10 size-[42rem] rounded-full bg-accent opacity-[0.07] blur-[120px]"
       />
 
-      <div className="shell grid items-center gap-12 pb-16 pt-12 md:pt-20 lg:grid-cols-12 lg:gap-6 lg:pb-24">
+      <div className="shell grid items-center gap-14 pb-16 pt-10 md:pt-16 lg:grid-cols-12 lg:gap-10 lg:pb-24">
         <div className="lg:col-span-7">
-          <p className="rise label flex flex-wrap items-center gap-x-3 gap-y-1" style={{ "--i": 0 } as React.CSSProperties}>
+          <p data-hero className="label flex flex-wrap items-center gap-x-3 gap-y-1">
             <span className="text-fg">{site.name}</span>
             <span aria-hidden="true" className="h-px w-6 bg-line-strong" />
-            <span>{site.role}</span>
+            <span data-hero-label>{site.role}</span>
           </p>
 
           <h1 id="hero-title" className="mt-7 font-serif text-display">
-            <span className="rise block" style={{ "--i": 1 } as React.CSSProperties}>
-              Engineering ideas
-            </span>
-            <span className="rise block" style={{ "--i": 2 } as React.CSSProperties}>
-              into systems
-            </span>
-            <span className="rise block" style={{ "--i": 3 } as React.CSSProperties}>
-              that <em className="text-accent">hold up.</em>
-            </span>
+            {lines.map((line, i) => (
+              // Each line is masked so it can rise from below its own baseline.
+              <span key={i} className="-mb-[0.12em] block overflow-hidden pb-[0.12em]">
+                <span data-hero data-hero-line className="block origin-bottom-left">
+                  {line}
+                </span>
+              </span>
+            ))}
           </h1>
 
-          <p className="rise mt-8 max-w-xl text-lg leading-relaxed text-fg-muted md:text-xl" style={{ "--i": 4 } as React.CSSProperties}>
+          <p data-hero data-hero-fade className="mt-8 max-w-xl text-lg leading-relaxed text-fg-muted md:text-xl">
             I build modern web applications, design the databases and permissions behind them, deploy them and keep them
             running — for schools, businesses and communities in Nigeria.
           </p>
 
-          <div className="rise mt-10 flex flex-wrap items-center gap-3" style={{ "--i": 5 } as React.CSSProperties}>
+          <div data-hero data-hero-fade className="mt-10 flex flex-wrap items-center gap-3">
             <ButtonLink href="/projects">Explore my work</ButtonLink>
             <ButtonLink href="/about" variant="outline">
               About me
@@ -124,16 +131,14 @@ function Hero() {
           </div>
         </div>
 
-        <div className="lg:col-span-5">
-          <div className="float-slow">
-            <SystemDrawing className="mx-auto w-full max-w-[34rem] text-fg" />
-          </div>
+        <div data-hero className="mx-auto w-full max-w-[22rem] sm:max-w-[26rem] lg:col-span-5 lg:max-w-none lg:pl-6">
+          <Portrait variant="hero" priority />
         </div>
       </div>
 
       {/* Title block, as on an engineering drawing */}
       <div className="shell pb-6">
-        <dl className="rise grid grid-cols-2 border border-line text-sm md:grid-cols-4" style={{ "--i": 6 } as React.CSSProperties}>
+        <dl data-hero data-hero-fade className="grid grid-cols-2 border border-line text-sm md:grid-cols-4">
           {[
             ["Discipline", site.disciplines.join(" · ")],
             ["Studying", "Mechanical Engineering, EKSU"],
@@ -150,6 +155,82 @@ function Hero() {
           ))}
         </dl>
       </div>
+    </HeroMotion>
+  );
+}
+
+function SystemSection() {
+  const projectNames = Object.fromEntries(projects.map((p) => [p.slug, p.name]));
+  return (
+    <section aria-labelledby="system-heading" className="shell pt-24 md:pt-36">
+      <SectionHeading
+        index="01"
+        label="How I build"
+        id="system-heading"
+        title={
+          <>
+            One owner, <em className="text-accent">every layer.</em>
+          </>
+        }
+        intro="Pick a layer to see what I do there and where you can see it. The dashed one at the bottom is where I'm heading next."
+      />
+      <div className="mt-12 md:mt-16">
+        <SystemExplorer projectNames={projectNames} />
+      </div>
+    </section>
+  );
+}
+
+function Interlude() {
+  const words = ["Design", "Build", "Deploy", "Maintain"];
+  return (
+    <section aria-label="What I do, in four words" className="relative mt-28 overflow-hidden border-y border-line py-14 md:mt-40 md:py-20">
+      <p data-drift="8" className="flex w-max items-baseline gap-[0.35em] whitespace-nowrap pl-[6vw] font-serif text-[clamp(3.5rem,12vw,11rem)] leading-none">
+        {words.map((w, i) => (
+          <span key={w} className="flex items-baseline gap-[0.35em]">
+            <span className={i % 2 ? "italic text-accent" : undefined}>{w}</span>
+            {i < words.length - 1 && (
+              <span aria-hidden="true" className="font-mono text-[0.25em] text-fg-subtle">
+                →
+              </span>
+            )}
+          </span>
+        ))}
+      </p>
+    </section>
+  );
+}
+
+function Console() {
+  return (
+    <section aria-labelledby="console-heading" className="shell pt-28 md:pt-40">
+      <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-12">
+        <div className="min-w-0 lg:col-span-5">
+          <p className="label flex items-center gap-3">
+            <span className="font-mono text-xs text-accent">05</span>
+            <span aria-hidden="true" className="h-px w-8 bg-line-strong" />
+            Console
+          </p>
+          <h2 id="console-heading" className="mt-6 font-serif text-headline">
+            Prefer the <em className="text-accent">command line?</em>
+          </h2>
+          <p className="mt-5 max-w-md text-lg leading-relaxed text-fg-muted">
+            So do I. Ask it about my projects and skills, or open a case study without touching the mouse. There are a
+            few things in there I didn&apos;t list.
+          </p>
+        </div>
+        <div className="reveal relative isolate min-w-0 lg:col-span-7">
+          <div aria-hidden="true" className="absolute bottom-4 left-0 -z-10 size-56 sm:-left-8 rounded-full bg-accent opacity-20 blur-3xl" />
+          <div aria-hidden="true" className="absolute -top-6 right-0 -z-10 h-40 w-64 sm:-right-4 rounded-full bg-[#3a6df2] opacity-[0.12] blur-3xl" />
+          <div aria-hidden="true" className="grid-paper absolute -inset-y-8 inset-x-0 -z-10 opacity-80 sm:-inset-x-6 [mask-image:radial-gradient(closest-side,#000,transparent)]" />
+          <TerminalLazy
+            data={{
+              projects: projects.map((p) => ({ slug: p.slug, name: p.name, summary: p.summary })),
+              skills: skills.map((g) => ({ title: g.title, items: [...g.items] })),
+            }}
+          />
+        </div>
+      </div>
     </section>
   );
 }
@@ -158,7 +239,7 @@ function Capabilities() {
   return (
     <section aria-labelledby="skills-heading" className="shell pt-28 md:pt-40">
       <SectionHeading
-        index="02"
+        index="03"
         label="Capabilities"
         id="skills-heading"
         title={
@@ -171,11 +252,13 @@ function Capabilities() {
 
       <div className="mt-14 grid border-l border-t border-line sm:grid-cols-2 xl:grid-cols-4">
         {skills.map((group, i) => (
-          <div key={group.title} className="reveal flex flex-col border-b border-r border-line p-6 md:p-8">
-            <p className="font-mono text-xs text-accent">{String(i + 1).padStart(2, "0")}</p>
+          <div key={group.title} className="reveal spotlight flex flex-col border-b border-r border-line p-6 md:p-8">
+            <p data-scramble className="font-mono text-xs text-accent">
+              {String(i + 1).padStart(2, "0")}
+            </p>
             <h3 className="mt-6 font-serif text-3xl">{group.title}</h3>
             <p className="mt-3 text-fg-muted">{group.blurb}</p>
-            <ul className="mt-6 flex flex-wrap gap-1.5">
+            <ul data-stagger className="mt-6 flex flex-wrap gap-1.5">
               {group.items.map((item) => (
                 <li key={item} className="rounded-full border border-line px-2.5 py-1 text-xs text-fg-muted">
                   {item}
@@ -207,7 +290,7 @@ function Journey() {
     <section aria-labelledby="journey-heading" className="relative mt-28 border-y border-line bg-ink-sunken py-24 md:mt-40 md:py-32">
       <div className="shell">
         <SectionHeading
-          index="03"
+          index="04"
           label="Trajectory"
           id="journey-heading"
           title={
@@ -218,7 +301,10 @@ function Journey() {
           intro="A progression of interests and skills, not a list of titles. The degree is still in progress, and DevOps is where I'm heading."
         />
 
-        <ol className="mt-16 grid gap-px overflow-hidden rounded-xl border border-line bg-line md:grid-cols-4">
+        <div aria-hidden="true" className="mt-16 hidden h-px bg-line md:block">
+          <div data-progress className="h-px bg-accent" />
+        </div>
+        <ol className="mt-6 grid gap-px overflow-hidden rounded-xl border border-line bg-line md:grid-cols-4">
           {journey.map((step, i) => {
             const last = i === journey.length - 1;
             return (
@@ -253,7 +339,7 @@ function WorkingWithAI() {
   return (
     <section aria-labelledby="ai-heading" className="shell pt-28 md:pt-40">
       <SectionHeading
-        index="04"
+        index="06"
         label="Working with AI"
         id="ai-heading"
         title={
@@ -294,7 +380,7 @@ function Services() {
   return (
     <section id="services" aria-labelledby="services-heading" className="shell scroll-mt-24 pt-28 md:pt-40">
       <SectionHeading
-        index="05"
+        index="07"
         label="Services"
         id="services-heading"
         title={

@@ -26,6 +26,18 @@ function NoScreenshot({ project, className }: { project: Pick<Project, "name" | 
   );
 }
 
+/** A glass label that slides in over a project image on hover. */
+function HoverChip({ children }: { children: React.ReactNode }) {
+  return (
+    <span
+      aria-hidden="true"
+      className="glass pointer-events-none absolute left-4 top-12 inline-flex translate-y-2 items-center gap-2 rounded-full px-4 py-2 text-sm font-medium text-fg opacity-0 transition-[opacity,translate] duration-500 ease-[var(--ease-out-expo)] group-hover:translate-y-0 group-hover:opacity-100"
+    >
+      {children} <span className="text-accent">→</span>
+    </span>
+  );
+}
+
 /** Large alternating feature used on the home page. */
 export function FeaturedProject({ project, index }: { project: Project; index: number }) {
   const [primary, secondary] = [project.shots.find((s) => s.device === "desktop"), project.shots.find((s) => s.device === "mobile")];
@@ -44,18 +56,22 @@ export function FeaturedProject({ project, index }: { project: Project; index: n
           className="absolute inset-0 -z-10 rounded-[2rem] opacity-0 blur-3xl md:-inset-6 transition-opacity duration-700 group-hover:opacity-20"
           style={{ background: project.tint }}
         />
-        {primary ? (
-          <ShotFrame
-            shot={primary}
-            tint={project.tint}
-            sizes="(min-width: 1024px) 760px, (min-width: 768px) 58vw, 100vw"
-            className="transition-transform duration-700 ease-[var(--ease-out-expo)] group-hover:-translate-y-1"
-          />
-        ) : (
-          <NoScreenshot project={project} />
-        )}
+        <div data-speed="4">
+          {primary ? (
+            <ShotFrame
+              shot={primary}
+              tint={project.tint}
+              sizes="(min-width: 1024px) 760px, (min-width: 768px) 58vw, 100vw"
+              className="transition-transform duration-700 ease-[var(--ease-out-expo)] group-hover:-translate-y-1"
+            />
+          ) : (
+            <NoScreenshot project={project} />
+          )}
+        </div>
+        <HoverChip>Open case study</HoverChip>
         {secondary && (
           <div
+            data-speed="-14"
             className={cn(
               "absolute -bottom-8 hidden w-[24%] transition-transform duration-700 ease-[var(--ease-out-expo)] group-hover:-translate-y-2 sm:block",
               flip ? "-left-4" : "-right-4",
@@ -68,7 +84,9 @@ export function FeaturedProject({ project, index }: { project: Project; index: n
 
       <div className={cn("md:col-span-5", flip && "md:order-1")}>
         <div className="flex flex-wrap items-center gap-3">
-          <span className="font-mono text-xs text-accent">{String(index + 1).padStart(2, "0")}</span>
+          <span data-scramble className="font-mono text-xs text-accent">
+            {String(index + 1).padStart(2, "0")}
+          </span>
           <StatusPill label={project.status.label} tone={project.status.tone} />
         </div>
         <h3 className="mt-5 font-serif text-title">
@@ -127,6 +145,7 @@ export function ProjectCard({
         ) : (
           <NoScreenshot project={project} className="[&_p:first-child]:text-3xl" />
         )}
+        <HoverChip>View</HoverChip>
       </div>
       <div className="mt-5 flex flex-1 flex-col">
         <div className="flex flex-wrap items-center justify-between gap-3">

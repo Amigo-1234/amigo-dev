@@ -75,7 +75,12 @@ export function SiteFooter() {
           <p className="font-mono tracking-wide">
             Nigeria · <LocalTime />
           </p>
-          <p>Set in Instrument Serif, Geist &amp; Geist Mono. Built with Next.js.</p>
+          <p>
+            Set in Instrument Serif, Geist &amp; Geist Mono. Built with Next.js &amp; GSAP.{" "}
+            <span className="font-mono tracking-wide" title="Try it on your keyboard">
+              ↑↑↓↓←→←→BA
+            </span>
+          </p>
         </div>
       </div>
     </footer>

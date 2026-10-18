@@ -28,6 +28,11 @@
   --shadow: 0 1px 0 rgb(255 255 255 / 0.04) inset, 0 24px 60px -24px rgb(0 0 0 / 0.7);
   --ok: #7fc8a0;
   --warn: #e7b366;
+  --glass-bg: rgb(20 20 23 / 0.58);
+  --glass-bg-strong: rgb(20 20 23 / 0.78);
+  --glass-border: rgb(236 235 230 / 0.12);
+  --glass-highlight: rgb(255 255 255 / 0.07);
+  --glass-shadow: 0 1px 0 rgb(255 255 255 / 0.06) inset, 0 20px 50px -20px rgb(0 0 0 / 0.75);
 }
 
 [data-theme="light"] {
@@ -49,6 +54,11 @@
   --shadow: 0 1px 0 rgb(255 255 255 / 0.6) inset, 0 24px 50px -28px rgb(60 40 20 / 0.35);
   --ok: #2f7a52;
   --warn: #93600f;
+  --glass-bg: rgb(251 249 244 / 0.62);
+  --glass-bg-strong: rgb(251 249 244 / 0.86);
+  --glass-border: rgb(21 21 19 / 0.1);
+  --glass-highlight: rgb(255 255 255 / 0.7);
+  --glass-shadow: 0 1px 0 rgb(255 255 255 / 0.8) inset, 0 20px 45px -24px rgb(60 40 20 / 0.32);
 }
 
 @theme inline {
@@ -237,6 +247,83 @@
     top: 1rem;
   }
 
+  /*
+   * Glass: used for floating UI only (navigation, menus, terminal, overlays).
+   * Without backdrop-filter support it falls back to a near-opaque surface.
+   */
+  .glass {
+    background: var(--glass-bg-strong);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+  }
+
+  @supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .glass {
+      background:
+        linear-gradient(180deg, var(--glass-highlight), transparent 38%),
+        var(--glass-bg);
+      -webkit-backdrop-filter: blur(18px) saturate(1.4);
+      backdrop-filter: blur(18px) saturate(1.4);
+    }
+  }
+
+  /* Cursor-following light for cards; --mx/--my are set by the motion layer. */
+  .spotlight {
+    position: relative;
+    isolation: isolate;
+  }
+
+  .spotlight::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    pointer-events: none;
+    opacity: 0;
+    background: radial-gradient(22rem circle at var(--mx, 50%) var(--my, 50%), var(--accent-soft), transparent 70%);
+    transition: opacity 0.4s;
+  }
+
+  .spotlight:hover::after {
+    opacity: 1;
+  }
+
+  /* Label that rolls to a second copy on hover. */
+  .roll {
+    display: inline-grid;
+    overflow: hidden;
+    vertical-align: top;
+  }
+
+  .roll > span {
+    grid-area: 1 / 1;
+    transition: transform 0.45s var(--ease-out-expo);
+  }
+
+  .roll > span + span {
+    transform: translateY(105%);
+  }
+
+  :is(a, button):hover > .roll > span:first-child,
+  :is(a, button):focus-visible > .roll > span:first-child {
+    transform: translateY(-105%);
+  }
+
+  :is(a, button):hover > .roll > span + span,
+  :is(a, button):focus-visible > .roll > span + span {
+    transform: translateY(0);
+  }
+
+  .monogram .monogram-bar {
+    transition: transform 0.5s var(--ease-out-expo);
+  }
+
+  a:hover .monogram .monogram-bar,
+  a:focus-visible .monogram .monogram-bar {
+    transform: translateX(2.5px);
+  }
+
   /* Long-form text in case studies. */
   .prose-case p {
     color: var(--fg-muted);
@@ -269,13 +356,11 @@
     animation-delay: calc(var(--i, 0) * 80ms + 60ms);
   }
 
-  @supports (animation-timeline: view()) {
-    .reveal {
-      animation: reveal linear both;
-      animation-timeline: view();
-      animation-range: entry 0% entry 55%;
-    }
-  }
+  /*
+   * Hero pieces start hidden only when JavaScript is running (html.js), and a
+   * CSS fallback reveals them after 2.5s in case the animation script never
+   * arrives. Once GSAP takes over it adds html.gsap and drives them itself.
+   */
 
   /* Elements opt in with data-draw and pathLength="1". */
   .draw [data-draw] {
@@ -314,6 +399,33 @@
     opacity: 1;
     transform: none;
     filter: none;
+  }
+}
+
+/*
+ * Hero pieces start hidden only when JavaScript is running (html.js) on large
+ * screens, and a CSS fallback reveals them after 2.5s in case the animation
+ * script never arrives. Phones skip the intro so the first paint is the page.
+ */
+@media (prefers-reduced-motion: no-preference) and (min-width: 1024px) {
+  html.js:not(.gsap) [data-hero] {
+    opacity: 0;
+    animation: hero-fallback 0.6s ease-out 2.5s forwards;
+  }
+}
+
+/* With JavaScript, only the selected layer panel shows from the first paint. */
+html.js .js-hide {
+  display: none;
+}
+
+html:not(.js) .js-only {
+  display: none;
+}
+
+@keyframes hero-fallback {
+  to {
+    opacity: 1;
   }
 }
 
@@ -368,6 +480,19 @@
   to {
     transform: translate3d(6%, 5%, 0) scale(1.12);
   }
+}
+
+/* Easter egg: the Konami code shows the page as a construction drawing. */
+html[data-blueprint] main :where(section, article, header, figure, li, div) {
+  outline: 1px dashed color-mix(in oklab, var(--accent) 45%, transparent);
+  outline-offset: -1px;
+}
+
+html[data-blueprint] body {
+  background-image:
+    linear-gradient(to right, var(--grid) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid) 1px, transparent 1px);
+  background-size: 1.25rem 1.25rem;
 }
 
 @media print {

@@ -9,7 +9,7 @@ import { cn } from "@/lib/cn";
 
 import { openCommandMenu } from "./command-menu";
 import { ThemeToggle } from "./theme-toggle";
-import { Wordmark } from "./wordmark";
+import { Wordmark } from "./brand";
 
 function isActive(pathname: string, href: string) {
   if (href.startsWith("/#")) return false;
@@ -34,15 +34,18 @@ export function SiteHeader() {
   }, [pathname]);
 
   return (
-    <header
-      className={cn(
-        "sticky top-0 z-40 transition-[background-color,border-color,backdrop-filter] duration-300",
-        scrolled ? "border-b border-line bg-ink/80 backdrop-blur-xl" : "border-b border-transparent",
-      )}
-    >
-      <div className="shell flex h-16 items-center justify-between gap-4 md:h-[4.5rem]">
+    // The header box keeps one height; only the bar inside moves, so the page never shifts.
+    <header className="sticky top-0 z-40 h-16 md:h-[4.5rem]">
+      <div
+        className={cn(
+          "mx-auto flex items-center justify-between gap-4 border transition-[max-width,height,padding,border-radius,background-color,border-color,box-shadow,transform] duration-500 ease-[var(--ease-out-expo)]",
+          scrolled
+            ? "glass h-14 max-w-[min(62rem,calc(100%-1rem))] translate-y-2.5 rounded-full pl-4 pr-2 sm:pl-5"
+            : "h-16 max-w-[84rem] rounded-none border-transparent px-4 sm:px-7 md:h-[4.5rem] lg:px-10",
+        )}
+      >
         <Link href="/" className="group -m-2 flex items-center gap-3 rounded-sm p-2">
-          <Wordmark />
+          <Wordmark compact={scrolled} />
           <span className="sr-only">, home</span>
         </Link>
 
@@ -60,8 +63,11 @@ export function SiteHeader() {
                       active ? "text-fg" : "text-fg-muted hover:text-fg",
                     )}
                   >
-                    {item.label}
-                    {active && <span aria-hidden="true" className="absolute inset-x-3.5 -bottom-px h-px bg-accent" />}
+                    <span className="roll">
+                      <span>{item.label}</span>
+                      <span aria-hidden="true">{item.label}</span>
+                    </span>
+                    {active && <span aria-hidden="true" className="absolute inset-x-3.5 bottom-0.5 h-px bg-accent" />}
                   </Link>
                 </li>
               );

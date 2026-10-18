@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from "next";
 
 import { CommandMenu } from "@/components/command-menu";
+import { EasterEggs } from "@/components/easter-eggs";
+import { MotionLayer } from "@/components/motion-layer";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { ThemeScript } from "@/components/theme";
@@ -66,6 +68,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           {children}
         </main>
         <SiteFooter />
+        <MotionLayer />
+        <EasterEggs />
         <CommandMenu
           projects={projects.map((p) => ({
             slug: p.slug,

@@ -9,10 +9,12 @@ type ButtonProps = {
   children: React.ReactNode;
   variant?: "solid" | "outline" | "ghost";
   external?: boolean;
+  /** Leans toward the pointer on devices with a fine pointer. */
+  magnetic?: boolean;
   className?: string;
 };
 
-export function ButtonLink({ href, children, variant = "solid", external, className }: ButtonProps) {
+export function ButtonLink({ href, children, variant = "solid", external, magnetic = variant !== "ghost", className }: ButtonProps) {
   const classes = cn(
     "group inline-flex h-12 items-center justify-center gap-2 rounded-full px-6 text-sm font-medium transition-[transform,background-color,border-color,color] duration-300 ease-[var(--ease-out-expo)] hover:-translate-y-0.5",
     variant === "solid" && "bg-fg text-ink",
@@ -28,7 +30,7 @@ export function ButtonLink({ href, children, variant = "solid", external, classN
 
   if (external) {
     return (
-      <a href={href} target="_blank" rel="noopener noreferrer" className={classes}>
+      <a href={href} target="_blank" rel="noopener noreferrer" className={classes} data-magnetic={magnetic ? "" : undefined}>
         {children}
         <span className="sr-only"> (opens in a new tab)</span>
         {arrow}
@@ -36,7 +38,7 @@ export function ButtonLink({ href, children, variant = "solid", external, classN
     );
   }
   return (
-    <Link href={href} className={classes}>
+    <Link href={href} className={classes} data-magnetic={magnetic ? "" : undefined}>
       {children}
       {arrow}
     </Link>

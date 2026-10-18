@@ -8,8 +8,9 @@ Production: https://amigo-dev.vercel.app
 - Next.js 16 (App Router, static generation) · React 19 · TypeScript (strict)
 - Tailwind CSS 4 with a small token set in `src/app/globals.css`
 - Instrument Serif, Geist and Geist Mono, self-hosted through `next/font`
-- No UI or animation libraries: motion is CSS (scroll-driven where supported) and always respects
-  `prefers-reduced-motion`; nothing is hidden when JavaScript is unavailable
+- GSAP (with ScrollTrigger and ScrambleText) for motion, loaded on demand: the desktop hero intro
+  loads it right away, everything else on the visitor's first interaction (`src/lib/gsap.ts`).
+  All motion respects `prefers-reduced-motion`, and nothing is hidden when JavaScript is unavailable
 
 ## Develop
 
@@ -31,7 +32,9 @@ npm run build      # production build
 | `src/content/profile.ts` | Story, skills (with evidence), journey, services, AI workflow, languages, interests |
 | `src/content/writing.ts` | Technical articles. Empty for now; `/writing` returns 404 until a post exists |
 | `src/assets/projects/` | Screenshots, captured from local builds of each project's repository |
-| `src/components/` | Header, footer, command menu, theme, cards, contact form, hero drawing |
+| `src/assets/portrait/` | The owner's portrait (set or remove it in `site.ts`; a designed fallback shows without it) |
+| `public/brand/` | AMIGODEV monogram and wordmark as standalone SVGs (outlined text, ink and paper versions, app tile) |
+| `src/components/` | Header, footer, command menu, theme, cards, contact form, portrait, layer explorer, terminal, motion layer |
 | `src/app/` | Routes, metadata, sitemap, robots, manifest and Open Graph images |
 
 ### Common changes
@@ -45,6 +48,23 @@ npm run build      # production build
 
 Content rule: only publish what can be verified. Project copy was checked against each project's
 repository; planned features are listed as planned.
+
+## Brand
+
+The monogram is an A and a D sharing one stem, with the crossbar running through both letters in
+the accent colour. Its geometry lives in `src/components/brand.tsx` (`MONOGRAM_INK`,
+`MONOGRAM_BAR`) and is reused by the favicon, the Apple icon and the Open Graph images.
+
+## Motion and interaction
+
+- Motion is declared with data attributes and driven by `src/components/motion-layer.tsx`:
+  `.reveal`, `data-stagger`, `data-speed` (parallax), `data-drift`, `data-scramble`, `data-progress`,
+  `data-magnetic` and `data-light` / `.spotlight` (pointer-following light, fine pointers only).
+- The hero intro (`hero-motion.tsx`) runs on large screens only; a CSS fallback reveals the hero
+  after 2.5s if the script never arrives.
+- The terminal (`terminal.tsx`) matches input against a fixed list of commands; nothing typed is
+  evaluated. It loads after the page is interactive.
+- Easter eggs: a few undocumented terminal commands, a console note, and the Konami code.
 
 ## Contact form
 

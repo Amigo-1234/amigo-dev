@@ -121,3 +121,37 @@ export const interests = [
   { title: "Content & digital media", body: "Making things to share, and learning how people find and watch them.", mark: "media" },
   { title: "Languages", body: "Learning Spanish, French and Arabic, slowly and on purpose.", mark: "languages" },
 ] as const;
+
+/** The four layers in the interactive system drawing. */
+export const layers = [
+  {
+    id: "interface",
+    name: "Interface",
+    tech: "Next.js · React · Tailwind CSS",
+    body: "Server-rendered React that works on a cheap phone over mobile data. Mobile-first layouts, accessible forms and keyboard support, and full right-to-left layouts where a product needs Arabic.",
+    evidence: ["markaz-il-ginna", "eksu-sports-hub"],
+  },
+  {
+    id: "application",
+    name: "Application",
+    tech: "TypeScript · Auth · APIs",
+    body: "The rules: who is signed in, what they are allowed to do, and what a valid request looks like. Checked on the server every time — never only in the interface.",
+    evidence: ["kandys-treats", "markaz-il-ginna"],
+  },
+  {
+    id: "data",
+    name: "Data",
+    tech: "PostgreSQL · Supabase · Firebase",
+    body: "Schemas designed around the real business, versioned migrations, Row Level Security, append-only histories for money and records, and real-time updates where people are watching live.",
+    evidence: ["eksu-sports-hub", "kandys-treats"],
+  },
+  {
+    id: "infrastructure",
+    name: "Infrastructure",
+    tech: "Vercel · DNS · Git → DevOps",
+    body: "Deployments, domains and DNS, environment configuration, object storage and production debugging. The layer I'm growing into next: CI/CD, containers, infrastructure as code and observability.",
+    evidence: ["amigo-world", "bia-jupeb"],
+  },
+] as const;
+
+export type LayerId = (typeof layers)[number]["id"];
