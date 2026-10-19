@@ -141,9 +141,20 @@ export function MotionLayer() {
 
 
       // Images and fonts change heights after load; keep trigger positions honest.
+      // Deferred sections (.defer-render) also change height when they first render.
       const refresh = () => ScrollTrigger.refresh();
+      let timer = 0;
+      const refreshSoon = () => {
+        clearTimeout(timer);
+        timer = window.setTimeout(refresh, 150);
+      };
       window.addEventListener("load", refresh);
-      return () => window.removeEventListener("load", refresh);
+      document.addEventListener("contentvisibilityautostatechange", refreshSoon, true);
+      return () => {
+        clearTimeout(timer);
+        window.removeEventListener("load", refresh);
+        document.removeEventListener("contentvisibilityautostatechange", refreshSoon, true);
+      };
     },
     [pathname],
     { defer: true },

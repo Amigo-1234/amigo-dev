@@ -6,6 +6,7 @@ import { useCallback, useEffect, useId, useMemo, useRef, useState } from "react"
 import { site } from "@/content/site";
 import { cn } from "@/lib/cn";
 
+import { renderAll } from "./defer-render-script";
 import { toggleTheme } from "./theme-toggle";
 
 const OPEN_EVENT = "amigodev:command-menu";
@@ -65,7 +66,10 @@ export function CommandMenu({ projects }: { projects: ProjectEntry[] }) {
     close();
     if (item.action === "theme") toggleTheme();
     else if (item.external) window.open(item.external, "_blank", "noopener,noreferrer");
-    else if (item.href) router.push(item.href);
+    else if (item.href) {
+      renderAll(item.href);
+      router.push(item.href);
+    }
   };
 
   const items = useMemo<Item[]>(

@@ -92,14 +92,12 @@ export function SiteHeader() {
             </kbd>
           </button>
           <ThemeToggle />
+          {/* Opened by MenuScript (inline in <head>), so it works before hydration. */}
           <button
             type="button"
-            onClick={() => {
-              dialogRef.current?.showModal();
-              // iOS keeps scrolling the page behind a modal; lock it while open.
-              document.documentElement.classList.add("menu-open");
-            }}
+            data-menu-open
             aria-haspopup="dialog"
+            aria-controls="site-menu"
             className="inline-flex h-10 items-center gap-2 rounded-full border border-line px-4 text-sm text-fg transition-colors hover:border-line-strong md:hidden"
           >
             Menu
@@ -123,26 +121,18 @@ function MobileMenu({
   dialogRef: React.RefObject<HTMLDialogElement | null>;
   pathname: string;
 }) {
-  const close = () => dialogRef.current?.close();
-
+  // Opening, closing and scroll locking are handled by MenuScript; React only renders.
   return (
     <dialog
       ref={dialogRef}
+      id="site-menu"
       aria-label="Site menu"
-      onClose={() => document.documentElement.classList.remove("menu-open")}
-      className="m-0 h-dvh max-h-none w-full max-w-none bg-ink p-0 text-fg backdrop:bg-ink/60 open:flex open:flex-col md:hidden [&[open]]:animate-[page-enter_0.45s_var(--ease-out-expo)_both]"
-      onClick={(e) => {
-        if (e.target === e.currentTarget) close();
-      }}
+      className="site-menu m-0 h-dvh max-h-none w-full max-w-none bg-ink p-0 text-fg backdrop:bg-ink/60 open:flex open:flex-col md:hidden"
     >
       <div className="grid-paper pointer-events-none absolute inset-0 opacity-60" aria-hidden="true" />
       <div className="shell relative flex h-16 items-center justify-between">
         <Wordmark />
-        <button
-          type="button"
-          onClick={close}
-          className="inline-flex h-10 items-center gap-2 rounded-full border border-line px-4 text-sm"
-        >
+        <button type="button" data-menu-close className="inline-flex h-10 items-center gap-2 rounded-full border border-line px-4 text-sm">
           Close
           <svg viewBox="0 0 16 16" aria-hidden="true" className="size-3.5">
             <path d="M3.5 3.5l9 9M12.5 3.5l-9 9" stroke="currentColor" strokeWidth="1.5" />
@@ -155,10 +145,10 @@ function MobileMenu({
           {[{ href: "/", label: "Home" }, ...nav].map((item, i) => {
             const active = item.href === "/" ? pathname === "/" : isActive(pathname, item.href);
             return (
-              <li key={item.href} className="rise" style={{ "--i": i } as React.CSSProperties}>
+              <li key={item.href} className="menu-item" style={{ "--i": i } as React.CSSProperties}>
                 <Link
                   href={item.href}
-                  onClick={close}
+                  data-menu-close
                   aria-current={active ? "page" : undefined}
                   className="flex items-baseline gap-4 border-b border-line py-3"
                 >
@@ -176,10 +166,8 @@ function MobileMenu({
       <div className="shell relative flex items-center justify-between gap-4 pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-6">
         <button
           type="button"
-          onClick={() => {
-            close();
-            openCommandMenu();
-          }}
+          data-menu-close
+          onClick={openCommandMenu}
           className="text-sm text-fg-muted underline decoration-line-strong underline-offset-4"
         >
           Search the site

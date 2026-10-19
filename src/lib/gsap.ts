@@ -25,19 +25,30 @@ const INTERACTIONS = ["scroll", "wheel", "pointerdown", "pointermove", "keydown"
 let interacted = false;
 const waiting = new Set<() => void>();
 
-/** Calls `fn` on the first interaction (or now, if one already happened). Returns a canceller. */
+/**
+ * Calls `fn` on the first interaction (or now, if one already happened), in
+ * idle time. Returns a canceller.
+ *
+ * Taps on the header or the menu don't count: loading and setting up scroll
+ * animations at that moment would compete with the menu opening.
+ */
 function onFirstInteraction(fn: () => void): () => void {
   if (interacted) {
     fn();
     return () => {};
   }
   if (waiting.size === 0) {
-    const fire = () => {
+    const fire = (e: Event) => {
+      const target = e.target;
+      if (target instanceof Element && target.closest("header, dialog")) return;
       interacted = true;
       INTERACTIONS.forEach((type) => window.removeEventListener(type, fire));
       const callbacks = [...waiting];
       waiting.clear();
-      callbacks.forEach((cb) => cb());
+      const run = () => callbacks.forEach((cb) => cb());
+      // Safari has no requestIdleCallback; fall back to a short timeout there.
+      if (typeof window.requestIdleCallback === "function") window.requestIdleCallback(run, { timeout: 1500 });
+      else setTimeout(run, 50);
     };
     INTERACTIONS.forEach((type) => window.addEventListener(type, fire, { passive: true }));
   }

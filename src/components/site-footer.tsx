@@ -6,7 +6,7 @@ import { LocalTime } from "./local-time";
 
 export function SiteFooter() {
   return (
-    <footer className="relative mt-24 border-t border-line md:mt-36">
+    <footer className="defer-render relative mt-24 border-t border-line md:mt-36">
       <div className="shell grid gap-14 py-16 md:grid-cols-12 md:py-24">
         <div className="md:col-span-7">
           <p className="label">Contact · Sheet ∞</p>

@@ -39,7 +39,7 @@ export default function HomePage() {
       <Hero />
       <SystemSection />
 
-      <section aria-labelledby="work-heading" className="shell pt-28 md:pt-40">
+      <section aria-labelledby="work-heading" className="defer-render shell pt-28 md:pt-40">
         <SectionHeading
           index="02"
           label="Selected work"
@@ -200,7 +200,7 @@ function IdentityStrip() {
 function SystemSection() {
   const projectNames = Object.fromEntries(projects.map((p) => [p.slug, p.name]));
   return (
-    <section aria-labelledby="system-heading" className="shell pt-20 md:pt-36">
+    <section aria-labelledby="system-heading" className="defer-render shell pt-20 md:pt-36">
       <SectionHeading
         index="01"
         label="How I build"
@@ -222,7 +222,7 @@ function SystemSection() {
 function Interlude() {
   const words = ["Design", "Build", "Deploy", "Maintain"];
   return (
-    <section aria-label="What I do, in four words" className="relative mt-28 overflow-hidden border-y border-line py-14 md:mt-40 md:py-20">
+    <section aria-label="What I do, in four words" className="defer-render relative mt-28 overflow-hidden border-y border-line py-14 md:mt-40 md:py-20">
       <p data-drift="8" className="flex w-max items-baseline gap-[0.35em] whitespace-nowrap pl-[6vw] font-serif text-[clamp(3.5rem,12vw,11rem)] leading-none">
         {words.map((w, i) => (
           <span key={w} className="flex items-baseline gap-[0.35em]">
@@ -241,7 +241,7 @@ function Interlude() {
 
 function Console() {
   return (
-    <section aria-labelledby="console-heading" className="shell pt-28 md:pt-40">
+    <section aria-labelledby="console-heading" className="defer-render shell pt-28 md:pt-40">
       <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-12">
         <div className="min-w-0 lg:col-span-5">
           <p className="label flex items-center gap-3">
@@ -276,7 +276,7 @@ function Console() {
 
 function Capabilities() {
   return (
-    <section aria-labelledby="skills-heading" className="shell pt-28 md:pt-40">
+    <section aria-labelledby="skills-heading" className="defer-render shell pt-28 md:pt-40">
       <SectionHeading
         index="03"
         label="Capabilities"
@@ -326,7 +326,7 @@ function Capabilities() {
 
 function Journey() {
   return (
-    <section aria-labelledby="journey-heading" className="relative mt-28 border-y border-line bg-ink-sunken py-24 md:mt-40 md:py-32">
+    <section aria-labelledby="journey-heading" className="defer-render relative mt-28 border-y border-line bg-ink-sunken py-24 md:mt-40 md:py-32">
       <div className="shell">
         <SectionHeading
           index="04"
@@ -376,7 +376,7 @@ function Journey() {
 
 function WorkingWithAI() {
   return (
-    <section aria-labelledby="ai-heading" className="shell pt-28 md:pt-40">
+    <section aria-labelledby="ai-heading" className="defer-render shell pt-28 md:pt-40">
       <SectionHeading
         index="06"
         label="Working with AI"
@@ -417,7 +417,7 @@ function WorkingWithAI() {
 function Services() {
   const bySlug = new Map(projects.map((p) => [p.slug, p]));
   return (
-    <section id="services" aria-labelledby="services-heading" className="shell scroll-mt-24 pt-28 md:pt-40">
+    <section id="services" aria-labelledby="services-heading" className="defer-render shell scroll-mt-24 pt-28 md:pt-40">
       <SectionHeading
         index="07"
         label="Services"
@@ -459,7 +459,7 @@ function Services() {
 
 function Exploring() {
   return (
-    <section aria-labelledby="exploring-heading" className="shell pt-28 md:pt-40">
+    <section aria-labelledby="exploring-heading" className="defer-render shell pt-28 md:pt-40">
       <div className="grid gap-10 lg:grid-cols-12">
         <div className="lg:col-span-4">
           <p className="label flex items-center gap-2">
