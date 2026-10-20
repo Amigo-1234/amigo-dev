@@ -3,12 +3,13 @@ import type { Metadata } from "next";
 import { ContactForm } from "@/components/contact-form";
 import { LocalTime } from "@/components/local-time";
 import { site } from "@/content/site";
+import { pageMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
+  path: "/contact",
   title: "Contact",
   description: "Get in touch with Muftau Idris about a website, a web application or a role.",
-  alternates: { canonical: "/contact" },
-};
+});
 
 export default function ContactPage() {
   return (

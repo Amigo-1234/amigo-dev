@@ -11,7 +11,8 @@ export const site = {
   role: "Full-Stack Developer & Engineering Student",
   disciplines: ["Software Engineering", "Web Applications", "Digital Infrastructure"],
   direction: "DevOps Engineering",
-  url: (process.env.NEXT_PUBLIC_SITE_URL ?? "https://amigo-dev.vercel.app").replace(/\/$/, ""),
+  /** Primary domain. Canonical, sitemap, robots, Open Graph and JSON-LD URLs all derive from it. */
+  url: "https://www.amigodev.com.ng",
   description:
     "Muftau Idris (AMIGODEV) is a full-stack developer and Mechanical Engineering student at Ekiti State University who designs, builds, deploys and maintains web applications with Next.js, TypeScript and PostgreSQL.",
   locale: "en_NG",

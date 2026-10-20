@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { type Block, getPost, posts } from "@/content/writing";
+import { pageMetadata } from "@/lib/metadata";
 
 export const dynamicParams = false;
 
@@ -12,12 +13,12 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: PageProps<"/writing/[slug]">): Promise<Metadata> {
   const post = getPost((await params).slug);
   if (!post) return {};
-  return {
+  return pageMetadata({
+    path: `/writing/${post.slug}`,
     title: post.title,
     description: post.summary,
-    alternates: { canonical: `/writing/${post.slug}` },
-    openGraph: { type: "article", publishedTime: post.date, title: post.title, description: post.summary },
-  };
+    openGraph: { type: "article", publishedTime: post.date },
+  });
 }
 
 function renderBlock(block: Block, key: number) {

@@ -2,13 +2,14 @@ import type { Metadata } from "next";
 
 import { ProjectFilter } from "@/components/project-filter";
 import { categories, projects, smallerWork, toCard } from "@/content/projects";
+import { pageMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
+  path: "/projects",
   title: "Projects",
   description:
     "Case studies from Muftau Idris: a university sports platform, a food ordering system, a bilingual school records platform, a social network and websites for organisations in Nigeria.",
-  alternates: { canonical: "/projects" },
-};
+});
 
 export default function ProjectsPage() {
   return (

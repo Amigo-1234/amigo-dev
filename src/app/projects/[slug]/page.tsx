@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { JsonLd, ShotFrame, StatusPill, Tag } from "@/components/ui";
 import { getAdjacentProject, getProject, projects } from "@/content/projects";
 import { site } from "@/content/site";
+import { pageMetadata } from "@/lib/metadata";
 
 export const dynamicParams = false;
 
@@ -16,14 +17,13 @@ export async function generateMetadata({ params }: PageProps<"/projects/[slug]">
   const { slug } = await params;
   const project = getProject(slug);
   if (!project) return {};
-  const title = `${project.name} — case study`;
-  return {
-    title,
+  return pageMetadata({
+    path: `/projects/${project.slug}`,
+    title: `${project.name} — case study`,
     description: project.summary,
-    alternates: { canonical: `/projects/${project.slug}` },
-    openGraph: { type: "article", title, description: project.summary, url: `/projects/${project.slug}` },
-    twitter: { title, description: project.summary },
-  };
+    openGraph: { type: "article" },
+    ownImage: true,
+  });
 }
 
 function Section({ n, title, children, id }: { n: number; title: string; children: React.ReactNode; id: string }) {

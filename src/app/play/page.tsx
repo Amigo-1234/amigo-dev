@@ -2,12 +2,13 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import { GameLoader } from "@/game/loader";
+import { pageMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
+  path: "/play",
   title: "DEBUG.EXE — a tiny arcade game",
   description: "Defend a production server from incoming bugs. A small arcade game built for the AMIGODEV portfolio.",
-  alternates: { canonical: "/play" },
-};
+});
 
 const controls: [string, string, string][] = [
   ["Move", "← → or A D", "Drag on the screen, or ◀ ▶"],

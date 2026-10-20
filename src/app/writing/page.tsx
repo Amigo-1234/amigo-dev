@@ -3,12 +3,13 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { posts } from "@/content/writing";
+import { pageMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
+  path: "/writing",
   title: "Writing",
   description: "Technical notes by Muftau Idris on building, deploying and maintaining web applications.",
-  alternates: { canonical: "/writing" },
-};
+});
 
 const date = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "long", year: "numeric" });
 

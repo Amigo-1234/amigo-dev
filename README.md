@@ -1,7 +1,7 @@
 # AMIGODEV — Muftau Idris
 
 Personal site and portfolio of Muftau Idris (AMIGODEV), full-stack developer and engineering student.
-Production: https://amigo-dev.vercel.app
+Production: https://www.amigodev.com.ng
 
 ## Stack
 

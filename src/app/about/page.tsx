@@ -4,13 +4,14 @@ import { Portrait } from "@/components/portrait";
 import { ButtonLink, JsonLd, SectionHeading } from "@/components/ui";
 import { aiWorkflow, interests, journey, languages, story } from "@/content/profile";
 import { site } from "@/content/site";
+import { pageMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
+  path: "/about",
   title: "About",
   description:
     "Muftau Idris is a Nigerian full-stack developer and Mechanical Engineering student at Ekiti State University, working toward DevOps engineering.",
-  alternates: { canonical: "/about" },
-};
+});
 
 const facts: [string, string][] = [
   ["Name", site.name],
