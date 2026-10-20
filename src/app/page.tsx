@@ -1,11 +1,8 @@
-import Image from "next/image";
 import Link from "next/link";
 
 import { ArcadeCard } from "@/components/arcade-card";
-import { Monogram } from "@/components/brand";
 import { HeroMotion } from "@/components/hero-motion";
-import { LocalTime } from "@/components/local-time";
-import { Portrait } from "@/components/portrait";
+import { Portrait, PortraitThumb } from "@/components/portrait";
 import { FeaturedProject, ProjectCard } from "@/components/project-cards";
 import { SystemExplorer } from "@/components/system-explorer";
 import { TerminalLazy } from "@/components/terminal-lazy";
@@ -97,7 +94,15 @@ function Hero() {
 
       <div className="shell grid items-center gap-10 pb-10 pt-8 sm:pt-12 lg:grid-cols-12 lg:gap-10 lg:pb-20 lg:pt-16">
         <div className="lg:col-span-8">
-          <p data-hero className="label flex flex-wrap items-center gap-x-3 gap-y-1">
+          {/* Phones and tablets: a compact byline with the portrait, instead of a large photo */}
+          <div data-hero className="flex items-center gap-3.5 lg:hidden">
+            <PortraitThumb className="w-[3.25rem] ring-1 ring-line" />
+            <p className="min-w-0">
+              <span className="block font-serif text-[1.375rem] leading-none text-fg">{site.name}</span>
+              <span className="label mt-1.5 block">{site.role}</span>
+            </p>
+          </div>
+          <p data-hero className="label hidden flex-wrap items-center gap-x-3 gap-y-1 lg:flex">
             <span className="text-fg">{site.name}</span>
             <span aria-hidden="true" className="h-px w-6 bg-line-strong" />
             <span data-hero-label>{site.role}</span>
@@ -137,15 +142,11 @@ function Hero() {
           </div>
         </div>
 
-        {/* Large screens: an editorial portrait card beside the headline */}
-        <div data-hero data-hero-portrait className="hidden w-full max-w-[20rem] justify-self-end lg:col-span-4 lg:block">
-          <Portrait priority size="sm" />
+        {/* Large screens: the editorial portrait beside the headline. Not preloaded,
+            so phones (where it is hidden) never download it. */}
+        <div data-hero data-hero-portrait className="hidden w-full max-w-[19rem] justify-self-end pr-7 lg:col-span-4 lg:block">
+          <Portrait sizes="(min-width: 1024px) 19rem, 1px" />
         </div>
-      </div>
-
-      {/* Phones and tablets: a compact identity strip instead of a large photo */}
-      <div className="shell lg:hidden">
-        <IdentityStrip />
       </div>
 
       {/* Title block, as on an engineering drawing */}
@@ -168,32 +169,6 @@ function Hero() {
         </dl>
       </div>
     </HeroMotion>
-  );
-}
-
-function IdentityStrip() {
-  const portrait = site.portrait;
-  return (
-    <div className="glass flex items-center gap-3.5 rounded-2xl p-2.5 pr-4">
-      <span className="relative grid size-14 shrink-0 place-items-center overflow-hidden rounded-xl bg-ink-sunken">
-        {portrait ? (
-          <Image src={portrait.image} alt={portrait.alt} fill sizes="56px" className="object-cover" style={{ objectPosition: portrait.focus }} />
-        ) : (
-          <>
-            <span aria-hidden="true" className="grid-paper absolute inset-0" />
-            <Monogram className="relative size-8 text-fg" />
-          </>
-        )}
-      </span>
-      <span className="min-w-0 flex-1">
-        <span className="block font-serif text-xl leading-none">{site.name}</span>
-        <span className="mt-1 block truncate text-xs text-fg-muted">Full-stack developer · AMIGODEV</span>
-      </span>
-      <span className="shrink-0 text-right font-mono text-[0.625rem] tracking-wide text-fg-muted">
-        <span className="block">Nigeria</span>
-        <LocalTime />
-      </span>
-    </div>
   );
 }
 

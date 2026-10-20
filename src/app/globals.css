@@ -668,3 +668,18 @@ html[data-blueprint] body {
 html.render-all .defer-render {
   content-visibility: visible;
 }
+
+/*
+ * Editorial portrait: the lower edge of the photograph fades into the page
+ * instead of ending at a hard card edge, and a warm highlight follows the
+ * pointer (--mx/--my come from MotionLayer's [data-light] handler).
+ */
+.portrait-photo {
+  -webkit-mask-image: linear-gradient(to bottom, #000 72%, transparent);
+  mask-image: linear-gradient(to bottom, #000 72%, transparent);
+}
+
+.portrait-light {
+  background: radial-gradient(22rem circle at var(--mx, 70%) var(--my, 22%), rgb(255 226 196 / 0.35), transparent 62%);
+  mix-blend-mode: soft-light;
+}

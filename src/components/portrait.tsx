@@ -7,32 +7,38 @@ import { Monogram } from "./brand";
 import { LocalTime } from "./local-time";
 
 /*
- * An editorial portrait card: the photo sits inside a thin glass frame with a
- * caption strip, warm light behind it and registration marks on the corners.
- * When no portrait is configured (site.portrait is null), a branded card takes
- * its place, so the layout never depends on the photo.
+ * An editorial portrait. There is no card around it: the photograph sits on
+ * the drawing sheet with registration marks outside its corners, a figure
+ * number along its edge, warm light behind it and a lower edge that fades
+ * into the page so it reads as part of the layout. A soft highlight follows
+ * the pointer on devices with a mouse ([data-light], driven by MotionLayer).
+ *
+ * When no portrait is configured (site.portrait is null), a branded panel
+ * takes its place, so the layout never depends on the photo.
  */
 export function Portrait({
   priority = false,
-  size = "md",
+  sizes,
+  caption = true,
   className,
 }: {
+  /** Preload the image. Only for portraits visible on load at every width. */
   priority?: boolean;
-  size?: "sm" | "md";
+  /** The rendered width at each breakpoint, for responsive image selection. */
+  sizes: string;
+  caption?: boolean;
   className?: string;
 }) {
   const portrait = site.portrait;
 
   return (
     <figure data-portrait className={cn("relative isolate", className)}>
-      {/* Warm light behind the card */}
-      <div aria-hidden="true" className="absolute -inset-2 -z-10 rounded-[2rem] bg-accent opacity-[0.14] blur-2xl sm:-inset-6 sm:blur-3xl" />
+      {/* Warm light behind the photograph, picking up the lamps in the shot */}
+      <div aria-hidden="true" className="absolute inset-x-[8%] top-[6%] bottom-[18%] -z-10 rounded-full bg-accent opacity-[0.16] blur-3xl" />
 
-      <div className="glass rounded-[1.6rem] p-1.5">
-        <div
-          data-light
-          className="relative aspect-[4/5] overflow-hidden rounded-[1.25rem] bg-ink-sunken"
-        >
+      <div className="relative">
+        <div aria-hidden="true" className="ticks pointer-events-none absolute -inset-2.5 sm:-inset-3.5" />
+        <div data-light className="portrait-photo relative aspect-[4/5] overflow-hidden rounded-[1.1rem] bg-ink-sunken">
           {portrait ? (
             <>
               <Image
@@ -41,38 +47,68 @@ export function Portrait({
                 fill
                 priority={priority}
                 placeholder="blur"
-                sizes={size === "sm" ? "(min-width: 1024px) 18rem, 60vw" : "(min-width: 1024px) 22rem, 80vw"}
+                sizes={sizes}
                 className="object-cover"
                 style={{ objectPosition: portrait.focus }}
               />
-              <div
-                aria-hidden="true"
-                className="pointer-events-none absolute inset-0 opacity-60 mix-blend-soft-light"
-                style={{ background: "radial-gradient(24rem circle at var(--mx, 30%) var(--my, 18%), rgb(255 236 220 / 0.55), transparent 60%)" }}
-              />
+              <div aria-hidden="true" className="portrait-light pointer-events-none absolute inset-0" />
             </>
           ) : (
             <PortraitFallback />
           )}
-          <div aria-hidden="true" className="ticks pointer-events-none absolute inset-2.5 rounded-[0.9rem] [--tick:rgb(255_255_255/0.35)]" />
         </div>
+        <p
+          aria-hidden="true"
+          className="absolute -right-7 top-1 hidden whitespace-nowrap font-mono text-[0.625rem] tracking-[0.18em] text-fg-subtle [writing-mode:vertical-rl] sm:block"
+        >
+          FIG. 01 — {site.brand}
+        </p>
+      </div>
 
-        <figcaption className="flex items-end justify-between gap-3 px-3 pb-2 pt-3">
+      {caption && (
+        <figcaption className="relative mt-4 flex items-end justify-between gap-3 border-t border-line pt-3">
           <span>
             <span className="block font-serif text-xl leading-none text-fg">{site.name}</span>
-            <span className="mt-1.5 block text-xs text-fg-muted">Full-stack developer</span>
+            <span className="mt-1.5 block text-xs text-fg-muted">Full-stack developer · {site.brand}</span>
           </span>
           <span className="shrink-0 text-right font-mono text-[0.625rem] tracking-wide text-fg-muted">
             <span className="block">Nigeria</span>
             <LocalTime />
           </span>
         </figcaption>
-      </div>
+      )}
     </figure>
   );
 }
 
-/** Branded card shown until a portrait is supplied. Decorative only. */
+/** Small portrait for compact layouts (the mobile hero). */
+export function PortraitThumb({ className }: { className?: string }) {
+  const portrait = site.portrait;
+  return (
+    <span className={cn("relative block aspect-[4/5] shrink-0 overflow-hidden rounded-xl bg-ink-sunken", className)}>
+      {portrait ? (
+        <Image
+          src={portrait.image}
+          alt={portrait.alt}
+          fill
+          placeholder="blur"
+          sizes="88px"
+          loading="eager"
+          fetchPriority="high"
+          className="object-cover"
+          style={{ objectPosition: portrait.focus }}
+        />
+      ) : (
+        <span aria-hidden="true" className="absolute inset-0 grid place-items-center">
+          <span className="grid-paper absolute inset-0" />
+          <Monogram className="relative w-1/2 text-fg" />
+        </span>
+      )}
+    </span>
+  );
+}
+
+/** Branded panel shown until a portrait is supplied. Decorative only. */
 function PortraitFallback() {
   return (
     <div aria-hidden="true" className="absolute inset-0 overflow-hidden">

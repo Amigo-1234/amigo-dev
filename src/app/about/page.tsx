@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 
+import { LocalTime } from "@/components/local-time";
 import { Portrait } from "@/components/portrait";
 import { ButtonLink, JsonLd, SectionHeading } from "@/components/ui";
 import { aiWorkflow, interests, journey, languages, story } from "@/content/profile";
@@ -111,6 +112,21 @@ export default function AboutPage() {
               </span>
             </h1>
 
+            {/* Phones and tablets: a compact figure with its caption beside it */}
+            <div className="rise mt-10 grid grid-cols-[8.5rem_1fr] items-end gap-5 pl-2.5 sm:grid-cols-[11rem_1fr] lg:hidden" style={{ "--i": 3 } as React.CSSProperties}>
+              <Portrait caption={false} sizes="(min-width: 640px) 11rem, 8.5rem" />
+              <p className="border-t border-line pt-3 pb-5">
+                <span className="label block">Fig. 01</span>
+                <span className="mt-2 block font-serif text-2xl leading-none text-fg">{site.name}</span>
+                <span className="mt-1.5 block text-xs text-fg-muted">Full-stack developer · {site.brand}</span>
+                <span className="mt-2 flex items-center gap-2 font-mono text-[0.625rem] tracking-wide text-fg-muted">
+                  <span>Nigeria</span>
+                  <span aria-hidden="true" className="h-px w-3 bg-line-strong" />
+                  <LocalTime />
+                </span>
+              </p>
+            </div>
+
             <dl className="rise mt-12 border border-line text-sm" style={{ "--i": 3 } as React.CSSProperties}>
               {facts.map(([term, value]) => (
                 <div key={term} className="grid grid-cols-[7rem_1fr] border-b border-line last:border-b-0">
@@ -121,8 +137,9 @@ export default function AboutPage() {
             </dl>
           </div>
 
-          <div className="rise mx-auto w-full max-w-[20rem] lg:col-span-5 lg:mr-0 lg:mt-24 lg:max-w-[22rem]" style={{ "--i": 2 } as React.CSSProperties}>
-            <Portrait priority />
+          {/* Large screens: a full editorial column. Not preloaded, so phones never fetch it. */}
+          <div className="rise hidden w-full max-w-[22rem] justify-self-end pr-7 lg:col-span-5 lg:mt-24 lg:block" style={{ "--i": 2 } as React.CSSProperties}>
+            <Portrait sizes="(min-width: 1024px) 22rem, 1px" />
           </div>
         </div>
       </header>
