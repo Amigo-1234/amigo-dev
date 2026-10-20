@@ -2,10 +2,12 @@ import type { MetadataRoute } from "next";
 
 import { projects } from "@/content/projects";
 import { site } from "@/content/site";
+import { experiments } from "@/content/lab";
 import { posts } from "@/content/writing";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const pages = ["", "/projects", "/about", "/contact", "/play"].map((path) => ({
+  const lab = experiments.map((e) => e.href).filter((href) => href !== "/play");
+  const pages = ["", "/projects", "/about", "/contact", "/lab", "/play", ...lab].map((path) => ({
     url: `${site.url}${path}`,
     changeFrequency: "monthly" as const,
     priority: path === "" ? 1 : 0.8,

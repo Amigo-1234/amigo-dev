@@ -34,7 +34,11 @@ const pages: Item[] = [
   { id: "about", group: "Pages", label: "About me", keywords: "story languages interests journey", href: "/about" },
   { id: "services", group: "Pages", label: "Services", keywords: "hire freelance client", href: "/#services" },
   { id: "contact", group: "Pages", label: "Contact", keywords: "email message hire", href: "/contact" },
-  { id: "play", group: "Pages", label: "Play DEBUG.EXE", keywords: "game arcade bugs fun", href: "/play" },
+  { id: "lab", group: "Pages", label: "Lab", keywords: "experiments playground tools demos", href: "/lab" },
+  { id: "play", group: "Pages", label: "Play DEBUG.EXE", keywords: "game arcade bugs fun lab", href: "/play" },
+  { id: "lab-prayer", group: "Pages", label: "Lab: Prayer times, calculated", keywords: "salah adhan lagos countdown haqslam", href: "/lab/prayer-times" },
+  { id: "lab-results", group: "Pages", label: "Lab: Bilingual result sheet", keywords: "grades arabic rtl school markaz", href: "/lab/result-sheet" },
+  { id: "lab-clock", group: "Pages", label: "Lab: Match clock", keywords: "football timer six-a-side eksu sports", href: "/lab/match-clock" },
 ];
 
 const actions: Item[] = [

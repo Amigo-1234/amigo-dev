@@ -32,7 +32,20 @@ export default function PlayPage() {
         </div>
 
         <div className="lg:order-1 lg:col-span-5 lg:pt-6">
-          <p className="label">Arcade · Sheet 404</p>
+          <nav aria-label="Breadcrumb">
+            <ol className="flex items-center gap-2 text-sm text-fg-subtle">
+              <li>
+                <Link href="/lab" className="link-underline hover:text-fg">
+                  Lab
+                </Link>
+              </li>
+              <li aria-hidden="true">/</li>
+              <li aria-current="page" className="text-fg-muted">
+                DEBUG.EXE
+              </li>
+            </ol>
+          </nav>
+          <p className="label mt-6">Lab · EXP-00 · Arcade</p>
           <h1 className="mt-4 font-sans text-5xl font-semibold tracking-tight md:text-6xl">
             DEBUG<span className="text-accent">.EXE</span>
           </h1>
@@ -64,8 +77,8 @@ export default function PlayPage() {
 
           <p className="mt-10 text-sm text-fg-subtle">
             Your best score stays on this device. Nothing is sent anywhere.{" "}
-            <Link href="/" className="text-fg underline decoration-line-strong underline-offset-4">
-              Back to the portfolio
+            <Link href="/lab" className="text-fg underline decoration-line-strong underline-offset-4">
+              More experiments in the Lab
             </Link>
           </p>
         </div>
