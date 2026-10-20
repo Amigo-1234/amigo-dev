@@ -74,7 +74,7 @@ export function PrayerTimes() {
                   isNext ? "bg-accent text-accent-fg" : slot.isPrayer ? "bg-surface-strong" : "border border-dashed border-line text-fg-muted",
                 )}
               >
-                <p lang="ar" dir="rtl" className={cn("text-right text-base leading-none", isNext ? "opacity-80" : "text-fg-subtle")}>
+                <p lang="ar" dir="rtl" className={cn("text-right text-base leading-none", !isNext && "text-fg-muted")}>
                   {slot.arabic}
                 </p>
                 <p className="mt-2 font-mono text-[0.6875rem] uppercase tracking-[0.14em]">{slot.name}</p>

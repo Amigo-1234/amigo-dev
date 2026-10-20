@@ -157,8 +157,15 @@ export function ProjectCard({
             <span className="link-underline">{project.name}</span>
           </Link>
         </Heading>
-        <p className="mt-2 text-fg-muted">{project.summary}</p>
-        <p className="mt-auto pt-4 font-mono text-xs text-fg-subtle">{project.stack.slice(0, 4).join(" · ")}</p>
+        <p className="mt-1.5 text-sm text-fg-subtle">{project.kind}</p>
+        <p className="mt-3 text-fg-muted">{project.summary}</p>
+        <ul className="mt-auto flex flex-wrap gap-1.5 pt-5" aria-label="Technologies">
+          {project.stack.slice(0, 4).map((s) => (
+            <li key={s} className="rounded-full border border-line px-2 py-0.5 text-[0.6875rem] text-fg-muted">
+              {s}
+            </li>
+          ))}
+        </ul>
       </div>
     </article>
   );

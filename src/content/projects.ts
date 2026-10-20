@@ -6,27 +6,32 @@ import eksuMatchMobile from "@/assets/projects/eksu-sports-hub/match-m.webp";
 import eksuTableMobile from "@/assets/projects/eksu-sports-hub/table-m.webp";
 import kandyHome from "@/assets/projects/kandys-treats/home-d.webp";
 import kandyMenu from "@/assets/projects/kandys-treats/menu-d.webp";
-import markazHome from "@/assets/projects/markaz-il-ginna/home-d.webp";
+import markazResults from "@/assets/projects/markaz-il-ginna/results-d.webp";
+import markazEntry from "@/assets/projects/markaz-il-ginna/entry-d.webp";
 import markazArabicMobile from "@/assets/projects/markaz-il-ginna/ar-m.webp";
+import markazArabicResultsMobile from "@/assets/projects/markaz-il-ginna/ar-results-m.webp";
 import markazHomeMobile from "@/assets/projects/markaz-il-ginna/home-m.webp";
-import biaHome from "@/assets/projects/bia-jupeb/home-d.webp";
 import biaFees from "@/assets/projects/bia-jupeb/fees-d.webp";
-import biaHomeMobile from "@/assets/projects/bia-jupeb/home-m.webp";
-import haqslamHome from "@/assets/projects/haqslam/home-d.webp";
+import biaTimetableMobile from "@/assets/projects/bia-jupeb/timetable-m.webp";
 import haqslamPrayer from "@/assets/projects/haqslam/prayer-d.webp";
+import haqslamLibrary from "@/assets/projects/haqslam/library-d.webp";
+import haqslamPrayerMobile from "@/assets/projects/haqslam/prayer-m.webp";
 import haqslamLibraryMobile from "@/assets/projects/haqslam/library-m.webp";
-import amigoWorlds from "@/assets/projects/amigo-world/worlds-d.webp";
-import amigoSupport from "@/assets/projects/amigo-world/support-d.webp";
-import amigoWorldsMobile from "@/assets/projects/amigo-world/worlds-m.webp";
+import amigoFeed from "@/assets/projects/amigo-world/feed-d.webp";
+import amigoWorld from "@/assets/projects/amigo-world/world-d.webp";
+import amigoFeedMobile from "@/assets/projects/amigo-world/feed-m.webp";
+import amigoWorldMobile from "@/assets/projects/amigo-world/world-m.webp";
+import amigoDmMobile from "@/assets/projects/amigo-world/dm-m.webp";
 
 /*
  * Every statement in this file was checked against the project's own
- * repository (README, docs, migrations, source) in October 2026. Screenshots
- * were captured from local builds of each repository; captions say when a
- * build was running on the project's demo data.
+ * repository (README, docs, migrations, source) and its Vercel deployments;
+ * last verified 20 October 2026. Counts in `facts` come straight from the
+ * repositories. Screenshots were captured from local builds of each
+ * repository; captions say when a build was running on demo or made-up data.
  */
 
-export type Category = "Web application" | "Website" | "Education" | "Community" | "Commerce" | "Concept";
+export type Category = "Web application" | "Website" | "Education" | "Sports" | "Community" | "Commerce" | "Concept";
 
 export type StatusTone = "live" | "building" | "concept";
 
@@ -35,6 +40,12 @@ export type Shot = {
   alt: string;
   caption: string;
   device: "desktop" | "mobile";
+};
+
+/** A layered system diagram: each tier lists its parts; `link` labels the connection to the next tier. */
+export type Diagram = {
+  caption: string;
+  tiers: { label: string; nodes: string[]; link?: string }[];
 };
 
 export type Project = {
@@ -62,16 +73,108 @@ export type Project = {
   architecture: { label: string; detail: string }[];
   features: { title: string; body: string }[];
   challenges: { title: string; problem: string; solution: string }[];
-  /** What exists today versus what is planned. */
+  /** What exists today versus what is planned. Rendered as the Outcome. */
   state: { done: string[]; next?: string[]; note?: string };
+  /** Verified, countable facts from the repository (no performance or business claims). */
+  facts: { value: string; label: string }[];
+  diagram?: Diagram;
+  /** How the project got here, oldest first. */
+  timeline?: { date: string; title: string; body: string }[];
 };
 
 export const projects: Project[] = [
   {
+    slug: "amigo-world",
+    name: "Amigo World",
+    kind: "Own product",
+    categories: ["Web application", "Community"],
+    status: { label: "Invite-only beta · in development", tone: "building" },
+    summary: "A social network with posts, 24-hour Moments, end-to-end encrypted messages and live community events called Worlds.",
+    intro:
+      "My own social platform, rebuilt from its first Firebase version into a typed React app on PostgreSQL. Posts, profiles, Explore, notifications, end-to-end encrypted one-to-one messages, Moments, live events called Worlds, a Support Hub and a Creator Programme.",
+    role: "Everything: product, design, front end, database, security and operations",
+    stack: ["React 19", "TypeScript", "Vite", "PostgreSQL (Neon)", "Neon Auth", "Matrix crypto (vodozemac)", "Cloudflare R2", "Web Push", "Vercel", "GitHub Actions"],
+    links: {
+      live: { href: "https://amigo-app-one.vercel.app", label: "Invite-only beta" },
+    },
+    tint: "#f05a3b",
+    featured: true,
+    shots: [
+      { image: amigoWorld, device: "desktop", alt: "A live World called Rage Bait Night with a LIVE badge, a countdown, 319 participants, a Join World button and the leaderboard tab showing four ranked members and their points.", caption: "A live World with real-time standings and its scoring rules. Local build running on the app's demo data; photos are placeholders." },
+      { image: amigoFeed, device: "desktop", alt: "The Amigo home feed in dark mode with an icon sidebar, Latest and Following tabs, a row of Moments, a composer and the first post with an image.", caption: "Home feed with Moments, the composer and the Latest timeline. Demo data." },
+      { image: amigoFeedMobile, device: "mobile", alt: "The mobile home feed with message and notification badges, Moments, a post with a large image and a bottom navigation bar with a central create button.", caption: "Mobile feed with bottom navigation." },
+      { image: amigoDmMobile, device: "mobile", alt: "A direct-message thread with a Verified badge, a note that the contact's security key was verified, an image message and a quoted reply marked Delivered.", caption: "Messages with contact key verification. The demo build itself runs without encryption." },
+      { image: amigoWorldMobile, device: "mobile", alt: "The mobile World page with a cover image, a LIVE badge, a Join World button and a Competition card explaining how to enter, scoring and the prize.", caption: "A World's competition rules on a phone." },
+    ],
+    overview: [
+      "Amigo World began as a small Firebase social app with a feed, profiles and a global chat. The rebuild, started in October 2026, is a typed React application on PostgreSQL, designed around what a real community needs: safety tools, moderation, private messaging and media that loads on mobile data.",
+      "It is ready for a small invited beta, not a public launch. The project's own launch checklist names what is left: final legal text, more than one administrator and paid-tier limits.",
+    ],
+    problem: [
+      "A social app is mostly the parts nobody sees: who can see a post, what happens after a block, how reports reach a moderator, and how messages stay private. Those have to be enforced by the server, not hidden by the interface.",
+    ],
+    approach: [
+      "Screens talk to a DataSource interface with three implementations: the legacy Firebase app (kept as the rollback path), the PostgreSQL backend and an in-memory demo. That let the rebuild proceed without touching the version people were already using.",
+      "Visibility, blocking, suspension and rate limits are enforced in the database. Media goes to a private Cloudflare R2 bucket through short-lived signed links that the database authorises.",
+      "Live checks run from GitHub Actions against preview and production deployments: media, push, Worlds and messaging journeys, with test accounts cleaned up afterwards.",
+    ],
+    architecture: [
+      { label: "Client", detail: "React 19, TypeScript and Vite with React Router. Plain CSS with design tokens." },
+      { label: "Backend", detail: "PostgreSQL on Neon with Neon Auth and the Data API. The schema was first written as Supabase migrations." },
+      { label: "Media", detail: "Private Cloudflare R2 bucket; uploads and reads use signed links issued only after a database check." },
+      { label: "Messages", detail: "End-to-end encrypted one-to-one messages using the Matrix Olm/Megolm implementation (vodozemac); the server stores ciphertext only." },
+      { label: "Operations", detail: "Vercel deployments, GitHub Actions smoke tests, privacy-safe error reports and performance measurements." },
+    ],
+    features: [
+      { title: "Feed and profiles", body: "Latest and Following feeds, likes, replies, photo posts, profiles with posts, replies and media tabs, and follow lists." },
+      { title: "Explore and search", body: "People and post search with Top, People, Posts and Media tabs, and suggestions." },
+      { title: "Notifications", body: "Follows, likes, replies and mentions, grouped, with read state and an unread badge." },
+      { title: "Worlds", body: "Admin-created live events with countdowns, posts, live chat and an optional competition with a leaderboard." },
+      { title: "Support Hub", body: "Ask for feedback on a song, video or project and help others in return, with credits and reputation." },
+      { title: "Moderation", body: "Reports, suspension, warnings, blocking, rate limits and an admin queue with an audit log." },
+    ],
+    challenges: [
+      { title: "Rebuilding without breaking the live app", problem: "Existing users were on Firebase; a big-bang switch would risk their accounts and posts.", solution: "A DataSource seam, a repeatable read-only migration toolchain (extract, audit, migrate, diff) with a runbook, and the Firebase build kept as an instant rollback." },
+      { title: "Private messages that stay private", problem: "Administrators and the database should not be able to read conversations.", solution: "Messages are encrypted on the device with the Matrix cryptography library compiled to WebAssembly; the server stores ciphertext, encrypted photos included, and contacts can verify each other's keys." },
+      { title: "Proving it works, not assuming it", problem: "Messaging, push and media cross the browser, edge functions, the database and storage, so unit tests alone can't show they work.", solution: "Live end-to-end checks drive two real accounts through DMs in Chromium and WebKit, plus media, push, blocking and Worlds journeys, from eight GitHub Actions workflows against preview and production." },
+      { title: "Photos on slow networks", problem: "Full-size images made the feed slow on mobile data.", solution: "Feed-sized copies, tiny blurred previews stored with each post and cacheable signed links. The project's performance log records the first feed photo on a 4G profile going from 6.0 s to 4.0 s." },
+    ],
+    state: {
+      done: [
+        "Feed, profiles, Explore, notifications, Moments, Worlds and Support Hub",
+        "End-to-end encrypted one-to-one messages with photos, reactions, edits and unsend",
+        "Moderation, blocking, suspension and database-level rate limits",
+        "Private media on Cloudflare R2, Web Push and an installable PWA",
+        "Creator Programme screens and admin tools (the programme itself is closed)",
+      ],
+      next: ["Final legal text and a second administrator before opening up", "Voice notes and video posts", "Creator monetisation (designed, not built)"],
+      note: "Ready for a small invited beta, not yet publicly launched.",
+    },
+    facts: [
+      { value: "39", label: "SQL migrations" },
+      { value: "41", label: "test and check scripts" },
+      { value: "8", label: "CI workflows, incl. live checks" },
+      { value: "27", label: "app screens" },
+    ],
+    diagram: {
+      caption: "Messages are encrypted on the device, so the server only ever stores ciphertext. Every media link is issued only after Postgres authorises the request.",
+      tiers: [
+        { label: "Client", nodes: ["React 19 PWA", "Matrix crypto (WebAssembly)", "Service worker"], link: "same-origin API · signed requests" },
+        { label: "Vercel functions", nodes: ["Auth and data proxy", "Media signing", "Push dispatch", "Worlds scheduler"], link: "SQL checks · row-level rules" },
+        { label: "Data and delivery", nodes: ["Neon Postgres + Neon Auth", "Cloudflare R2 (private)", "Web Push (VAPID)"] },
+      ],
+    },
+    timeline: [
+      { date: "Nov 2025", title: "First version", body: "A vanilla JavaScript app on Firebase: feed, profiles and a global chat." },
+      { date: "Oct 2026", title: "The rebuild", body: "A ground-up rewrite on React, TypeScript and Postgres, with encrypted messages, private media, Worlds and live end-to-end tests. Over 200 commits in its first two weeks." },
+      { date: "Next", title: "Invited beta", body: "A small group of invited members while the legal text, moderation cover and limits are finished." },
+    ],
+  },
+  {
     slug: "eksu-sports-hub",
     name: "EKSU Sports Hub",
     kind: "Own product",
-    categories: ["Web application", "Education"],
+    categories: ["Web application", "Sports", "Education"],
     status: { label: "In active development", tone: "building" },
     summary: "Live scores, fixtures and league tables for Ekiti State University sport, run from a match operator console.",
     intro:
@@ -104,13 +207,14 @@ export const projects: Project[] = [
       { label: "Public site", detail: "Next.js App Router with loading, error and empty states on every route. Home, live, fixtures, results, tables, competitions, teams and a match centre." },
       { label: "Operator console", detail: "A separate app at /op with its own state machine. Commands are queued as intents, applied optimistically and reconciled with the server's canonical state." },
       { label: "Admin dashboard", detail: "Competitions, teams, squads, fixtures, operator assignments, live monitoring, event-based corrections, standings, staff and a read-only audit log." },
-      { label: "Database", detail: "Supabase PostgreSQL with Row Level Security and SECURITY DEFINER functions as the only write path. 21 versioned migrations." },
+      { label: "Database", detail: "Supabase PostgreSQL with Row Level Security and SECURITY DEFINER functions as the only write path. 21 versioned migrations and 14 pgTAP test suites." },
       { label: "Realtime", detail: "Supabase Realtime sends a lightweight hint; clients then refetch canonical state instead of trusting the payload." },
       { label: "Notifications", detail: "Anonymous, per-device Web Push for followed matches and teams. Messages are queued in an outbox table in the same transaction as the match change." },
     ],
     features: [
       { title: "Live match centre", body: "Score, running minute, timeline, line-ups on a responsive pitch that follows substitutions and red cards, stats and head-to-head." },
-      { title: "Competitions and tables", body: "League tables calculated from completed matches, competition switching, fixtures and results by date, and top scorers." },
+      { title: "Competitions and tables", body: "League tables calculated from completed matches, competition switching, fixtures and results by date, and a top-scorers tab." },
+      { title: "Special competition rules", body: "Per-competition match length (for example 2 × 7:30) and a six-a-side preset: no added time, rolling substitutions with re-entry, and a 60-second red-card suspension counted in active play. Rules are snapshotted onto each match at kick-off." },
       { title: "Player registration and screening", body: "Players register with a private student number and are screened per team and season (pending, cleared, rejected, suspended) before joining a squad." },
       { title: "Line-ups and eligibility", body: "Formation, starting XI, bench and captain picked by an admin or the assigned operator. Kick-off needs both line-ups confirmed." },
       { title: "Match notifications", body: "Reminders, kick-off and goal alerts per match or team, with per-device preferences and no account required." },
@@ -127,8 +231,24 @@ export const projects: Project[] = [
         "Hosted Supabase project with migrations applied and the database test suite run against it",
         "Player registration, screening, squads and line-ups",
         "Per-device match and team notifications",
+        "Configurable match length, six-a-side special rules and top scorers (October 2026)",
       ],
+      next: ["Competition Engine V2: groups, knockouts, extra time and penalties (built on a branch, not yet merged)"],
       note: "The project is still being extended; the public launch date and domain are not final.",
+    },
+    facts: [
+      { value: "62", label: "routes across three apps" },
+      { value: "21", label: "SQL migrations" },
+      { value: "14", label: "pgTAP database test suites" },
+      { value: "0", label: "tables writable from the browser" },
+    ],
+    diagram: {
+      caption: "Three front ends share one database. Writes happen only through checked database functions; realtime messages are hints to refetch, never the data itself.",
+      tiers: [
+        { label: "Front ends", nodes: ["Public site (server-rendered)", "Match operator console", "Admin dashboard"], link: "RPC calls only · SECURITY DEFINER" },
+        { label: "Database", nodes: ["Supabase Postgres", "Row Level Security", "Audit log", "Notification outbox"], link: "change hints · queued messages" },
+        { label: "Delivery", nodes: ["Supabase Realtime", "Web Push (keys in Vault)"] },
+      ],
     },
   },
   {
@@ -175,7 +295,8 @@ export const projects: Project[] = [
       { title: "Order tracking", body: "Order statuses with history and transition rules, notifications and push alerts." },
       { title: "Admin console", body: "Orders, menu and catalogue, customers, support conversations, announcements, careers and settings." },
       { title: "Inventory and finance", body: "An append-only inventory ledger, ingredients, end-of-day staff reports, sales reporting and a finance audit trail." },
-      { title: "Team and partners", body: "Staff invitations, role tiers, suspension, and partner referrals with order commission." },
+      { title: "Team and partners", body: "Staff invitations, role tiers and suspension; partner invite codes with per-order commission and a refund safeguard." },
+      { title: "Per-plate packaging", body: "Takeaway packs are priced per plate from each dish's pack class, with the checkout function and the basket applying the same rule." },
     ],
     challenges: [
       { title: "Prices the browser cannot change", problem: "A client-calculated total can be edited before it is submitted.", solution: "The server recomputes every figure from the menu table inside the same transaction that creates the order, and the client is denied write access to the tables involved." },
@@ -187,9 +308,30 @@ export const projects: Project[] = [
         "Customer storefront, accounts, checkout, wallet and Paystack payments",
         "Admin console for orders, menu, inventory, finance, staff and support",
         "Firebase to Supabase migration of the core data and logic",
+        "October 2026: partner commissions, inventory and end-of-day history, per-plate packaging fees",
       ],
       note: "The platform went to a partial launch in September 2026 and is still being refined with the kitchen.",
     },
+    facts: [
+      { value: "84", label: "SQL migrations" },
+      { value: "174", label: "RLS policy definitions in migrations" },
+      { value: "7", label: "Edge Functions" },
+      { value: "4", label: "generations, one live business" },
+    ],
+    diagram: {
+      caption: "The browser displays prices; the database decides them. Payment confirmations are accepted only from signed webhooks bound to the order, its owner and its purpose.",
+      tiers: [
+        { label: "Browser", nodes: ["Storefront (static, installable)", "Staff admin console"], link: "RPC calls · Realtime channels" },
+        { label: "Supabase", nodes: ["Postgres + Row Level Security", "Checkout and wallet functions", "Inventory ledger"], link: "Edge Functions (Deno)" },
+        { label: "Services", nodes: ["Paystack initialise", "Signed webhook (HMAC-SHA512)", "Email and Web Push"] },
+      ],
+    },
+    timeline: [
+      { date: "Jan 2026", title: "Prototype", body: "Static pages on Firebase with a basket in the browser and a live order list for staff." },
+      { date: "Feb – May 2026", title: "Version 1 in production", body: "Paystack payments confirmed by signature-checked webhooks, a live admin dashboard, push notifications and an installable app." },
+      { date: "Jun – Aug 2026", title: "Payments hardening", body: "Server-priced checkout, a customer wallet updated inside transactions, and Paystack and Flutterwave webhooks that cannot count a payment twice." },
+      { date: "Aug 2026 – now", title: "Supabase rebuild", body: "PostgreSQL with Row Level Security, database functions for every sensitive write and Edge Functions for payments, now serving kandystreats.com.ng." },
+    ],
   },
   {
     slug: "markaz-il-ginna",
@@ -207,9 +349,11 @@ export const projects: Project[] = [
     tint: "#0f5a43",
     featured: true,
     shots: [
-      { image: markazHome, device: "desktop", alt: "Markaz il Ginna school portal landing page in English with links to the student portal and staff login.", caption: "Public landing page in English. Local build." },
-      { image: markazArabicMobile, device: "mobile", alt: "The same landing page in Arabic, laid out right to left.", caption: "The Arabic version, mirrored right to left." },
-      { image: markazHomeMobile, device: "mobile", alt: "The English landing page on a phone.", caption: "English on a phone." },
+      { image: markazEntry, device: "desktop", alt: "A staff score-entry grid for a made-up class, with CA and exam boxes per pupil, totals and grades, a reason-for-change field and a Save scores button.", caption: "Staff score entry: keyboard-driven, with totals and grades as you type and a reason recorded with every change. Local build, made-up data." },
+      { image: markazResults, device: "desktop", alt: "A student result sheet for a made-up student listing subjects with CA, exam, total, grade, remark and pass status.", caption: "The student portal's result sheet. Made-up data." },
+      { image: markazArabicResultsMobile, device: "mobile", alt: "The same result sheet in Arabic on a phone, laid out right to left.", caption: "The result sheet in Arabic, right to left." },
+      { image: markazArabicMobile, device: "mobile", alt: "The Arabic landing page on a phone in right-to-left layout with the portal and staff buttons mirrored.", caption: "The Arabic landing page." },
+      { image: markazHomeMobile, device: "mobile", alt: "The English landing page on a phone with buttons for the student and parent portal and staff login.", caption: "English landing page with both ways in." },
     ],
     overview: [
       "The school's first system was a static Firebase app. Version 2 is a ground-up rebuild on PostgreSQL, designed around how a school actually works: sessions, terms, levels, subjects, enrolments, results and families.",
@@ -228,13 +372,14 @@ export const projects: Project[] = [
       { label: "Application", detail: "Next.js App Router with Server Components and Server Actions. Every route lives under /en or /ar." },
       { label: "Database", detail: "PostgreSQL on Neon through Drizzle ORM: UUID keys, integer kobo for money, constraints and triggers that enforce the rules as well as the code." },
       { label: "Staff access", detail: "Neon Auth sign-in, then role and permission checks on every server action." },
-      { label: "Family access", detail: "Student ID and PIN sign-in, with PINs hashed using argon2id and sign-in throttling." },
+      { label: "Family access", detail: "Student ID and PIN sign-in, with PINs hashed using argon2id plus a server-side pepper and sign-in throttling." },
+      { label: "Testing", detail: "Vitest with PGlite, an in-process PostgreSQL, so database rules are tested against a real Postgres engine: 14 test files, about 180 test cases." },
       { label: "Internationalisation", detail: "Typed dictionaries (a missing Arabic string is a compile error), logical CSS properties for mirroring, and Intl formatting in the Africa/Lagos time zone." },
     ],
     features: [
       { title: "Student records", body: "Registration, profiles, guardians, placement, status changes and never-recycled student IDs." },
       { title: "Staff administration", body: "A staff workspace with permissions per role, academic sessions, terms and enrolments." },
-      { title: "Results", body: "Score entry, validation, grading, ranking and publication by term, level and subject." },
+      { title: "Results", body: "Keyboard-driven score entry, validation, grading from a policy stored in the database, competition ranking (1, 2, 2, 4) and publication by term, level and subject." },
       { title: "Student and parent portal", body: "Overview, published results and profile, scoped to the signed-in student." },
       { title: "Bilingual interface", body: "English and Arabic throughout, right-to-left layout, and both scripts with their own fonts." },
     ],
@@ -251,71 +396,25 @@ export const projects: Project[] = [
       ],
       next: ["Fees and payment ledger", "Promotion and graduation", "Reports and further hardening"],
     },
-  },
-  {
-    slug: "amigo-world",
-    name: "Amigo World",
-    kind: "Own product",
-    categories: ["Web application", "Community"],
-    status: { label: "In development · early access", tone: "building" },
-    summary: "A social network with posts, Moments, encrypted messages and live community events called Worlds.",
-    intro:
-      "My own social platform, now being rebuilt from its first Firebase version. Posts, profiles, Explore, notifications, encrypted one-to-one messages, 24-hour Moments, live events called Worlds and a Support Hub for honest feedback.",
-    role: "Everything: product, design, front end, database, security and operations",
-    stack: ["React", "TypeScript", "Vite", "PostgreSQL (Neon)", "Supabase (schema origin)", "Cloudflare R2", "Web Push", "Vercel", "GitHub Actions"],
-    links: {
-      live: { href: "https://amigo-app-one.vercel.app", label: "Early-access build" },
-      source: "https://github.com/Amigo-1234/amigo-app",
-    },
-    tint: "#f05a3b",
-    featured: true,
-    shots: [
-      { image: amigoWorlds, device: "desktop", alt: "Amigo World's Worlds page showing a live event card with a countdown, competition entries and a join button.", caption: "Worlds: live and upcoming community events. Local build running on the app's demo data." },
-      { image: amigoSupport, device: "desktop", alt: "The Support Hub with requests for feedback on songs and projects, credits and reputation counters.", caption: "Support Hub, where people trade honest feedback. Demo data." },
-      { image: amigoWorldsMobile, device: "mobile", alt: "Worlds on a phone with a bottom navigation bar.", caption: "The mobile layout with bottom navigation." },
+    facts: [
+      { value: "2", label: "languages, with full right-to-left" },
+      { value: "2", label: "separate sign-in systems" },
+      { value: "180+", label: "test cases, run on real Postgres" },
+      { value: "6", label: "delivery phases shipped" },
     ],
-    overview: [
-      "Amigo World began as a small Firebase social app with a feed, profiles and a global chat. The current rebuild is a typed React application with a PostgreSQL backend, designed for the features a real community needs: safety tools, moderation and reliable messaging.",
-      "It is in early access. Some features are live-tested end to end; others are tested locally and still waiting for live checks.",
-    ],
-    problem: [
-      "A social app is mostly the parts nobody sees: who can see a post, what happens after a block, how reports reach a moderator, and how messages stay private. Those have to be enforced by the server, not hidden by the interface.",
-    ],
-    approach: [
-      "Screens talk to a DataSource interface with three implementations: the legacy Firebase app (kept as the rollback path), the PostgreSQL backend and an in-memory demo. That let the rebuild proceed without touching the version people were already using.",
-      "Visibility, blocking, suspension and rate limits are enforced in the database. Media goes to a private Cloudflare R2 bucket through short-lived signed links that the database authorises.",
-      "Live checks run from GitHub Actions against preview and production deployments: media, push, Worlds and messaging journeys, with test accounts cleaned up afterwards.",
-    ],
-    architecture: [
-      { label: "Client", detail: "React 19, TypeScript and Vite with React Router. Plain CSS with design tokens." },
-      { label: "Backend", detail: "PostgreSQL on Neon with Neon Auth and the Data API. The schema was first written as Supabase migrations." },
-      { label: "Media", detail: "Private Cloudflare R2 bucket; uploads and reads use signed links issued only after a database check." },
-      { label: "Messages", detail: "End-to-end encrypted one-to-one messages using the Matrix Olm/Megolm implementation (vodozemac); the server stores ciphertext only." },
-      { label: "Operations", detail: "Vercel deployments, GitHub Actions smoke tests, privacy-safe error reports and performance measurements." },
-    ],
-    features: [
-      { title: "Feed and profiles", body: "Latest and Following feeds, likes, replies, photo posts, profiles with posts, replies and media tabs, and follow lists." },
-      { title: "Explore and search", body: "People and post search with Top, People, Posts and Media tabs, and suggestions." },
-      { title: "Notifications", body: "Follows, likes, replies and mentions, grouped, with read state and an unread badge." },
-      { title: "Worlds", body: "Admin-created live events with countdowns, posts, live chat and an optional competition with a leaderboard." },
-      { title: "Support Hub", body: "Ask for feedback on a song, video or project and help others in return, with credits and reputation." },
-      { title: "Moderation", body: "Reports, suspension, warnings, blocking, rate limits and an admin queue with an audit log." },
-    ],
-    challenges: [
-      { title: "Rebuilding without breaking the live app", problem: "Existing users were on Firebase; a big-bang switch would risk their accounts and posts.", solution: "A DataSource seam, a repeatable read-only migration with validation reports, and the Firebase build kept as an instant rollback." },
-      { title: "Private messages that stay private", problem: "Admins and the database should not be able to read conversations.", solution: "Messages are encrypted on the device; moderators only see what a reporter chooses to share." },
-      { title: "Photos on slow networks", problem: "Full-size images made the feed slow on mobile data.", solution: "Feed-sized copies, tiny blurred previews stored with each post, and cacheable signed links. Measured on a 4G profile, the first feed photo went from 6.0 s to 4.0 s." },
-    ],
-    state: {
-      done: [
-        "Feed, profiles, Explore, notifications, Worlds and Support Hub",
-        "Encrypted one-to-one messages with photos",
-        "Moderation, blocking, suspension and rate limits",
-        "Media storage on Cloudflare R2 and Web Push",
+    diagram: {
+      caption: "The browser never talks to the database. Every request is resolved to a locale and an identity first, then checked against a named permission in server code.",
+      tiers: [
+        { label: "Routes", nodes: ["/en (left to right)", "/ar (right to left)", "Locale and session gate"], link: "Server Components · Server Actions" },
+        { label: "Server", nodes: ["Permission checks", "Results and grading rules", "Audit log"], link: "Drizzle ORM" },
+        { label: "Identity and data", nodes: ["Staff: Neon Auth + roles", "Families: student ID + argon2id PIN", "Neon Postgres"] },
       ],
-      next: ["Final legal text before public launch", "Voice notes and video posts", "Creator programme (designed, not open)"],
-      note: "Not yet publicly launched.",
     },
+    timeline: [
+      { date: "Jul 2025", title: "Version 1", body: "A static Firebase app for registration and results." },
+      { date: "6–12 Oct 2026", title: "Version 2, phases 1–6", body: "A ground-up rebuild on Next.js and PostgreSQL: bilingual foundation, staff and family sign-in, student administration, results and the student portal." },
+      { date: "Next", title: "Phases 7 onward", body: "Fees and a payment ledger, promotion and graduation, migrating the V1 records, and right-to-left accessibility review." },
+    ],
   },
   {
     slug: "bia-jupeb",
@@ -333,9 +432,8 @@ export const projects: Project[] = [
     tint: "#c8102e",
     featured: false,
     shots: [
-      { image: biaHome, device: "desktop", alt: "BIA JUPEB home page headline 'Your direct route to 200 Level' beside a classroom photo.", caption: "Home page. Local build." },
-      { image: biaFees, device: "desktop", alt: "Fees page listing registration, science and non-science programme fees and physical tutorial fees.", caption: "Fees, published in full from the academy's official payment advice." },
-      { image: biaHomeMobile, device: "mobile", alt: "The home page on a phone with a photo carousel and an enquiry button.", caption: "On a phone." },
+      { image: biaFees, device: "desktop", alt: "Fees page section with a flexible payment structure card listing three instalments beside registration requirements and an important notice.", caption: "The fees page: the instalment plan and what to bring, from the academy's official documents. Local production build." },
+      { image: biaTimetableMobile, device: "mobile", alt: "Mobile class timetable with semester tabs, day pills and the current day's sessions highlighted under a Today badge.", caption: "The timetable highlights today's classes and the current slot." },
     ],
     overview: [
       "Families comparing JUPEB centres want plain answers: what the programme is, what it costs, when classes hold and how to apply. The site is organised around those questions.",
@@ -359,7 +457,8 @@ export const projects: Project[] = [
       { title: "Fees in full", body: "Registration, programme and tutorial fees for 2026/27 taken from the official payment advice." },
       { title: "Timetables", body: "Weekly class timetables for the first semester and the free online classes before resumption." },
       { title: "Guides for search", body: "Articles answering common questions, such as JUPEB versus IJMB and getting into UNILAG through JUPEB." },
-      { title: "Proof", body: "Success stories, a hall of excellence, the team and a gallery." },
+      { title: "Proof", body: "Success stories, a consent-gated Hall of Excellence, the team and a gallery. Only achievements the academy has approved are published." },
+      { title: "Captioned lesson videos", body: "Direction and lesson videos with WebVTT captions." },
     ],
     challenges: [
       { title: "Not promising what does not exist", problem: "An enquiry form implies someone receives and tracks it.", solution: "Until a backend exists, calls to action go to the admissions phone line and the centre. The data model for tracked enquiries is ready but deliberately not switched on." },
@@ -369,6 +468,16 @@ export const projects: Project[] = [
       done: ["Redesigned site live on the academy's domain", "Fees, timetable, guides, team and success stories", "Redirects from the previous site"],
       next: ["Stored and tracked admission enquiries, once a backend is in place"],
     },
+    facts: [
+      { value: "11", label: "pages, static HTML" },
+      { value: "3", label: "test suites incl. accessibility" },
+      { value: "All", label: "legacy URLs redirected" },
+      { value: "Oct 2026", label: "redesign launched" },
+    ],
+    timeline: [
+      { date: "Jan 2025", title: "Version 1", body: "Static HTML pages and guides for the academy." },
+      { date: "13 Oct 2026", title: "Version 2 launched", body: "An Astro redesign on biajupeb.com.ng, followed within a week by the Hall of Excellence, team, gallery, fees and timetable pages." },
+    ],
   },
   {
     slug: "haqslam",
@@ -381,14 +490,15 @@ export const projects: Project[] = [
     intro:
       "The website of Haqiqat-s-Salam Society of Nigeria (HAQSLAM), an Islamic society in Ijaye-Ojokoro, Lagos. It introduces the society and its founder, lists gatherings and events, calculates daily prayer times for Lagos and puts the society's devotional books online.",
     role: "Design, development, content verification and deployment",
-    stack: ["Next.js", "TypeScript", "Tailwind CSS", "Adhan", "Vercel"],
-    links: { live: { href: "https://haqqs.vercel.app", label: "haqqs.vercel.app" } },
+    stack: ["Next.js", "React", "TypeScript", "Tailwind CSS", "adhan", "Vercel"],
+    links: { live: { href: "https://haqslam.com.ng", label: "haqslam.com.ng" } },
     tint: "#14453a",
     featured: false,
     shots: [
-      { image: haqslamHome, device: "desktop", alt: "HAQSLAM home page with the society's name in Arabic and English and a portrait of the founder.", caption: "Home page. Local build." },
-      { image: haqslamPrayer, device: "desktop", alt: "Prayer times page showing calculated prayer start times for Lagos and a countdown to the next prayer.", caption: "Calculated prayer start times for Lagos with a live countdown." },
-      { image: haqslamLibraryMobile, device: "mobile", alt: "The Islamic library page on a phone with book covers.", caption: "The library on a phone." },
+      { image: haqslamPrayer, device: "desktop", alt: "The prayer-times panel showing calculated start times for the six daily prayers in Lagos, the Gregorian and Hijri dates and a countdown to Asr.", caption: "Calculated prayer start times for Lagos with a live countdown. Local production build." },
+      { image: haqslamLibrary, device: "desktop", alt: "The library reader open on the scanned cover of Kitab al-Adhkar al-Mukhtarat, page 1 of 28, with page controls.", caption: "The scanned-book reader." },
+      { image: haqslamPrayerMobile, device: "mobile", alt: "Prayer times on a phone with the countdown above a two-column grid of the six times.", caption: "Prayer times on a phone." },
+      { image: haqslamLibraryMobile, device: "mobile", alt: "The book reader on a phone with previous and next buttons.", caption: "Reading page by page on a phone." },
     ],
     overview: [
       "The society's previous site was a set of static pages. Version 2 is a Next.js site built around what members and visitors come for: prayer times, gatherings, the founder, the books and how to get in touch.",
@@ -422,6 +532,17 @@ export const projects: Project[] = [
       done: ["Version 2 site live", "Prayer times, library, events, gallery, founder and contact pages", "Redirects from the legacy site"],
       next: ["Confirmed weekly programme times", "Society history and founder biography, once documented"],
     },
+    facts: [
+      { value: "13", label: "routes" },
+      { value: "4", label: "books online, page by page" },
+      { value: "5", label: "static versions before V2" },
+      { value: "All", label: "old .html addresses redirected" },
+    ],
+    timeline: [
+      { date: "Dec 2024 – Jan 2025", title: "Five static versions in three weeks", body: "From image e-books to a prayer countdown, an interactive book, sign-in, an installable app and notifications. One of the first sites I built." },
+      { date: "2025", title: "The static site in use", body: "The society's site for most of the year, hand-built HTML, CSS and JavaScript." },
+      { date: "Oct 2026", title: "Version 2 on haqslam.com.ng", body: "Rebuilt in Next.js with calculated prayer times, the library reader, verified content and redirects from every old address." },
+    ],
   },
   {
     slug: "fara-hotel-suites",
@@ -465,21 +586,86 @@ export const projects: Project[] = [
       done: ["Complete static site with QA notes"],
       note: "Shown here by description only. It has not been adopted by the hotel.",
     },
+    facts: [
+      { value: "11", label: "static pages" },
+      { value: "0", label: "axe violations in its QA run" },
+      { value: "noindex", label: "on every page" },
+      { value: "Private", label: "deployment" },
+    ],
   },
 ];
 
-/** Smaller builds that are worth listing but do not need a case study. */
-export const smallerWork = [
+/**
+ * Smaller builds that are worth listing but do not need a case study: static
+ * client websites on their own domains. Each was checked against its
+ * repository and its Vercel production deployment (domain assigned, READY).
+ */
+export const smallerWork: {
+  name: string;
+  sector: string;
+  year: string;
+  description: string;
+  stack: string[];
+  live?: { href: string; label: string };
+}[] = [
+  {
+    name: "God's Voice Family Health",
+    sector: "Healthcare",
+    year: "2025",
+    description: "Website for a fertility and family-health clinic: services, success stories, FAQs and appointment details. Built in two versions over three months; my first client site on its own domain.",
+    stack: ["HTML", "CSS", "JavaScript"],
+    live: { href: "https://gvfh.com.ng", label: "gvfh.com.ng" },
+  },
+  {
+    name: "Akmazoo",
+    sector: "Real estate",
+    year: "2026",
+    description: "Marketing site for a real-estate developer: nine pages, project galleries with brochures and video, and a hero slider. WhatsApp links connect buyers to the sales team.",
+    stack: ["HTML", "CSS", "JavaScript"],
+    live: { href: "https://www.akmazoo.com", label: "akmazoo.com" },
+  },
+  {
+    name: "Mubocare Surrogacy",
+    sector: "Healthcare",
+    year: "2026",
+    description: "Website for a fertility and surrogacy agency: IVF, IUI and surrogacy services, testimonials and an FAQ.",
+    stack: ["HTML", "CSS", "AOS"],
+    live: { href: "https://www.mubocaresurrogacyltd.com.ng", label: "mubocaresurrogacyltd.com.ng" },
+  },
   {
     name: "JUVIC Global Concept",
-    description: "Front end for an eyewear store: catalogue, product pages and a cart kept in the browser. Checkout was not built.",
+    sector: "Retail",
+    year: "2026",
+    description: "Homepage for an eyewear store: product grids rendered from data and a cart kept in the browser. The other pages were not built.",
     stack: ["HTML", "CSS", "JavaScript"],
   },
-] as const;
+];
 
 export type ProjectCardData = Pick<Project, "slug" | "name" | "summary" | "status" | "categories" | "stack" | "kind" | "tint" | "client"> & {
   cover?: Shot;
 };
+
+export type ShowcaseData = Pick<Project, "slug" | "name" | "summary" | "status" | "categories" | "stack" | "kind" | "tint" | "facts"> & {
+  cover?: Shot;
+  phone?: Shot;
+};
+
+/** The subset of a project the featured showcase needs. */
+export function toShowcase(p: Project): ShowcaseData {
+  return {
+    slug: p.slug,
+    name: p.name,
+    summary: p.summary,
+    status: p.status,
+    categories: p.categories,
+    stack: p.stack,
+    kind: p.kind,
+    tint: p.tint,
+    facts: p.facts,
+    cover: p.shots.find((s) => s.device === "desktop"),
+    phone: p.shots.find((s) => s.device === "mobile"),
+  };
+}
 
 /** The subset of a project that cards need, so client components don't receive whole case studies. */
 export function toCard(p: Project): ProjectCardData {
@@ -497,10 +683,15 @@ export function toCard(p: Project): ProjectCardData {
   };
 }
 
-export const categories: Category[] = ["Web application", "Website", "Education", "Community", "Commerce", "Concept"];
+export const categories: Category[] = ["Web application", "Website", "Education", "Sports", "Community", "Commerce", "Concept"];
 
 export function getProject(slug: string) {
   return projects.find((p) => p.slug === slug);
+}
+
+export function getPreviousProject(slug: string) {
+  const index = projects.findIndex((p) => p.slug === slug);
+  return projects[(index - 1 + projects.length) % projects.length];
 }
 
 export function getAdjacentProject(slug: string) {

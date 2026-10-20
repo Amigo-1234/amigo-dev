@@ -7,6 +7,8 @@ import { FeaturedProject, ProjectCard } from "@/components/project-cards";
 import { SystemExplorer } from "@/components/system-explorer";
 import { TerminalLazy } from "@/components/terminal-lazy";
 import { ButtonLink, JsonLd, SectionHeading } from "@/components/ui";
+import { building, buildingAsOf } from "@/content/building";
+import { experiments } from "@/content/lab";
 import { projects, toCard } from "@/content/projects";
 import { aiWorkflow, exploring, journey, learning, services, skills } from "@/content/profile";
 import { site } from "@/content/site";
@@ -71,6 +73,7 @@ export default function HomePage() {
         </div>
       </section>
 
+      <CurrentlyBuilding />
       <Interlude />
       <Capabilities />
       <Journey />
@@ -214,13 +217,57 @@ function Interlude() {
   );
 }
 
+function CurrentlyBuilding() {
+  return (
+    <section aria-labelledby="building-heading" className="defer-render shell pt-28 md:pt-40">
+      <SectionHeading
+        index="03"
+        label="Currently building"
+        id="building-heading"
+        title={
+          <>
+            On the bench <em className="text-accent">right now.</em>
+          </>
+        }
+        intro={`Three projects with real commits in the past fortnight, as of ${buildingAsOf}. What changed, and what comes next.`}
+      />
+      <ol className="mt-14 grid gap-px overflow-hidden rounded-2xl border border-line bg-line md:mt-20 lg:grid-cols-3">
+        {building.map((item, i) => (
+          <li key={item.slug} className="reveal group relative flex flex-col bg-ink p-6 md:p-8" style={{ "--i": i } as React.CSSProperties}>
+            <div className="flex items-center justify-between gap-3">
+              <p className="flex items-center gap-2.5 font-mono text-[0.6875rem] tracking-wide text-fg-muted">
+                <span aria-hidden="true" className="relative flex size-2">
+                  <span className="absolute inline-flex size-full animate-ping rounded-full bg-ok opacity-50 motion-reduce:hidden" />
+                  <span className="relative inline-flex size-2 rounded-full bg-ok" />
+                </span>
+                {item.evidence}
+              </p>
+              <span className="font-mono text-[0.6875rem] text-fg-subtle">Last commit {item.lastCommit}</span>
+            </div>
+            <h3 className="mt-6 font-serif text-4xl leading-none">
+              <Link href={`/projects/${item.slug}`} className="after:absolute after:inset-0 after:content-['']">
+                <span className="link-underline">{item.name}</span>
+              </Link>
+            </h3>
+            <p className="mt-4 leading-relaxed text-fg-muted">{item.now}</p>
+            <p className="mt-auto border-t border-line pt-4 text-sm text-fg">
+              <span className="label mr-2 text-accent">Next</span>
+              {item.next}
+            </p>
+          </li>
+        ))}
+      </ol>
+    </section>
+  );
+}
+
 function Console() {
   return (
     <section aria-labelledby="console-heading" className="defer-render shell pt-28 md:pt-40">
       <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-12">
         <div className="min-w-0 lg:col-span-5">
           <p className="label flex items-center gap-3">
-            <span className="font-mono text-xs text-accent">05</span>
+            <span className="font-mono text-xs text-accent">06</span>
             <span aria-hidden="true" className="h-px w-8 bg-line-strong" />
             Console
           </p>
@@ -232,6 +279,29 @@ function Console() {
             few things in there I didn&apos;t list.
           </p>
           <ArcadeCard />
+          <div className="mt-4 rounded-2xl border border-line p-4">
+            <p className="flex items-center justify-between gap-3 text-sm">
+              <span className="label">More in the Lab</span>
+              <Link href="/lab" className="link-underline text-fg">
+                Open the Lab →
+              </Link>
+            </p>
+            <ul className="mt-3 space-y-1.5">
+              {experiments
+                .filter((e) => e.origin)
+                .map((e) => (
+                  <li key={e.slug}>
+                    <Link href={e.href} className="group flex items-baseline justify-between gap-3 text-sm text-fg-muted hover:text-fg">
+                      <span>
+                        <span className="mr-2 font-mono text-[0.6875rem] text-fg-subtle">{e.code}</span>
+                        {e.title}
+                      </span>
+                      <span className="hidden shrink-0 font-mono text-[0.6875rem] text-fg-subtle sm:inline">{e.origin!.project}</span>
+                    </Link>
+                  </li>
+                ))}
+            </ul>
+          </div>
         </div>
         <div className="reveal relative isolate min-w-0 lg:col-span-7">
           <div aria-hidden="true" className="absolute bottom-4 left-0 -z-10 size-56 sm:-left-8 rounded-full bg-accent opacity-20 blur-3xl" />
@@ -253,7 +323,7 @@ function Capabilities() {
   return (
     <section aria-labelledby="skills-heading" className="defer-render shell pt-28 md:pt-40">
       <SectionHeading
-        index="03"
+        index="04"
         label="Capabilities"
         id="skills-heading"
         title={
@@ -304,7 +374,7 @@ function Journey() {
     <section aria-labelledby="journey-heading" className="defer-render relative mt-28 border-y border-line bg-ink-sunken py-24 md:mt-40 md:py-32">
       <div className="shell">
         <SectionHeading
-          index="04"
+          index="05"
           label="Trajectory"
           id="journey-heading"
           title={
@@ -353,7 +423,7 @@ function WorkingWithAI() {
   return (
     <section aria-labelledby="ai-heading" className="defer-render shell pt-28 md:pt-40">
       <SectionHeading
-        index="06"
+        index="07"
         label="Working with AI"
         id="ai-heading"
         title={
@@ -394,7 +464,7 @@ function Services() {
   return (
     <section id="services" aria-labelledby="services-heading" className="defer-render shell scroll-mt-24 pt-28 md:pt-40">
       <SectionHeading
-        index="07"
+        index="08"
         label="Services"
         id="services-heading"
         title={

@@ -83,7 +83,7 @@ export function MatchClock() {
           {running && (d.paused ? <Btn primary onClick={() => act(resume)}>Resume</Btn> : <Btn onClick={() => act(pause)}>Pause</Btn>)}
           {running && !clock.noAddedTime && <Btn onClick={() => act((c) => setStoppage(c, c.stoppageSeconds + 60))}>Announce +1 min</Btn>}
           {running && p.suspension && (
-            <Btn onClick={() => setCards((cs) => [...cs, { id: nextId.current++, at: activeSeconds(clock, simNow(sim, wallClock())) }])}>Red card</Btn>
+            <Btn onClick={() => setCards((cs) => [...cs, { id: nextId.current++, at: active }])}>Red card</Btn>
           )}
           {running && <Btn onClick={() => act(endPeriod)}>End half</Btn>}
           <Btn onClick={() => choosePreset(preset)} className="ml-auto">Reset</Btn>
@@ -99,7 +99,7 @@ export function MatchClock() {
             ) : (
               <ul className="mt-3 space-y-1.5">
                 {cards.map((card) => {
-                  const left = p.suspension! - (active - card.at);
+                  const left = Math.min(p.suspension!, p.suspension! - (active - card.at));
                   return (
                     <li key={card.id} className="flex items-center justify-between rounded-lg bg-surface px-3 py-2 text-sm">
                       <span>Red card #{card.id}</span>

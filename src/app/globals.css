@@ -539,6 +539,11 @@ html:not(.js) .js-only {
   display: none;
 }
 
+/* Only one showcase panel shows when the tabs work; without JavaScript, all do. */
+html.js .showcase-panel[data-inactive] {
+  display: none;
+}
+
 @keyframes hero-fallback {
   to {
     opacity: 1;

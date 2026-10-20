@@ -94,7 +94,6 @@ export function PortraitThumb({ className }: { className?: string }) {
           placeholder="blur"
           sizes="88px"
           loading="eager"
-          fetchPriority="high"
           className="object-cover"
           style={{ objectPosition: portrait.focus }}
         />
