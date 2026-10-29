@@ -16,12 +16,15 @@ export function pageMetadata({
   description,
   openGraph,
   ownImage = false,
+  noindex = false,
 }: {
   path: string;
   title: string;
   description: string;
   openGraph?: { type: "article"; publishedTime?: string };
   ownImage?: boolean;
+  /** noindex, follow: readable and linked, but not shown in search results. */
+  noindex?: boolean;
 }): Metadata {
   const fullTitle = `${title} — ${site.name} · ${site.brand}`;
   const image = { width: 1200, height: 630, alt: `${site.name} — ${site.role}` };
@@ -29,6 +32,7 @@ export function pageMetadata({
     title,
     description,
     alternates: { canonical: path },
+    ...(noindex ? { robots: { index: false, follow: true } } : {}),
     openGraph: {
       type: "website",
       locale: site.locale,

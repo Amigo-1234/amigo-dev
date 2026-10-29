@@ -14,7 +14,8 @@ import { posts } from "@/content/writing";
 export default function sitemap(): MetadataRoute.Sitemap {
   const lab = experiments.map((e) => e.href).filter((href) => href !== "/play") as UpdatedPath[];
   const pages: UpdatedPath[] = ["/", "/about", "/projects", "/contact", "/lab", "/play", ...lab];
-  const caseStudies = projects.map((p) => ({
+  // Pages marked noindex stay on the site but are left out of the sitemap.
+  const caseStudies = projects.filter((p) => !p.noindex).map((p) => ({
     url: `${site.url}/projects/${p.slug}`,
     lastModified: contentUpdated.caseStudies,
   }));

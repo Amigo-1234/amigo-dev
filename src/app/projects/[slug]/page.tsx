@@ -26,6 +26,7 @@ export async function generateMetadata({ params }: PageProps<"/projects/[slug]">
     description: project.summary,
     openGraph: { type: "article" },
     ownImage: true,
+    noindex: Boolean(project.noindex),
   });
 }
 

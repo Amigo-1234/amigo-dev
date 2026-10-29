@@ -77,6 +77,11 @@ export type Project = {
   state: { done: string[]; next?: string[]; note?: string };
   /** Verified, countable facts from the repository (no performance or business claims). */
   facts: { value: string; label: string }[];
+  /**
+   * Keep the page out of search results (noindex, follow) and the sitemap,
+   * while it stays linked and readable on the site. The reason is for editors.
+   */
+  noindex?: { reason: string };
   diagram?: Diagram;
   /** How the project got here, oldest first. */
   timeline?: { date: string; title: string; body: string }[];
@@ -558,6 +563,9 @@ export const projects: Project[] = [
     links: {},
     tint: "#1d2b45",
     featured: false,
+    noindex: {
+      reason: "An unofficial concept named after a real hotel: it should not appear in searches for that business.",
+    },
     shots: [],
     overview: [
       "A static, fast website for a hotel: rooms, the lounge, services, a curated gallery, location and a reservation enquiry.",
