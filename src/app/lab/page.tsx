@@ -9,7 +9,7 @@ export const metadata: Metadata = pageMetadata({
   path: "/lab",
   title: "Lab",
   description:
-    "AMIGODEV Lab: working experiments lifted out of real projects — calculated prayer times, a bilingual result sheet, a match clock that can't drift — and the DEBUG.EXE arcade game.",
+    "AMIGODEV Lab: working pieces from real projects — calculated prayer times, a bilingual result sheet, a drift-free match clock — and the DEBUG.EXE game.",
 });
 
 const rules: [string, string][] = [

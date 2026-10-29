@@ -37,7 +37,7 @@ export default function ContactPage() {
             <div className="flex items-baseline justify-between gap-6 border-b border-line py-4">
               <dt className="label">GitHub</dt>
               <dd>
-                <a href={site.social.github} target="_blank" rel="noopener noreferrer" className="link-underline text-fg">
+                <a href={site.social.github} target="_blank" rel="me noopener noreferrer" className="link-underline text-fg">
                   @Amigo-1234 ↗<span className="sr-only"> (opens in a new tab)</span>
                 </a>
               </dd>
@@ -45,8 +45,16 @@ export default function ContactPage() {
             <div className="flex items-baseline justify-between gap-6 border-b border-line py-4">
               <dt className="label">LinkedIn</dt>
               <dd>
-                <a href={site.social.linkedin} target="_blank" rel="noopener noreferrer" className="link-underline text-fg">
+                <a href={site.social.linkedin} target="_blank" rel="me noopener noreferrer" className="link-underline text-fg">
                   Muftau Idris ↗<span className="sr-only"> (opens in a new tab)</span>
+                </a>
+              </dd>
+            </div>
+            <div className="flex items-baseline justify-between gap-6 border-b border-line py-4">
+              <dt className="label">X</dt>
+              <dd>
+                <a href={site.social.x} target="_blank" rel="me noopener noreferrer" className="link-underline text-fg">
+                  {site.xHandle} ↗<span className="sr-only"> (opens in a new tab)</span>
                 </a>
               </dd>
             </div>

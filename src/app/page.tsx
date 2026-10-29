@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Fragment } from "react";
 
 import { ArcadeCard } from "@/components/arcade-card";
 import { HeroMotion } from "@/components/hero-motion";
@@ -12,6 +13,7 @@ import { experiments } from "@/content/lab";
 import { projects, toCard } from "@/content/projects";
 import { aiWorkflow, exploring, journey, learning, services, skills } from "@/content/profile";
 import { site } from "@/content/site";
+import { homePageGraph } from "@/lib/schema";
 
 export default function HomePage() {
   const featured = projects.filter((p) => p.featured);
@@ -19,22 +21,7 @@ export default function HomePage() {
 
   return (
     <>
-      <JsonLd
-        data={{
-          "@context": "https://schema.org",
-          "@type": "Person",
-          name: site.name,
-          alternateName: site.brand,
-          url: site.url,
-          jobTitle: "Full-Stack Developer",
-          description: site.description,
-          email: `mailto:${site.email}`,
-          sameAs: [site.social.github, site.social.linkedin],
-          ...(site.portrait ? { image: `${site.url}${site.portrait.image.src}` } : {}),
-          affiliation: { "@type": "CollegeOrUniversity", name: "Ekiti State University" },
-          knowsAbout: ["Web development", "Next.js", "TypeScript", "PostgreSQL", "Supabase", "Firebase", "Vercel"],
-        }}
-      />
+      <JsonLd data={homePageGraph()} />
       <Hero />
       <SystemSection />
 
@@ -113,12 +100,15 @@ function Hero() {
 
           <h1 id="hero-title" className="mt-5 font-serif text-display sm:mt-7">
             {lines.map((line, i) => (
-              // Each line is masked so it can rise from below its own baseline.
-              <span key={i} className="-mb-[0.12em] block overflow-hidden pb-[0.12em]">
-                <span data-hero data-hero-line className="block origin-bottom-left">
-                  {line}
-                </span>
-              </span>
+              // Each line is masked so it can rise from below its own baseline. The " "
+              // after it keeps words apart in the raw HTML text; it has no visual effect.
+              <Fragment key={i}>
+                <span className="-mb-[0.12em] block overflow-hidden pb-[0.12em]">
+                  <span data-hero data-hero-line className="block origin-bottom-left">
+                    {line}
+                  </span>
+                </span>{" "}
+              </Fragment>
             ))}
           </h1>
 

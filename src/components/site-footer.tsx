@@ -47,16 +47,19 @@ export function SiteFooter() {
           <div>
             <p className="label">Elsewhere</p>
             <ul className="mt-4 space-y-2.5">
-              <li>
-                <a href={site.social.github} target="_blank" rel="noopener noreferrer" className="link-underline text-fg-muted hover:text-fg">
-                  GitHub<span className="sr-only"> (opens in a new tab)</span>
-                </a>
-              </li>
-              <li>
-                <a href={site.social.linkedin} target="_blank" rel="noopener noreferrer" className="link-underline text-fg-muted hover:text-fg">
-                  LinkedIn<span className="sr-only"> (opens in a new tab)</span>
-                </a>
-              </li>
+              {[
+                { href: site.social.github, label: "GitHub" },
+                { href: site.social.linkedin, label: "LinkedIn" },
+                { href: site.social.x, label: "X" },
+              ].map((profile) => (
+                <li key={profile.label}>
+                  {/* rel="me": these are the owner's own profiles. */}
+                  <a href={profile.href} target="_blank" rel="me noopener noreferrer" className="link-underline text-fg-muted hover:text-fg">
+                    {profile.label}
+                    <span className="sr-only"> (opens in a new tab)</span>
+                  </a>
+                </li>
+              ))}
               <li>
                 <a href={`mailto:${site.email}`} className="link-underline text-fg-muted hover:text-fg">
                   Email

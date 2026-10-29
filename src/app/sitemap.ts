@@ -1,24 +1,30 @@
 import type { MetadataRoute } from "next";
 
+import { experiments } from "@/content/lab";
 import { projects } from "@/content/projects";
 import { site } from "@/content/site";
-import { experiments } from "@/content/lab";
+import { contentUpdated, type UpdatedPath } from "@/content/updated";
 import { posts } from "@/content/writing";
 
+/*
+ * Every indexable page, with the date its content last changed (see
+ * src/content/updated.ts). changefreq and priority are left out: Google
+ * ignores them, and lastmod is the signal it does use when it is accurate.
+ */
 export default function sitemap(): MetadataRoute.Sitemap {
-  const lab = experiments.map((e) => e.href).filter((href) => href !== "/play");
-  const pages = ["", "/projects", "/about", "/contact", "/lab", "/play", ...lab].map((path) => ({
-    url: `${site.url}${path}`,
-    changeFrequency: "monthly" as const,
-    priority: path === "" ? 1 : 0.8,
-  }));
+  const lab = experiments.map((e) => e.href).filter((href) => href !== "/play") as UpdatedPath[];
+  const pages: UpdatedPath[] = ["/", "/about", "/projects", "/contact", "/lab", "/play", ...lab];
   const caseStudies = projects.map((p) => ({
     url: `${site.url}/projects/${p.slug}`,
-    changeFrequency: "monthly" as const,
-    priority: 0.7,
+    lastModified: contentUpdated.caseStudies,
   }));
   const writing = posts.length
-    ? [{ url: `${site.url}/writing`, changeFrequency: "weekly" as const, priority: 0.6 }, ...posts.map((p) => ({ url: `${site.url}/writing/${p.slug}`, lastModified: p.date, priority: 0.6 }))]
+    ? [{ url: `${site.url}/writing` }, ...posts.map((p) => ({ url: `${site.url}/writing/${p.slug}`, lastModified: p.date }))]
     : [];
-  return [...pages, ...caseStudies, ...writing];
+  return [
+    // The home URL is written exactly as its canonical tag (no trailing slash).
+    ...pages.map((path) => ({ url: path === "/" ? site.url : `${site.url}${path}`, lastModified: contentUpdated[path] })),
+    ...caseStudies,
+    ...writing,
+  ];
 }

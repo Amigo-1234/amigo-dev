@@ -46,6 +46,7 @@ const actions: Item[] = [
   { id: "copy-email", group: "Actions", label: "Copy email address", hint: site.email, action: "copy-email" },
   { id: "github", group: "Actions", label: "Open GitHub", hint: "github.com/Amigo-1234", external: site.social.github },
   { id: "linkedin", group: "Actions", label: "Open LinkedIn", external: site.social.linkedin },
+  { id: "x", group: "Actions", label: "Open X", hint: site.xHandle, external: site.social.x },
 ];
 
 export function CommandMenu({ projects }: { projects: ProjectEntry[] }) {

@@ -1,17 +1,20 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 
 import { LocalTime } from "@/components/local-time";
 import { Portrait } from "@/components/portrait";
 import { ButtonLink, JsonLd, SectionHeading } from "@/components/ui";
 import { aiWorkflow, interests, journey, languages, story } from "@/content/profile";
+import { projects } from "@/content/projects";
 import { site } from "@/content/site";
 import { pageMetadata } from "@/lib/metadata";
+import { profilePageGraph } from "@/lib/schema";
 
 export const metadata: Metadata = pageMetadata({
   path: "/about",
   title: "About",
   description:
-    "Muftau Idris is a Nigerian full-stack developer and Mechanical Engineering student at Ekiti State University, working toward DevOps engineering.",
+    "Muftau Idris (AMIGODEV) is a Nigerian full-stack developer and Mechanical Engineering student at Ekiti State University, working toward DevOps engineering.",
 });
 
 const facts: [string, string][] = [
@@ -78,24 +81,10 @@ function InterestMark({ mark }: { mark: string }) {
 }
 
 export default function AboutPage() {
+  const featured = projects.filter((p) => p.featured);
   return (
     <>
-      <JsonLd
-        data={{
-          "@context": "https://schema.org",
-          "@type": "ProfilePage",
-          mainEntity: {
-            "@type": "Person",
-            name: site.name,
-            alternateName: site.brand,
-            url: site.url,
-            nationality: "Nigerian",
-            affiliation: { "@type": "CollegeOrUniversity", name: "Ekiti State University" },
-            sameAs: [site.social.github, site.social.linkedin],
-            ...(site.portrait ? { image: `${site.url}${site.portrait.image.src}` } : {}),
-          },
-        }}
-      />
+      <JsonLd data={profilePageGraph()} />
 
       <header className="relative isolate overflow-hidden">
         <div aria-hidden="true" className="grid-paper fade-edges absolute inset-0 -z-10" />
@@ -103,10 +92,11 @@ export default function AboutPage() {
           <div className="lg:col-span-7">
             <p className="label">About · Sheet 02</p>
             <h1 className="mt-6 font-serif text-display">
-              <span className="rise block">An engineering</span>
+              {/* The {" "} keeps words apart in the raw HTML text crawlers read; it doesn't change the layout. */}
+              <span className="rise block">An engineering</span>{" "}
               <span className="rise block" style={{ "--i": 1 } as React.CSSProperties}>
                 student who
-              </span>
+              </span>{" "}
               <span className="rise block" style={{ "--i": 2 } as React.CSSProperties}>
                 ships <em className="text-accent">software.</em>
               </span>
@@ -261,8 +251,45 @@ export default function AboutPage() {
         </ul>
       </section>
 
-      <section className="shell mt-28 md:mt-36">
-        <div className="flex flex-wrap items-center gap-3">
+      <section aria-label="Work and profiles" className="shell mt-28 md:mt-36">
+        <div className="grid gap-12 border-t border-line pt-10 md:grid-cols-12 md:gap-10">
+          <div className="md:col-span-7">
+            <h2 className="label">Selected work</h2>
+            <ul className="mt-5 border-t border-line">
+              {featured.map((p) => (
+                <li key={p.slug} className="border-b border-line">
+                  <Link href={`/projects/${p.slug}`} className="group flex items-baseline justify-between gap-6 py-4">
+                    <span>
+                      <span className="block font-serif text-2xl leading-tight transition-colors group-hover:text-accent">{p.name}</span>
+                      <span className="mt-1 block text-sm text-fg-muted">{p.summary}</span>
+                    </span>
+                    <span aria-hidden="true" className="text-fg-subtle transition-transform group-hover:translate-x-1">
+                      →
+                    </span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="md:col-span-5">
+            <h2 className="label">Find me elsewhere</h2>
+            <ul className="mt-5 border-t border-line text-sm">
+              {[
+                { label: "GitHub", handle: "@Amigo-1234", href: site.social.github },
+                { label: "LinkedIn", handle: site.name, href: site.social.linkedin },
+                { label: "X", handle: site.xHandle, href: site.social.x },
+              ].map((profile) => (
+                <li key={profile.label} className="flex items-baseline justify-between gap-6 border-b border-line py-4">
+                  <span className="label">{profile.label}</span>
+                  <a href={profile.href} target="_blank" rel="me noopener noreferrer" className="link-underline text-fg">
+                    {profile.handle} ↗<span className="sr-only"> (opens in a new tab)</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+        <div className="mt-12 flex flex-wrap items-center gap-3">
           <ButtonLink href="/projects">See the work</ButtonLink>
           <ButtonLink href="/contact" variant="outline">
             Get in touch

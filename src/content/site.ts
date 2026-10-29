@@ -15,16 +15,20 @@ export const site = {
   direction: "DevOps Engineering",
   /** Primary domain. Canonical, sitemap, robots, Open Graph and JSON-LD URLs all derive from it. */
   url: "https://www.amigodev.com.ng",
+  /** Used as the home page's meta and social description, so kept under 160 characters. */
   description:
-    "Muftau Idris (AMIGODEV) is a full-stack developer and Mechanical Engineering student at Ekiti State University who designs, builds, deploys and maintains web applications with Next.js, TypeScript and PostgreSQL.",
+    "Muftau Idris (AMIGODEV) is a full-stack developer and Mechanical Engineering student at Ekiti State University, building web apps with Next.js and PostgreSQL.",
   locale: "en_NG",
   location: "Nigeria",
   timeZone: "Africa/Lagos",
   email: "Olamidesamson841@gmail.com",
+  /** The owner's own profiles, confirmed by the owner. Also used as schema.org sameAs. */
   social: {
     github: "https://github.com/Amigo-1234",
-    linkedin: "https://www.linkedin.com/in/muftau-idris-3221603a1",
+    linkedin: "https://www.linkedin.com/in/muftau-idris-3221603a1/",
+    x: "https://x.com/amigooone1",
   },
+  xHandle: "@amigooone1",
   /** Path to a verified CV in /public. The CV button only appears when this is set. */
   resume: null as string | null,
   /**

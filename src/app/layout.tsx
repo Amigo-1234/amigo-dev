@@ -8,8 +8,10 @@ import { MotionLayer } from "@/components/motion-layer";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { ThemeScript } from "@/components/theme";
+import { JsonLd } from "@/components/ui";
 import { projects } from "@/content/projects";
 import { site } from "@/content/site";
+import { siteGraph } from "@/lib/schema";
 
 import { GeistMono, GeistSans, instrumentSerif } from "./fonts";
 import "./globals.css";
@@ -17,8 +19,8 @@ import "./globals.css";
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
-    default: `${site.name} — ${site.role} | ${site.brand}`,
-    template: `%s — ${site.name}`,
+    default: `${site.name} (${site.brand}) — Full-Stack Developer`,
+    template: `%s — ${site.name} · ${site.brand}`,
   },
   description: site.description,
   applicationName: site.brand,
@@ -30,12 +32,13 @@ export const metadata: Metadata = {
     locale: site.locale,
     url: "/",
     siteName: `${site.name} · ${site.brand}`,
-    title: `${site.name} — ${site.role}`,
+    title: `${site.name} (${site.brand}) — Full-Stack Developer`,
     description: site.description,
   },
   twitter: {
     card: "summary_large_image",
-    title: `${site.name} — ${site.role}`,
+    creator: site.xHandle,
+    title: `${site.name} (${site.brand}) — Full-Stack Developer`,
     description: site.description,
   },
   robots: { index: true, follow: true },
@@ -64,6 +67,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <DeferRenderScript />
       </head>
       <body className="min-h-dvh">
+        {/* The site-wide WebSite and Person entities; pages refer to them by @id. */}
+        <JsonLd data={siteGraph()} />
         <a href="#main" className="skip-link">
           Skip to content
         </a>

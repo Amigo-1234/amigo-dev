@@ -10,7 +10,7 @@ export const metadata: Metadata = pageMetadata({
   path: "/projects",
   title: "Projects",
   description:
-    "Case studies from Muftau Idris: a social network with encrypted messaging, a live campus sports platform, a food ordering and payments system, a bilingual school results platform and websites for organisations in Nigeria.",
+    "Case studies by Muftau Idris (AMIGODEV): a social network, a live campus sports platform, a food ordering system and a bilingual school results platform.",
 });
 
 export default function ProjectsPage() {

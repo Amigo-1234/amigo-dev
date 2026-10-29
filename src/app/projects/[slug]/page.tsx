@@ -6,7 +6,9 @@ import { ArchitectureDiagram } from "@/components/architecture-diagram";
 import { JsonLd, ShotFrame, StatusPill, Tag } from "@/components/ui";
 import { getAdjacentProject, getPreviousProject, getProject, projects } from "@/content/projects";
 import { site } from "@/content/site";
+import { contentUpdated } from "@/content/updated";
 import { pageMetadata } from "@/lib/metadata";
+import { caseStudyGraph } from "@/lib/schema";
 
 export const dynamicParams = false;
 
@@ -41,6 +43,10 @@ function Section({ n, title, children, id }: { n: number; title: string; childre
   );
 }
 
+const reviewed = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" }).format(
+  new Date(`${contentUpdated.caseStudies}T00:00:00Z`),
+);
+
 export default async function ProjectPage({ params }: PageProps<"/projects/[slug]">) {
   const { slug } = await params;
   const project = getProject(slug);
@@ -67,18 +73,7 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
 
   return (
     <article style={{ "--tint": project.tint } as React.CSSProperties}>
-      <JsonLd
-        data={{
-          "@context": "https://schema.org",
-          "@type": "CreativeWork",
-          name: project.name,
-          description: project.summary,
-          url: `${site.url}/projects/${project.slug}`,
-          author: { "@type": "Person", name: site.name, url: site.url },
-          keywords: project.stack.join(", "),
-          ...(project.links.live ? { sameAs: project.links.live.href } : {}),
-        }}
-      />
+      <JsonLd data={caseStudyGraph(project)} />
 
       <header className="relative isolate overflow-hidden">
         <div aria-hidden="true" className="grid-paper fade-edges absolute inset-0 -z-10" />
@@ -109,6 +104,14 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
           <h1 className="rise mt-6 font-serif text-display">{project.name}</h1>
           <p className="rise mt-8 max-w-3xl text-xl leading-relaxed text-fg-muted md:text-2xl" style={{ "--i": 1 } as React.CSSProperties}>
             {project.intro}
+          </p>
+          <p className="rise mt-6 text-sm text-fg-muted" style={{ "--i": 1 } as React.CSSProperties}>
+            Case study by{" "}
+            <Link href="/about" rel="author" className="link-underline text-fg">
+              {site.name}
+            </Link>{" "}
+            ({site.brand}) · Reviewed against the project&rsquo;s repository on{" "}
+            <time dateTime={contentUpdated.caseStudies}>{reviewed}</time>
           </p>
 
           <dl className="rise mt-12 grid border border-line text-sm sm:grid-cols-2 lg:grid-cols-4" style={{ "--i": 2 } as React.CSSProperties}>
@@ -350,6 +353,12 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
         <p className="mt-6 text-center">
           <Link href="/projects" className="link-underline text-sm text-fg">
             All projects
+          </Link>
+          <span aria-hidden="true" className="mx-3 text-fg-subtle">
+            ·
+          </span>
+          <Link href="/contact" className="link-underline text-sm text-fg">
+            Discuss a similar project
           </Link>
         </p>
       </nav>

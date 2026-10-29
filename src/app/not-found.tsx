@@ -3,9 +3,9 @@ import type { Metadata } from "next";
 import { SearchButton } from "@/components/search-button";
 import { ButtonLink } from "@/components/ui";
 
+// Next.js marks not-found responses noindex itself; a second robots tag isn't needed.
 export const metadata: Metadata = {
   title: "Page not found",
-  robots: { index: false },
 };
 
 export default function NotFound() {

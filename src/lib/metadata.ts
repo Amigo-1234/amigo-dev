@@ -23,7 +23,7 @@ export function pageMetadata({
   openGraph?: { type: "article"; publishedTime?: string };
   ownImage?: boolean;
 }): Metadata {
-  const fullTitle = `${title} — ${site.name}`;
+  const fullTitle = `${title} — ${site.name} · ${site.brand}`;
   const image = { width: 1200, height: 630, alt: `${site.name} — ${site.role}` };
   return {
     title,
@@ -41,6 +41,7 @@ export function pageMetadata({
     },
     twitter: {
       card: "summary_large_image",
+      creator: site.xHandle,
       title: fullTitle,
       description,
       ...(ownImage ? {} : { images: [{ url: "/twitter-image", ...image }] }),
