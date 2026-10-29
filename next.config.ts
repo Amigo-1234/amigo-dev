@@ -17,8 +17,18 @@ const nextConfig: NextConfig = {
     return [{ source: "/:path*", headers: securityHeaders }];
   },
   async redirects() {
-    // The previous single-page site lived at /index.html with #anchors.
-    return [{ source: "/index.html", destination: "/", permanent: true }];
+    return [
+      // The project's public vercel.app domain sends visitors and crawlers to
+      // the primary domain, keeping the path and query string (308).
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: "amigo-dev\\.vercel\\.app" }],
+        destination: "https://www.amigodev.com.ng/:path*",
+        permanent: true,
+      },
+      // The previous single-page site lived at /index.html with #anchors.
+      { source: "/index.html", destination: "/", permanent: true },
+    ];
   },
 };
 
