@@ -3,9 +3,11 @@ import type { Metadata } from "next";
 import { SearchButton } from "@/components/search-button";
 import { ButtonLink } from "@/components/ui";
 
-// Next.js marks not-found responses noindex itself; a second robots tag isn't needed.
+// Next.js adds its own noindex to not-found responses, but the static 404 page
+// also inherits the layout's "index, follow"; this keeps every tag on it noindex.
 export const metadata: Metadata = {
   title: "Page not found",
+  robots: { index: false, follow: true },
 };
 
 export default function NotFound() {
