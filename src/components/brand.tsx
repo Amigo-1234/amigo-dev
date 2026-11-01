@@ -29,7 +29,7 @@ export function Wordmark({ compact = false }: { compact?: boolean }) {
           AMIGO<span className="text-accent">DEV</span>
         </span>
         {!compact && (
-          <span className="mt-1 hidden font-mono text-[0.625rem] tracking-[0.14em] text-fg-subtle uppercase xs:block">{site.name}</span>
+          <span className="mt-1 font-mono text-[0.6875rem] tracking-[0.1em] text-fg-subtle uppercase">{site.name}</span>
         )}
       </span>
     </span>

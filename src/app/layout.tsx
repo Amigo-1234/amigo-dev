@@ -3,7 +3,6 @@ import type { Metadata, Viewport } from "next";
 import { CommandMenu } from "@/components/command-menu";
 import { DeferRenderScript } from "@/components/defer-render-script";
 import { EasterEggs } from "@/components/easter-eggs";
-import { MenuScript } from "@/components/menu-script";
 import { MotionLayer } from "@/components/motion-layer";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
@@ -63,7 +62,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     >
       <head>
         <ThemeScript />
-        <MenuScript />
         <DeferRenderScript />
       </head>
       <body className="min-h-dvh">

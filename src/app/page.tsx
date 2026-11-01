@@ -3,11 +3,12 @@ import { Fragment } from "react";
 
 import { ArcadeCard } from "@/components/arcade-card";
 import { HeroMotion } from "@/components/hero-motion";
-import { Portrait, PortraitThumb } from "@/components/portrait";
+import { PortraitThumb } from "@/components/portrait";
 import { FeaturedProject, ProjectCard } from "@/components/project-cards";
 import { SystemExplorer } from "@/components/system-explorer";
 import { TerminalLazy } from "@/components/terminal-lazy";
 import { ButtonLink, JsonLd, SectionHeading } from "@/components/ui";
+import { TiltedGridHero } from "@/components/ui/tilted-grid-hero";
 import { building, buildingAsOf } from "@/content/building";
 import { experiments } from "@/content/lab";
 import { projects, toCard } from "@/content/projects";
@@ -74,6 +75,13 @@ export default function HomePage() {
 
 function Hero() {
   const lines: React.ReactNode[] = ["Engineering ideas", "into systems", <>that <em className="text-accent">hold up.</em></>];
+  const heroImages = [
+    { src: "https://pub-940ccf6255b54fa799a9b01050e6c227.r2.dev/stock-images/767d99bb371a54d0d36751e8cecae43c.jpg", alt: "A diver silhouetted against a sunset seascape" },
+    { src: "https://pub-940ccf6255b54fa799a9b01050e6c227.r2.dev/gradients/hero_gradient/hero-gradients-01.png", alt: "A soft multi-tone gradient" },
+    { src: "https://pub-940ccf6255b54fa799a9b01050e6c227.r2.dev/stock-images/821d815affa6496c39cbdeeec7a84603.jpg", alt: "A double exposure portrait and city skyline" },
+    { src: "https://pub-940ccf6255b54fa799a9b01050e6c227.r2.dev/gradients/moon/moon-grade-03.png", alt: "A cool moonlit gradient" },
+    { src: "https://pub-940ccf6255b54fa799a9b01050e6c227.r2.dev/stock-images/937438c560ada1c83317f2c11b3454b0.jpg", alt: "A motion-blurred profile in warm light" },
+  ];
   return (
     <HeroMotion className="relative isolate overflow-hidden">
       <div aria-hidden="true" className="grid-paper fade-edges absolute inset-0 -z-10" />
@@ -93,7 +101,7 @@ function Hero() {
             </p>
           </div>
           <p data-hero className="label hidden flex-wrap items-center gap-x-3 gap-y-1 lg:flex">
-            <span className="text-fg">{site.name}</span>
+            <span className="font-serif text-[1.375rem] leading-none tracking-normal text-fg normal-case">{site.name}</span>
             <span aria-hidden="true" className="h-px w-6 bg-line-strong" />
             <span data-hero-label>{site.role}</span>
           </p>
@@ -135,10 +143,9 @@ function Hero() {
           </div>
         </div>
 
-        {/* Large screens: the editorial portrait beside the headline. Not preloaded,
-            so phones (where it is hidden) never download it. */}
-        <div data-hero data-hero-portrait className="hidden w-full max-w-[19rem] justify-self-end pr-7 lg:col-span-4 lg:block">
-          <Portrait sizes="(min-width: 1024px) 19rem, 1px" />
+        {/* Large screens: a tilted image rail adds depth beside the headline. */}
+        <div data-hero data-hero-portrait className="hidden w-full justify-self-end lg:col-span-4 lg:block">
+          <TiltedGridHero images={heroImages} className="h-[22rem] w-full max-w-[25rem] rounded-2xl lg:h-[28rem]" />
         </div>
       </div>
 
