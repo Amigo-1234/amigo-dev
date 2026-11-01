@@ -45,7 +45,7 @@ export function MotionLayer() {
             { scaleX: 1, duration: 0.6, ease: "expo.out", onComplete: () => void gsap.to(bar.current, { opacity: 0, duration: 0.4 }) },
           );
         }
-        if (!first.current && page) {
+        if (page) {
           const heading = page.querySelector<HTMLElement>("h1");
           // The home hero already has its own masked GSAP timeline.
           if (heading && !heading.querySelector("[data-hero-line]")) {
@@ -182,7 +182,7 @@ export function MotionLayer() {
       };
     },
     [pathname],
-    { defer: true },
+    { when: () => window.matchMedia(MOTION).matches },
   );
 
   return (
