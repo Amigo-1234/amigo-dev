@@ -8,7 +8,7 @@ import { FINE_POINTER, MOTION, useGsap } from "@/lib/gsap";
 /*
  * Site-wide motion, driven by data attributes so pages stay server-rendered:
  *
- *   .reveal            fades and rises in when scrolled into view
+ *   .reveal / sections / cards fade and rise in when scrolled into view
  *   [data-stagger]     its children rise in one after another
  *   [data-speed]       parallax; the value is the drift in % of its height
  *   [data-drift]       horizontal drift while scrolling (in %)
@@ -34,7 +34,10 @@ export function MotionLayer() {
       mm.add(MOTION, () => {
         const belowFold = (el: Element) => el.getBoundingClientRect().top > window.innerHeight * 0.92;
 
-        // Route change: a thin accent line sweeps across the top.
+        const page = document.querySelector<HTMLElement>(".page-enter");
+
+        // Route change: sweep the accent rule and choreograph the new page's
+        // heading and introduction with the same GSAP timing as the hero.
         if (!first.current && bar.current) {
           gsap.fromTo(
             bar.current,
@@ -42,9 +45,31 @@ export function MotionLayer() {
             { scaleX: 1, duration: 0.6, ease: "expo.out", onComplete: () => void gsap.to(bar.current, { opacity: 0, duration: 0.4 }) },
           );
         }
+        if (!first.current && page) {
+          const heading = page.querySelector<HTMLElement>("h1");
+          // The home hero already has its own masked GSAP timeline.
+          if (heading && !heading.querySelector("[data-hero-line]")) {
+            const intro = heading.closest("header") ?? heading.parentElement;
+            const label = intro?.querySelector<HTMLElement>(".label");
+            const copy = Array.from(intro?.querySelectorAll<HTMLElement>("p:not(.label)") ?? []).slice(0, 1);
+            const pieces = [label, heading, ...copy].filter((el): el is HTMLElement => Boolean(el));
+            if (pieces.length) {
+              gsap.fromTo(
+                pieces,
+                { autoAlpha: 0, y: 22 },
+                { autoAlpha: 1, y: 0, duration: 0.82, stagger: 0.075, ease: "expo.out", clearProps: "opacity,visibility,transform" },
+              );
+            }
+          }
+        }
         first.current = false;
 
-        const reveals = gsap.utils.toArray<HTMLElement>(".reveal").filter(belowFold);
+        // Animate the deepest page sections/cards so nested content never
+        // receives competing transforms. Existing .reveal markers still opt in.
+        const candidates = gsap.utils.toArray<HTMLElement>(".reveal, .page-enter section, .page-enter article");
+        const reveals = candidates.filter(
+          (el) => belowFold(el) && !candidates.some((child) => child !== el && el.contains(child)),
+        );
         gsap.set(reveals, { opacity: 0, y: 36 });
         ScrollTrigger.batch(reveals, {
           start: "top 90%",
