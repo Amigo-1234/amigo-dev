@@ -48,6 +48,7 @@ export function BlobCursorLayer() {
         drip={0}
         shine={0.9}
         hideCursor={false}
+        style={{}}
       />
     </div>
   );
