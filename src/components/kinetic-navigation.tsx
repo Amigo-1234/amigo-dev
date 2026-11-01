@@ -33,6 +33,10 @@ export function KineticNavigation() {
     const extras = root.querySelectorAll<HTMLElement>("[data-kn-fade]");
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+    // Let GSAP own the panel transform from its initial state. A CSS translate
+    // here is parsed as pixels and then compounded with xPercent by GSAP.
+    if (!hasOpened.current && !isOpen) gsap.set(panel, { xPercent: 105 });
+
     if (isOpen) {
       hasOpened.current = true;
       overlay.style.visibility = "visible";
@@ -160,8 +164,8 @@ export function KineticNavigation() {
         .kn-overlay{position:fixed;inset:0;z-index:100;visibility:hidden;color:var(--fg);font-family:var(--font-sans)}
         .kn-scrim{position:absolute;inset:0;width:100%;height:100%;border:0;background:rgb(0 0 0/.72);backdrop-filter:blur(12px);cursor:pointer}
         .kn-panel{position:absolute;inset:0 0 0 auto;width:min(100%,1000px);overflow:hidden}
-        .kn-panel-backdrop{background:var(--ink-raised);transform:translateX(105%);border-left:1px solid var(--line-strong)}
-        .kn-panel-main{display:flex;flex-direction:column;padding:clamp(1.25rem,4vw,3rem);background:var(--ink);transform:translateX(105%);box-shadow:-30px 0 90px rgb(0 0 0/.4)}
+        .kn-panel-backdrop{background:var(--ink-raised);border-left:1px solid var(--line-strong)}
+        .kn-panel-main{display:flex;flex-direction:column;padding:clamp(1.25rem,4vw,3rem);background:var(--ink);box-shadow:-30px 0 90px rgb(0 0 0/.4)}
         .kn-topbar,.kn-bottom{position:relative;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:1rem}
         .kn-close{display:flex;align-items:center;gap:.75rem;border:1px solid var(--line-strong);border-radius:999px;padding:.65rem 1rem;color:var(--fg);background:transparent;font:inherit;cursor:pointer}
         .kn-close span{font-size:1.4rem;line-height:.7}
