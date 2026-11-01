@@ -26,7 +26,7 @@ type BlobCursorProps = {
   shadow?: boolean;
   hideCursor?: boolean;
   className?: string;
-  style?: React.CSSProperties;
+  style: React.CSSProperties;
 };
 
 const BlobCursor = dynamic<BlobCursorProps>(() => import("@/components/ui/BlobCursor"), { ssr: false });
