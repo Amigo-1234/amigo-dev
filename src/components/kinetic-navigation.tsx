@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
 import gsap from "gsap";
 import { CustomEase } from "gsap/CustomEase";
 
@@ -135,7 +136,7 @@ export function KineticNavigation() {
               <ol className="kn-list">
                 {links.map((item, index) => (
                   <li key={item.href} className="kn-item" onMouseEnter={() => animateShape(index, true)} onMouseLeave={() => animateShape(index, false)} onFocus={() => animateShape(index, true)} onBlur={() => animateShape(index, false)}>
-                    <Link ref={index === 0 ? firstLinkRef : undefined} href={item.href} className="kn-link" onClick={() => setIsOpen(false)}>
+                    <Link ref={index === 0 ? firstLinkRef : undefined} href={item.href} aria-current={active ? "page" : undefined} className={`kn-link${active ? " kn-link-active" : ""}`} onClick={() => setIsOpen(false)}>
                       <span className="kn-number">{String(index + 1).padStart(2, "0")}</span>
                       <span>{item.label}</span>
                       <span className="kn-arrow" aria-hidden="true">↗</span>
@@ -171,7 +172,7 @@ export function KineticNavigation() {
         .kn-shape-5{width:38rem;height:38rem;right:4%;top:0;background:repeating-linear-gradient(135deg,transparent 0 26px,rgb(242 107 58/.08) 27px 28px);mask-image:radial-gradient(circle,#000 0%,transparent 70%)}
         .kn-list{position:relative;z-index:2;display:grid;gap:.15rem;margin:0;padding:0;list-style:none}
         .kn-link{display:flex;align-items:baseline;gap:clamp(.8rem,2vw,2rem);width:max-content;max-width:100%;color:var(--fg);font-family:var(--font-serif);font-size:clamp(2.75rem,7vw,6.5rem);line-height:.98;letter-spacing:-.035em;text-decoration:none;transition:color .2s ease}
-        .kn-link:hover,.kn-link:focus-visible{color:var(--accent)}
+        .kn-link:hover,.kn-link:focus-visible,.kn-link-active{color:var(--accent)}
         .kn-number{width:2.3rem;flex:none;font-family:var(--font-mono);font-size:.7rem;letter-spacing:.12em;color:var(--fg-subtle)}
         .kn-arrow{font-family:var(--font-sans);font-size:.35em;opacity:0;transform:translate(-8px,8px);transition:opacity .25s ease,transform .25s ease}
         .kn-link:hover .kn-arrow,.kn-link:focus-visible .kn-arrow{opacity:1;transform:translate(0,0)}
