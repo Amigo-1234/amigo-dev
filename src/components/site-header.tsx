@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { useEffect, useRef } from "react";
 
-import { cn } from "@/lib/cn";
 import { openCommandMenu } from "./command-menu";
 import { ThemeToggle } from "./theme-toggle";
 import { Wordmark } from "./brand";
