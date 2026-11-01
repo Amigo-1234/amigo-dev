@@ -3,10 +3,10 @@ import type { Metadata, Viewport } from "next";
 import { CommandMenu } from "@/components/command-menu";
 import { DeferRenderScript } from "@/components/defer-render-script";
 import { EasterEggs } from "@/components/easter-eggs";
-import { MenuScript } from "@/components/menu-script";
 import { MotionLayer } from "@/components/motion-layer";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
+import { BlobCursorLayer } from "@/components/blob-cursor-layer";
 import { ThemeScript } from "@/components/theme";
 import { JsonLd } from "@/components/ui";
 import { projects } from "@/content/projects";
@@ -63,7 +63,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     >
       <head>
         <ThemeScript />
-        <MenuScript />
         <DeferRenderScript />
       </head>
       <body className="min-h-dvh">
@@ -73,6 +72,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           Skip to content
         </a>
         <SiteHeader />
+        <BlobCursorLayer />
         <main id="main" tabIndex={-1} className="outline-none">
           {children}
         </main>
