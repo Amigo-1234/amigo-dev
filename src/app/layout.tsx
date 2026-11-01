@@ -6,7 +6,6 @@ import { EasterEggs } from "@/components/easter-eggs";
 import { MotionLayer } from "@/components/motion-layer";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
-import { BlobCursorLayer } from "@/components/blob-cursor-layer";
 import { ThemeScript } from "@/components/theme";
 import { JsonLd } from "@/components/ui";
 import { projects } from "@/content/projects";
@@ -72,7 +71,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           Skip to content
         </a>
         <SiteHeader />
-        <BlobCursorLayer />
         <main id="main" tabIndex={-1} className="outline-none">
           {children}
         </main>
