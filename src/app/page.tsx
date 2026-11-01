@@ -101,7 +101,7 @@ function Hero() {
             </p>
           </div>
           <p data-hero className="label hidden flex-wrap items-center gap-x-3 gap-y-1 lg:flex">
-            <span className="text-fg">{site.name}</span>
+            <span className="font-serif text-[1.375rem] leading-none tracking-normal text-fg normal-case">{site.name}</span>
             <span aria-hidden="true" className="h-px w-6 bg-line-strong" />
             <span data-hero-label>{site.role}</span>
           </p>
