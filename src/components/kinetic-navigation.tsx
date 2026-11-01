@@ -134,7 +134,9 @@ export function KineticNavigation() {
             </div>
             <nav aria-label="Site menu links" className="relative z-10">
               <ol className="kn-list">
-                {links.map((item, index) => (
+                {links.map((item, index) => {
+                  const active = item.href === "/" ? pathname === "/" : item.href.startsWith("/#") ? false : pathname === item.href || pathname.startsWith(`${item.href}/`);
+                  return (
                   <li key={item.href} className="kn-item" onMouseEnter={() => animateShape(index, true)} onMouseLeave={() => animateShape(index, false)} onFocus={() => animateShape(index, true)} onBlur={() => animateShape(index, false)}>
                     <Link ref={index === 0 ? firstLinkRef : undefined} href={item.href} aria-current={active ? "page" : undefined} className={`kn-link${active ? " kn-link-active" : ""}`} onClick={() => setIsOpen(false)}>
                       <span className="kn-number">{String(index + 1).padStart(2, "0")}</span>
@@ -142,7 +144,8 @@ export function KineticNavigation() {
                       <span className="kn-arrow" aria-hidden="true">↗</span>
                     </Link>
                   </li>
-                ))}
+                  );
+                })}
               </ol>
             </nav>
           </div>
