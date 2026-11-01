@@ -12,6 +12,7 @@ import { Wordmark } from "./brand";
 const links = [{ href: "/", label: "Home" }, ...nav, { href: "/play", label: "Play DEBUG.EXE" }];
 
 export function KineticNavigation() {
+  const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
