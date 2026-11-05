@@ -1,7 +1,9 @@
 import Link from "next/link";
 
+import { Stamp } from "@/components/drawing/stamp";
 import type { Experiment } from "@/content/lab";
 import { cn } from "@/lib/cn";
+import { centreDistance, gearGeometry, gearPath, meshRotation } from "@/lib/engineering/gears";
 
 // The game's beetle, drawn as SVG squares (same art as the sprite).
 const BEETLE = ["..k...k..", "...k.k...", ".rrrrrrr.", "rrwrrrwrr", ".rrrrrrr.", "k.rrrrr.k", ".k.....k."];
@@ -13,6 +15,26 @@ export function Beetle({ className }: { className?: string }) {
       {BEETLE.flatMap((row, y) =>
         [...row].map((ch, x) => (BEETLE_COLOURS[ch] ? <rect key={`${x}-${y}`} x={x} y={y} width={1} height={1} fill={BEETLE_COLOURS[ch]} /> : null)),
       )}
+    </svg>
+  );
+}
+
+/** Two meshing gears for the gear-train card, drawn with the instrument's own geometry. */
+function GearGlyph() {
+  const [n1, n2, m] = [14, 24, 2];
+  const a = centreDistance(m, n1, n2);
+  const beta = -0.25;
+  const rot2 = meshRotation(n1, n2, beta, 0);
+  const g1 = gearGeometry(n1, m);
+  const g2 = gearGeometry(n2, m);
+  return (
+    <svg viewBox="-19 -38 85 57" aria-hidden="true" className="w-[62%] text-fg">
+      <g fill="var(--ink-raised)" stroke="currentColor" strokeWidth="0.6" strokeLinejoin="round">
+        <path d={gearPath(g1, 5)} />
+        <path d={gearPath(g2, 5)} transform={`translate(${a * Math.cos(beta)} ${a * Math.sin(beta)}) rotate(${(rot2 * 180) / Math.PI})`} />
+      </g>
+      <circle r="3" fill="var(--accent)" />
+      <circle cx={a * Math.cos(beta)} cy={a * Math.sin(beta)} r="4" fill="none" stroke="currentColor" strokeWidth="0.6" />
     </svg>
   );
 }
@@ -67,6 +89,8 @@ export function LabGlyph({ slug }: { slug: string }) {
           <span className="mt-2 block font-mono text-[0.6875rem] tracking-wide text-fg-subtle">47:12 · 2ND HALF NEXT</span>
         </span>
       );
+    case "gear-train":
+      return <GearGlyph />;
     default:
       return null;
   }
@@ -104,7 +128,16 @@ export function ExperimentCard({ experiment, className }: { experiment: Experime
 }
 
 /** Shared frame for an experiment page: breadcrumb, title, origin, the widget, then how it works. */
-export function ExperimentPage({ experiment, children }: { experiment: Experiment; children: React.ReactNode }) {
+export function ExperimentPage({
+  experiment,
+  children,
+  details,
+}: {
+  experiment: Experiment;
+  children: React.ReactNode;
+  /** Server-rendered explanation shown after the widget (equations, worked numbers). */
+  details?: React.ReactNode;
+}) {
   return (
     <div className="shell pt-8 md:pt-14">
       <nav aria-label="Breadcrumb">
@@ -129,6 +162,11 @@ export function ExperimentPage({ experiment, children }: { experiment: Experimen
           <h1 className="mt-4 font-serif text-[clamp(2.75rem,1.6rem+4.2vw,5.5rem)] leading-[0.95]">{experiment.title}</h1>
           <p className="mt-5 max-w-2xl text-lg leading-relaxed text-fg-muted">{experiment.summary}</p>
         </div>
+        {experiment.assumptions && (
+          <div className="md:col-span-4 md:justify-self-end">
+            <Stamp note="Educational model">Not for design</Stamp>
+          </div>
+        )}
         {experiment.origin && (
           <p className="text-sm text-fg-muted md:col-span-4 md:text-right">
             Logic from{" "}
@@ -145,6 +183,8 @@ export function ExperimentPage({ experiment, children }: { experiment: Experimen
 
       <div className="mt-10 md:mt-14">{children}</div>
 
+      {details}
+
       <section aria-labelledby="how-heading" className="mt-16 grid gap-6 border-t border-line pt-10 md:mt-24 md:grid-cols-12">
         <h2 id="how-heading" className="label md:col-span-3">
           How it works
@@ -158,6 +198,41 @@ export function ExperimentPage({ experiment, children }: { experiment: Experimen
           ))}
         </ul>
       </section>
+
+      {experiment.assumptions && (
+        <section aria-labelledby="assumptions-heading" className="mt-12 grid gap-6 border-t border-line pt-10 md:grid-cols-12">
+          <h2 id="assumptions-heading" className="label md:col-span-3">
+            Assumptions and limits
+          </h2>
+          <div className="md:col-span-9">
+            <ol className="space-y-3">
+              {experiment.assumptions.map((a, i) => (
+                <li key={a} className="flex gap-4 text-fg-muted">
+                  <span className="font-mono text-xs leading-7 text-accent">{String(i + 1).padStart(2, "0")}</span>
+                  {a}
+                </li>
+              ))}
+            </ol>
+            <p className="mt-6 text-sm text-fg-subtle">
+              An educational model for learning how these systems behave. It is not a substitute for a design calculation,
+              a standard or a qualified engineer.
+            </p>
+          </div>
+        </section>
+      )}
+
+      {experiment.references && (
+        <section aria-labelledby="references-heading" className="mt-12 grid gap-6 border-t border-line pt-10 md:grid-cols-12">
+          <h2 id="references-heading" className="label md:col-span-3">
+            References
+          </h2>
+          <ul className="space-y-2 text-sm text-fg-muted md:col-span-9">
+            {experiment.references.map((r) => (
+              <li key={r}>{r}</li>
+            ))}
+          </ul>
+        </section>
+      )}
 
       <p className="mt-16 text-sm text-fg-subtle">
         <Link href="/lab" className="link-underline text-fg">

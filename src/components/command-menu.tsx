@@ -39,6 +39,7 @@ const pages: Item[] = [
   { id: "lab-prayer", group: "Pages", label: "Lab: Prayer times, calculated", keywords: "salah adhan lagos countdown haqslam", href: "/lab/prayer-times" },
   { id: "lab-results", group: "Pages", label: "Lab: Bilingual result sheet", keywords: "grades arabic rtl school markaz", href: "/lab/result-sheet" },
   { id: "lab-clock", group: "Pages", label: "Lab: Match clock", keywords: "football timer six-a-side eksu sports", href: "/lab/match-clock" },
+  { id: "lab-gears", group: "Pages", label: "Lab: Gear train", keywords: "gears ratio torque involute mechanical engineering", href: "/lab/gear-train" },
 ];
 
 const actions: Item[] = [

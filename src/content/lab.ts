@@ -15,6 +15,11 @@ export type Experiment = {
   origin?: { project: string; slug: string; file: string; source: string };
   tech: string[];
   notes: string[];
+  /** Engineering instruments are built for this site from first principles, not lifted from a project. */
+  family?: "instrument";
+  /** Simplifications an educational model makes; shown with a "not for design" stamp. */
+  assumptions?: string[];
+  references?: string[];
 };
 
 export const experiments: Experiment[] = [
@@ -92,6 +97,34 @@ export const experiments: Experiment[] = [
       "A 7:30 half ends in the 8th minute, so added time is counted from 8:00, not 7:30.",
       "Under six-a-side rules there is no added time, and a red card is a 60-second suspension of active play: pauses and half-time don't count towards it.",
       "The simulation speed only changes how fast the pretend wall clock runs. The match clock code is the same either way.",
+    ],
+  },
+  {
+    slug: "gear-train",
+    code: "EXP-04",
+    family: "instrument",
+    href: "/lab/gear-train",
+    title: "Gear train",
+    kind: "Simulation",
+    summary:
+      "Spur gears drawn from true involute geometry. Change the tooth counts and watch speed, direction and torque work through the train, then drag any gear to turn it by hand.",
+    tech: ["TypeScript", "SVG", "Involute geometry"],
+    notes: [
+      "The drawing and the numbers come from the same functions. Each gear sits at its true centre distance and is turned by the mesh relation, so the teeth you see meshing are the teeth that were calculated.",
+      "Rotation is written straight to the drawing, so nothing re-renders while it turns. It only runs while it is on screen, and starts paused if you prefer reduced motion.",
+      "The maths is checked against independent methods: hand-worked examples, the unwound-string definition of the involute, a simulation that turns each pair through a full pitch to prove the teeth touch without overlapping, and a direct construction of the contact ratio.",
+      "The settings are kept in the address bar, so a train can be shared as a link.",
+    ],
+    assumptions: [
+      "Standard 20° full-depth involute teeth (ISO 53 basic rack): addendum 1·m, dedendum 1.25·m, no profile shift and no backlash.",
+      "Rigid teeth and shafts. Efficiency is a fixed fraction lost at each mesh, not a model of friction, load or speed.",
+      "Below the base circle the tooth flank is drawn radial. Real teeth have a trochoidal root fillet, and are undercut when cut with fewer than about 17 teeth.",
+      "A simple train only: one gear per shaft, external meshes. Compound and planetary trains are not modelled.",
+    ],
+    references: [
+      "ISO 53:1998, Cylindrical gears for general and heavy engineering — Standard basic rack tooth profile",
+      "ISO 54:1996, Cylindrical gears for general engineering and for heavy engineering — Modules",
+      "R. G. Budynas and J. K. Nisbett, Shigley's Mechanical Engineering Design, chapter 13: Gears — General",
     ],
   },
 ];

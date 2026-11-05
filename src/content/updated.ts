@@ -9,10 +9,11 @@ export const contentUpdated = {
   "/about": "2026-10-29",
   "/projects": "2026-10-20",
   "/contact": "2026-10-29",
-  "/lab": "2026-10-20",
+  "/lab": "2026-11-05",
   "/lab/prayer-times": "2026-10-20",
   "/lab/result-sheet": "2026-10-20",
   "/lab/match-clock": "2026-10-20",
+  "/lab/gear-train": "2026-11-05",
   "/play": "2026-10-20",
   /** Every case study was rewritten and re-verified against its repository on this date. */
   caseStudies: "2026-10-20",

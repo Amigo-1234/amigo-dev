@@ -9,17 +9,19 @@ export const metadata: Metadata = pageMetadata({
   path: "/lab",
   title: "Lab",
   description:
-    "AMIGODEV Lab: working pieces from real projects — calculated prayer times, a bilingual result sheet, a drift-free match clock — and the DEBUG.EXE game.",
+    "AMIGODEV Lab: working pieces from real projects, engineering instruments with real calculations and stated assumptions, and the DEBUG.EXE game.",
 });
 
 const rules: [string, string][] = [
   ["Everything works", "No mock-ups. If an experiment is on this bench, you can use it."],
-  ["Real logic", "Each tool runs code taken from a shipped project, linked to its source, on made-up data."],
+  ["Honest sources", "Project tools run code taken from a shipped project, linked to its source. Instruments are built from first principles and tested against worked examples."],
   ["Stays on your device", "Nothing you type or score is sent anywhere."],
 ];
 
 export default function LabPage() {
-  const [game, ...tools] = experiments;
+  const game = experiments.find((e) => e.kind === "Game")!;
+  const tools = experiments.filter((e) => e.origin);
+  const instruments = experiments.filter((e) => e.family === "instrument");
   return (
     <div className="relative isolate">
       <div aria-hidden="true" className="grid-paper fade-edges absolute inset-x-0 top-0 -z-10 h-[38rem]" />
@@ -46,6 +48,21 @@ export default function LabPage() {
             {tools.map((e) => (
               <ExperimentCard key={e.slug} experiment={e} />
             ))}
+          </div>
+
+          <div className="mt-16 grid gap-6 border-t border-line pt-10 md:mt-20 md:grid-cols-12">
+            <div className="md:col-span-4">
+              <h3 className="font-serif text-title">Engineering instruments</h3>
+              <p className="mt-4 text-fg-muted">
+                From my Mechanical Engineering studies: working models with their equations and assumptions on the page.
+                Educational, not design tools.
+              </p>
+            </div>
+            <div className="grid gap-6 md:col-span-8 md:grid-cols-2">
+              {instruments.map((e) => (
+                <ExperimentCard key={e.slug} experiment={e} />
+              ))}
+            </div>
           </div>
 
           <div className="mt-6 grid gap-6 lg:grid-cols-3">
