@@ -7,33 +7,40 @@
 /* Tokens                                                              */
 /* ------------------------------------------------------------------ */
 
+/*
+ * Dark theme: cyanotype. Prussian-blue paper with white linework, like a
+ * blueprint print; the accent is the redline used for review markups. Every
+ * text colour clears WCAG AA (4.5:1) on ink, ink-raised and ink-sunken.
+ */
 :root,
 [data-theme="dark"] {
   color-scheme: dark;
-  --ink: #0b0b0c;
-  --ink-raised: #121214;
-  --ink-sunken: #08080a;
-  --paper: #ecebe6;
-  --fg: #ecebe6;
-  --fg-muted: #a6a59e;
-  --fg-subtle: #858479;
-  --line: rgb(236 235 230 / 0.09);
-  --line-strong: rgb(236 235 230 / 0.18);
-  --surface: rgb(236 235 230 / 0.035);
-  --surface-strong: rgb(236 235 230 / 0.06);
-  --accent: #f26b3a;
-  --accent-fg: #0b0b0c;
-  --accent-soft: rgb(242 107 58 / 0.14);
-  --grid: rgb(236 235 230 / 0.045);
-  --shadow: 0 1px 0 rgb(255 255 255 / 0.04) inset, 0 24px 60px -24px rgb(0 0 0 / 0.7);
-  --ok: #7fc8a0;
-  --warn: #e7b366;
-  --glass-bg: rgb(19 19 22 / 0.72);
-  --glass-bg-strong: rgb(19 19 22 / 0.9);
-  --glass-border: rgb(236 235 230 / 0.13);
-  --glass-highlight: rgb(255 255 255 / 0.06);
-  --glass-shadow: 0 1px 0 rgb(255 255 255 / 0.05) inset, 0 18px 40px -22px rgb(0 0 0 / 0.8);
-  --header-bg: rgb(11 11 12 / 0.9);
+  --ink: #0f2846;
+  --ink-raised: #13304f;
+  --ink-sunken: #0b2038;
+  --paper: #e9eff6;
+  --fg: #e9eff6;
+  --fg-muted: #acbdd2;
+  --fg-subtle: #8ea3bd;
+  --line: rgb(233 239 246 / 0.12);
+  --line-strong: rgb(233 239 246 / 0.24);
+  --surface: rgb(233 239 246 / 0.035);
+  --surface-strong: rgb(233 239 246 / 0.06);
+  --accent: #ff8656;
+  --accent-fg: #0b2038;
+  --accent-soft: rgb(255 134 86 / 0.14);
+  --grid: rgb(233 239 246 / 0.06);
+  --shadow: 0 1px 0 rgb(255 255 255 / 0.05) inset, 0 24px 60px -24px rgb(3 12 26 / 0.75);
+  --ok: #86d3a9;
+  --warn: #f0c070;
+  --construction: rgb(233 239 246 / 0.3);
+  --hatch: rgb(233 239 246 / 0.16);
+  --glass-bg: rgb(17 42 72 / 0.74);
+  --glass-bg-strong: rgb(17 42 72 / 0.92);
+  --glass-border: rgb(233 239 246 / 0.15);
+  --glass-highlight: rgb(255 255 255 / 0.07);
+  --glass-shadow: 0 1px 0 rgb(255 255 255 / 0.06) inset, 0 18px 40px -22px rgb(3 12 26 / 0.85);
+  --header-bg: rgb(15 40 70 / 0.92);
 }
 
 [data-theme="light"] {
@@ -55,6 +62,8 @@
   --shadow: 0 1px 0 rgb(255 255 255 / 0.6) inset, 0 24px 50px -28px rgb(60 40 20 / 0.35);
   --ok: #2f7a52;
   --warn: #93600f;
+  --construction: rgb(21 21 19 / 0.28);
+  --hatch: rgb(21 21 19 / 0.14);
   --glass-bg: rgb(251 249 244 / 0.78);
   --glass-bg-strong: rgb(251 249 244 / 0.93);
   --glass-border: rgb(21 21 19 / 0.11);
@@ -79,6 +88,8 @@
   --color-accent-soft: var(--accent-soft);
   --color-ok: var(--ok);
   --color-warn: var(--warn);
+  --color-construction: var(--construction);
+  --color-hatch: var(--hatch);
 
   --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, "SFMono-Regular", monospace;
@@ -179,6 +190,15 @@
     .shell {
       padding-inline: 2.5rem;
     }
+  }
+
+  /* Dimension and annotation text inside drawings (ISO 3098 spirit): mono, tracked, tabular. */
+  .dim-text {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.06em;
+    font-variant-numeric: tabular-nums;
+    fill: currentColor;
   }
 
   /* Technical-drawing label: small, monospaced, tracked. */

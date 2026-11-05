@@ -57,7 +57,7 @@ export function ProjectFilter({ items, categories, gridId }: { items: Item[]; ca
               )}
             >
               {f}
-              <span className={cn("font-mono text-xs", active ? "text-ink/60" : "text-fg-subtle")}>{count}</span>
+              <span className={cn("font-mono text-xs", active ? "text-ink/75" : "text-fg-subtle")}>{count}</span>
             </button>
           );
         })}

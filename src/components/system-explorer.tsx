@@ -254,7 +254,7 @@ export function SystemExplorer({ projectNames }: { projectNames: Record<string, 
                     selected ? "bg-fg text-ink" : "text-fg-muted hover:bg-surface-strong hover:text-fg",
                   )}
                 >
-                  <span className={cn("block font-mono text-[0.625rem]", selected ? "text-ink/60" : "text-fg-subtle")}>
+                  <span className={cn("block font-mono text-[0.625rem]", selected ? "text-ink/75" : "text-fg-subtle")}>
                     {String(i + 1).padStart(2, "0")}
                   </span>
                   {layer.name}
