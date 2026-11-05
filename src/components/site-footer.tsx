@@ -1,20 +1,27 @@
 import Link from "next/link";
 
-import { nav, site } from "@/content/site";
+import { site } from "@/content/site";
 
-import { LocalTime } from "./local-time";
+import { SiteWordmarkFooter } from "./site-wordmark-footer";
 
+/*
+ * The end of every page: a call to start a conversation, then the footer
+ * proper, AMIGODEV printed as halftone dots (SiteWordmarkFooter renders the
+ * <footer> landmark, so this wrapper is not one).
+ */
 export function SiteFooter() {
   return (
-    <footer className="defer-render relative mt-24 border-t border-line md:mt-36">
-      <div className="shell grid gap-14 py-16 md:grid-cols-12 md:py-24">
-        <div className="md:col-span-7">
-          <p className="label">Contact · Sheet ∞</p>
-          <p className="mt-5 font-serif text-headline">
-            Have something that needs
-            <br className="hidden sm:block" /> to <em className="text-accent">work properly</em>?
-          </p>
-          <div className="mt-8 flex flex-wrap items-center gap-3">
+    <div className="defer-render mt-24 md:mt-36">
+      <section aria-labelledby="footer-cta" className="border-t border-line">
+        <div className="shell flex flex-col gap-8 py-16 md:flex-row md:items-end md:justify-between md:py-24">
+          <div>
+            <p className="label">Contact · Sheet ∞</p>
+            <h2 id="footer-cta" className="mt-5 font-serif text-headline">
+              Have something that needs
+              <br className="hidden sm:block" /> to <em className="text-accent">work properly</em>?
+            </h2>
+          </div>
+          <div className="flex flex-wrap items-center gap-3">
             <Link
               href="/contact"
               className="inline-flex h-12 items-center gap-2 rounded-full bg-fg px-6 text-sm font-medium text-ink transition-transform hover:-translate-y-0.5"
@@ -22,70 +29,13 @@ export function SiteFooter() {
               Start a conversation
               <span aria-hidden="true">→</span>
             </Link>
-            <a
-              href={`mailto:${site.email}`}
-              className="link-underline break-all text-sm text-fg-muted hover:text-fg"
-            >
+            <a href={`mailto:${site.email}`} className="link-underline break-all text-sm text-fg-muted hover:text-fg">
               {site.email}
             </a>
           </div>
         </div>
-
-        <div className="grid grid-cols-2 gap-8 text-sm md:col-span-5 md:justify-items-end">
-          <div>
-            <p className="label">Index</p>
-            <ul className="mt-4 space-y-2.5">
-              {[{ href: "/", label: "Home" }, ...nav, { href: "/play", label: "Play DEBUG.EXE" }].map((item) => (
-                <li key={item.href}>
-                  <Link href={item.href} className="link-underline text-fg-muted hover:text-fg">
-                    {item.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div>
-            <p className="label">Elsewhere</p>
-            <ul className="mt-4 space-y-2.5">
-              {[
-                { href: site.social.github, label: "GitHub" },
-                { href: site.social.linkedin, label: "LinkedIn" },
-                { href: site.social.x, label: "X" },
-              ].map((profile) => (
-                <li key={profile.label}>
-                  {/* rel="me": these are the owner's own profiles. */}
-                  <a href={profile.href} target="_blank" rel="me noopener noreferrer" className="link-underline text-fg-muted hover:text-fg">
-                    {profile.label}
-                    <span className="sr-only"> (opens in a new tab)</span>
-                  </a>
-                </li>
-              ))}
-              <li>
-                <a href={`mailto:${site.email}`} className="link-underline text-fg-muted hover:text-fg">
-                  Email
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      <div className="border-t border-line">
-        <div className="shell flex flex-col gap-3 py-6 text-xs text-fg-subtle sm:flex-row sm:items-center sm:justify-between">
-          <p>
-            © {new Date().getFullYear()} {site.name} · {site.brand}
-          </p>
-          <p className="font-mono tracking-wide">
-            Nigeria · <LocalTime />
-          </p>
-          <p>
-            Set in Instrument Serif, Geist &amp; Geist Mono. Built with Next.js &amp; GSAP.{" "}
-            <span className="font-mono tracking-wide" title="Try it on your keyboard">
-              ↑↑↓↓←→←→BA
-            </span>
-          </p>
-        </div>
-      </div>
-    </footer>
+      </section>
+      <SiteWordmarkFooter />
+    </div>
   );
 }

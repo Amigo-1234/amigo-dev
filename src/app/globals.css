@@ -91,6 +91,23 @@
   --color-construction: var(--construction);
   --color-hatch: var(--hatch);
 
+  /* shadcn/ui names, mapped onto this site's tokens so pasted components follow both themes. */
+  --color-background: var(--ink);
+  --color-foreground: var(--fg);
+  --color-card: var(--ink-raised);
+  --color-card-foreground: var(--fg);
+  --color-popover: var(--ink-raised);
+  --color-popover-foreground: var(--fg);
+  --color-primary: var(--accent);
+  --color-primary-foreground: var(--accent-fg);
+  --color-secondary: var(--surface-strong);
+  --color-secondary-foreground: var(--fg);
+  --color-muted: var(--surface-strong);
+  --color-muted-foreground: var(--fg-muted);
+  --color-border: var(--line);
+  --color-input: var(--line-strong);
+  --color-ring: var(--accent);
+
   --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, "SFMono-Regular", monospace;
   --font-serif: var(--font-instrument-serif), "Iowan Old Style", Georgia, serif;
@@ -707,4 +724,302 @@ html.render-all .defer-render {
 .portrait-light {
   background: radial-gradient(22rem circle at var(--mx, 70%) var(--my, 22%), rgb(255 226 196 / 0.35), transparent 62%);
   mix-blend-mode: soft-light;
+}
+
+/* ------------------------------------------------------------------ */
+/* Ignition: the homepage's opening (see components/ignition.tsx)      */
+/* ------------------------------------------------------------------ */
+
+.ign {
+  display: none;
+}
+
+html[data-ignition="idle"] .ign,
+html[data-ignition="spool"] .ign,
+html[data-ignition="launch"] .ign {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: block;
+  overflow: hidden;
+  color: var(--fg);
+}
+
+/* The sheet, in two halves that part like valves when the engine fires. */
+.ign-panel {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 50.5%;
+  background-color: var(--ink);
+  background-image:
+    linear-gradient(to right, var(--grid) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid) 1px, transparent 1px);
+  background-size: 2.5rem 2.5rem;
+  transition: transform 0.95s var(--ease-in-out-quart);
+}
+.ign-panel--top {
+  top: 0;
+}
+.ign-panel--bottom {
+  bottom: 0;
+  background-position: 0 100%;
+}
+.ign-panel--top::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  background: var(--accent);
+  transform: scaleX(var(--ign-p, 0));
+  box-shadow: 0 0 18px var(--accent);
+}
+html[data-ignition="launch"] .ign-panel--top {
+  transform: translateY(-101%);
+}
+html[data-ignition="launch"] .ign-panel--bottom {
+  transform: translateY(101%);
+}
+
+.ign-bar {
+  position: absolute;
+  inset: 0 0 auto;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.1rem clamp(1rem, 3vw, 2.5rem);
+  transition: opacity 0.35s;
+}
+.ign-mark {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+}
+.ign-mono {
+  width: 1.75rem;
+  height: 1.75rem;
+  color: var(--fg);
+}
+.ign-skip {
+  height: 2.75rem;
+  padding: 0 1.1rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  background: var(--glass-bg);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--fg);
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+.ign-skip:hover {
+  border-color: var(--fg);
+}
+.ign-skip:focus-visible,
+.ign-start:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 6px;
+}
+
+.ign-stage {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+}
+.ign-rig {
+  margin-top: -9vh;
+  transform: translate(var(--ign-sx, 0px), var(--ign-sy, 0px));
+}
+.ign-start {
+  position: relative;
+  display: block;
+  width: min(62vmin, 25rem);
+  aspect-ratio: 1;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  color: var(--fg);
+  cursor: pointer;
+  pointer-events: auto;
+  -webkit-tap-highlight-color: transparent;
+}
+.ign-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.ign-construction {
+  fill: none;
+  stroke: var(--construction);
+  stroke-width: 1;
+  stroke-dasharray: 12 4 2 4;
+  vector-effect: non-scaling-stroke;
+  transition: opacity 0.3s;
+}
+.ign-tooth,
+.ign-hub {
+  fill: var(--ink-raised);
+  stroke: currentColor;
+  stroke-width: 1.3;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+  transition: stroke 0.25s;
+}
+.ign-rim {
+  fill: none;
+  stroke: currentColor;
+  stroke-opacity: 0.45;
+  vector-effect: non-scaling-stroke;
+}
+.ign-bore {
+  fill: var(--ink-sunken);
+  stroke: currentColor;
+  vector-effect: non-scaling-stroke;
+}
+/* SVG elements transform about the drawing's origin, which is each gear's centre. */
+.ign-g1 {
+  transform: translateX(var(--ign-x1, 0px)) rotate(var(--ign-a1, 0rad));
+}
+.ign-ghost {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 7;
+  opacity: calc(var(--ign-p, 0) * 0.5);
+  filter: blur(3px);
+  transform: translateX(var(--ign-x1, 0px)) rotate(calc(var(--ign-a1, 0rad) - 0.16rad));
+}
+.ign-g2 {
+  transform: translate(var(--ign-x2, 0px), var(--ign-y2, 0px)) rotate(var(--ign-a2, 0rad));
+}
+.ign-start:hover .ign-g1 .ign-tooth,
+.ign-start:focus-visible .ign-g1 .ign-tooth {
+  stroke: var(--accent);
+}
+.ign-pulse {
+  position: absolute;
+  inset: 6%;
+  border: 1px solid var(--accent);
+  border-radius: 50%;
+  pointer-events: none;
+  animation: ign-pulse 2.4s var(--ease-out-expo) 1.2s infinite;
+  opacity: 0;
+}
+html[data-ignition="spool"] .ign-pulse,
+html[data-ignition="launch"] .ign-pulse {
+  animation: none;
+}
+/* The focus ring helps a keyboard user find the gear; once it is running it would only get in the way. */
+html[data-ignition="spool"] .ign-start,
+html[data-ignition="launch"] .ign-start {
+  outline: none;
+}
+/* Rolling is slower than the spin, so most of the blur goes. */
+html[data-ignition="launch"] .ign-ghost {
+  opacity: 0.12;
+}
+html[data-ignition="launch"] .ign-construction,
+html[data-ignition="launch"] .ign-bar,
+html[data-ignition="launch"] .ign-foot {
+  opacity: 0;
+}
+
+.ign-foot {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: clamp(1.25rem, 6vh, 3.5rem);
+  z-index: 2;
+  padding: 0 1rem;
+  text-align: center;
+  transition: opacity 0.35s;
+}
+.ign-gauge {
+  display: inline-grid;
+  grid-template-columns: auto auto;
+  align-items: baseline;
+  column-gap: 0.5rem;
+  font-family: var(--font-mono);
+}
+.ign-rpm::after {
+  content: attr(data-rpm);
+  font-size: clamp(2.25rem, 1.6rem + 3vw, 4rem);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+  line-height: 1;
+}
+.ign-unit {
+  font-size: 0.75rem;
+  letter-spacing: 0.16em;
+  color: var(--fg-muted);
+}
+.ign-track {
+  grid-column: 1 / -1;
+  display: block;
+  height: 2px;
+  margin-top: 0.75rem;
+  overflow: hidden;
+  background: var(--line-strong);
+}
+.ign-fill {
+  display: block;
+  height: 100%;
+  background: var(--accent);
+  transform: scaleX(var(--ign-p, 0));
+  transform-origin: left;
+}
+html[data-ignition="spool"] .ign-rpm {
+  color: var(--accent);
+}
+.ign-title {
+  margin-top: 1.1rem;
+  font-family: var(--font-serif);
+  font-size: clamp(1.6rem, 1.2rem + 1.6vw, 2.5rem);
+  line-height: 1.05;
+}
+.ign-desc {
+  margin-top: 0.6rem;
+  font-size: 0.8125rem;
+  color: var(--fg-muted);
+}
+
+/* The site rises into place behind the parting sheet. */
+html[data-ignited] .site-header,
+html[data-ignited] #main {
+  animation: ign-rise 0.9s var(--ease-out-expo) both;
+}
+
+@keyframes ign-pulse {
+  0% {
+    opacity: 0.8;
+    transform: scale(0.96);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.18);
+  }
+}
+
+@keyframes ign-rise {
+  from {
+    opacity: 0.2;
+    transform: translateY(2.5rem) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }

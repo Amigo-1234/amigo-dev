@@ -4,20 +4,28 @@ import { Fragment } from "react";
 import { ArcadeCard } from "@/components/arcade-card";
 import { HeroMotion } from "@/components/hero-motion";
 import { Portrait, PortraitThumb } from "@/components/portrait";
-import { FeaturedProject, ProjectCard } from "@/components/project-cards";
+import { FeaturedProject } from "@/components/project-cards";
+import { type FolderProject, ProjectFolders } from "@/components/project-folders";
 import { SystemExplorer } from "@/components/system-explorer";
 import { TerminalLazy } from "@/components/terminal-lazy";
 import { ButtonLink, JsonLd, SectionHeading } from "@/components/ui";
 import { building, buildingAsOf } from "@/content/building";
 import { experiments } from "@/content/lab";
-import { projects, toCard } from "@/content/projects";
+import { projects } from "@/content/projects";
 import { aiWorkflow, exploring, journey, learning, services, skills } from "@/content/profile";
 import { site } from "@/content/site";
 import { homePageGraph } from "@/lib/schema";
 
 export default function HomePage() {
   const featured = projects.filter((p) => p.featured);
-  const more = projects.filter((p) => !p.featured);
+  const folders: FolderProject[] = projects.map((p) => ({
+    slug: p.slug,
+    name: p.name,
+    status: p.status.label.split("·")[0].trim(),
+    tint: p.tint,
+    live: p.links.live?.href,
+    shots: p.shots.map((s) => ({ src: s.image.src, caption: s.caption, device: s.device })),
+  }));
 
   return (
     <>
@@ -45,17 +53,19 @@ export default function HomePage() {
 
         <div className="mt-28 border-t border-line pt-12 md:mt-36">
           <div className="flex flex-wrap items-end justify-between gap-6">
-            <h3 className="font-serif text-title">More work</h3>
+            <div>
+              <h3 className="font-serif text-title">The archive</h3>
+              <p className="mt-3 max-w-xl text-fg-muted">
+                Every project in its own folder. Hover to lift the files, click to fan out the real screens, and pick any
+                one to read the case study.
+              </p>
+            </div>
             <ButtonLink href="/projects" variant="outline">
               All projects
             </ButtonLink>
           </div>
-          <div className="mt-10 grid gap-x-8 gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
-            {more.map((project) => (
-              <div key={project.slug} className="reveal">
-                <ProjectCard project={toCard(project)} />
-              </div>
-            ))}
+          <div className="mt-14">
+            <ProjectFolders projects={folders} />
           </div>
         </div>
       </section>

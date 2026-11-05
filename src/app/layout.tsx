@@ -7,6 +7,7 @@ import { MenuScript } from "@/components/menu-script";
 import { MotionLayer } from "@/components/motion-layer";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
+import { Ignition, IgnitionGate } from "@/components/ignition";
 import { ThemeScript } from "@/components/theme";
 import { JsonLd } from "@/components/ui";
 import { projects } from "@/content/projects";
@@ -63,12 +64,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     >
       <head>
         <ThemeScript />
+        <IgnitionGate />
         <MenuScript />
         <DeferRenderScript />
       </head>
       <body className="min-h-dvh">
         {/* The site-wide WebSite and Person entities; pages refer to them by @id. */}
         <JsonLd data={siteGraph()} />
+        {/* Shown only on the homepage, and only when IgnitionGate switched it on. */}
+        <Ignition />
         <a href="#main" className="skip-link">
           Skip to content
         </a>
