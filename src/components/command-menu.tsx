@@ -40,6 +40,7 @@ const pages: Item[] = [
   { id: "lab-results", group: "Pages", label: "Lab: Bilingual result sheet", keywords: "grades arabic rtl school markaz", href: "/lab/result-sheet" },
   { id: "lab-clock", group: "Pages", label: "Lab: Match clock", keywords: "football timer six-a-side eksu sports", href: "/lab/match-clock" },
   { id: "lab-gears", group: "Pages", label: "Lab: Gear train", keywords: "gears ratio torque involute mechanical engineering", href: "/lab/gear-train" },
+  { id: "lab-beam", group: "Pages", label: "Lab: Beam deflection", keywords: "beam bending stress structural mechanical engineering", href: "/lab/beam-deflection" },
 ];
 
 const actions: Item[] = [

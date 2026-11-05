@@ -30,6 +30,8 @@ export function formatSig(value: number, sig = 3): string {
 /**
  * A quantity in SI base units shown with the nearest engineering prefix:
  * formatSI(0.008333, "m") → "8.33 mm"; formatSI(2.1e11, "Pa") → "210 GPa".
+ * Not for powered units such as m⁴: a prefix applies before the exponent
+ * (1 mm⁴ = 10⁻¹² m⁴), so those need their own formatting.
  */
 export function formatSI(value: number, unit: string, sig = 3): string {
   if (!Number.isFinite(value)) return "—";

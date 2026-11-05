@@ -501,7 +501,7 @@ export function GearTrain({ initial }: { initial: GearConfig }) {
 
         <label className="mt-5 block text-sm">
           <span className="flex justify-between">
-            Input speed <output className="font-mono tabular-nums text-fg">{config.rpm} rpm</output>
+            Input speed <span className="font-mono tabular-nums text-fg">{config.rpm} rpm</span>
           </span>
           <input
             type="range"
@@ -509,13 +509,14 @@ export function GearTrain({ initial }: { initial: GearConfig }) {
             max={3000}
             step={10}
             value={config.rpm}
+            aria-valuetext={`${config.rpm} revolutions per minute`}
             onChange={(e) => update({ rpm: Number(e.target.value) })}
             className="mt-2 w-full accent-[var(--accent)]"
           />
         </label>
         <label className="mt-5 block text-sm">
           <span className="flex justify-between">
-            Efficiency per mesh <output className="font-mono tabular-nums text-fg">{formatSig(config.eta * 100, 3)} %</output>
+            Efficiency per mesh <span className="font-mono tabular-nums text-fg">{formatSig(config.eta * 100, 3)} %</span>
           </span>
           <input
             type="range"
@@ -523,6 +524,7 @@ export function GearTrain({ initial }: { initial: GearConfig }) {
             max={100}
             step={0.5}
             value={config.eta * 100}
+            aria-valuetext={`${formatSig(config.eta * 100, 3)} percent`}
             onChange={(e) => update({ eta: Number(e.target.value) / 100 })}
             className="mt-2 w-full accent-[var(--accent)]"
           />

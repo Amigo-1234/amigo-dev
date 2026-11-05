@@ -91,6 +91,17 @@ export function LabGlyph({ slug }: { slug: string }) {
       );
     case "gear-train":
       return <GearGlyph />;
+    case "beam-deflection":
+      return (
+        <svg viewBox="0 0 120 56" aria-hidden="true" className="w-[72%] text-fg">
+          <path d="M12 20 Q60 40 108 20" fill="none" stroke="currentColor" strokeWidth="5" strokeLinecap="round" />
+          <line x1="12" y1="20" x2="108" y2="20" stroke="var(--construction)" strokeDasharray="4 3" />
+          <path d="M12 23l-6 10h12z M108 23l-6 8h12z" fill="var(--ink-raised)" stroke="currentColor" strokeWidth="1" />
+          <line x1="48" y1="2" x2="48" y2="22" stroke="var(--accent)" strokeWidth="2" />
+          <path d="M44 18l4 8 4-8z" fill="var(--accent)" />
+          <path d="M12 48 L48 42 L108 48" fill="none" stroke="currentColor" strokeOpacity=".5" />
+        </svg>
+      );
     default:
       return null;
   }

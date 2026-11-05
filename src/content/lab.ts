@@ -127,6 +127,34 @@ export const experiments: Experiment[] = [
       "R. G. Budynas and J. K. Nisbett, Shigley's Mechanical Engineering Design, chapter 13: Gears — General",
     ],
   },
+  {
+    slug: "beam-deflection",
+    code: "EXP-05",
+    family: "instrument",
+    href: "/lab/beam-deflection",
+    title: "Beam deflection",
+    kind: "Simulation",
+    summary:
+      "Load a beam and watch it bend. Choose the supports, load, span, section and material, drag a point load along the span, and read the deflection, stresses and diagrams.",
+    tech: ["TypeScript", "SVG", "Euler–Bernoulli beam theory"],
+    notes: [
+      "The deflected shape, the shear force and bending moment diagrams and every readout come from the same closed-form solutions, evaluated along the span.",
+      "Real deflections are millimetres on a span of metres, so the shape is drawn exaggerated, and the factor is printed under the drawing.",
+      "The maths is checked against independent methods: hand-worked examples, numerical double integration of the curvature with each case's support conditions, statics, and Maxwell–Betti reciprocity.",
+      "The settings are kept in the address bar, so a beam can be shared as a link.",
+    ],
+    assumptions: [
+      "Euler–Bernoulli beam theory: small deflections, linear-elastic material, a straight prismatic beam, and plane sections that stay plane. Shear deformation is ignored, which suits slender beams (span well over ten times the depth).",
+      "Self-weight is ignored. Loads act through the section's centroid, and the beam neither twists nor buckles sideways.",
+      "Material values are typical published figures for teaching. Real values vary with grade, product, moisture (for timber) and temperature, and design codes apply their own factors.",
+      "Span/360 is a common serviceability guideline, not a universal limit. Stress is compared with the material's strength without any safety factor.",
+    ],
+    references: [
+      "J. M. Gere and B. J. Goodno, Mechanics of Materials, chapter 9: Deflections of Beams",
+      "EN 1993-1-1 (Eurocode 3) and EN 10025-2 for structural steel; EN 338 for timber strength classes",
+      "ASTM A240 for stainless steel 304; ASM handbook typical values for aluminium 6061-T6",
+    ],
+  },
 ];
 
 export function getExperiment(slug: string) {
