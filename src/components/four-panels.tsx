@@ -1,4 +1,5 @@
 import { gearGeometry, gearPath } from "@/lib/engineering/gears";
+import { compactPath } from "@/lib/svg";
 
 import { Panel, Sfx } from "./comic";
 
@@ -30,7 +31,7 @@ const PANELS = [
     sfx: "Clank",
     art: (
       <>
-        <path d={gearPath(gear, 4)} transform="translate(60 60)" />
+        <path d={compactPath(gearPath(gear, 4))} transform="translate(60 60)" />
         <circle cx="60" cy="60" r="12" />
       </>
     ),

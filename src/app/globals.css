@@ -238,6 +238,7 @@
     font-synthesis: none;
   }
   :where(p, li, blockquote, dd).font-serif {
+    font-family: var(--font-display-light), var(--font-display);
     font-weight: 700;
     text-transform: none;
     letter-spacing: 0.005em;

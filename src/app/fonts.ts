@@ -31,11 +31,22 @@ export const GeistMono = localFont({
  * machine-shop signage. Headings only, so two weights are enough.
  */
 export const displayFace = localFont({
-  src: [
-    { path: "../fonts/big-shoulders-display-latin-700-normal.woff2", weight: "700", style: "normal" },
-    { path: "../fonts/big-shoulders-display-latin-900-normal.woff2", weight: "900", style: "normal" },
-  ],
+  src: "../fonts/big-shoulders-display-latin-900-normal.woff2",
+  weight: "900",
   variable: "--font-display-face",
   display: "swap",
+  fallback: ["Impact", "Haettenschweiler", "Arial Narrow", "sans-serif"],
+});
+
+/*
+ * The lighter cut, for the few longer passages set in the display face (pull
+ * quotes, ground rules). Never above the fold, so it is not preloaded.
+ */
+export const displayFaceLight = localFont({
+  src: "../fonts/big-shoulders-display-latin-700-normal.woff2",
+  weight: "700",
+  variable: "--font-display-light",
+  display: "swap",
+  preload: false,
   fallback: ["Impact", "Haettenschweiler", "Arial Narrow", "sans-serif"],
 });

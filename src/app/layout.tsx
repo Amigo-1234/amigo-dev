@@ -17,7 +17,7 @@ import { projects } from "@/content/projects";
 import { site } from "@/content/site";
 import { siteGraph } from "@/lib/schema";
 
-import { displayFace, GeistMono, GeistSans } from "./fonts";
+import { displayFace, displayFaceLight, GeistMono, GeistSans } from "./fonts";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -61,7 +61,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       lang="en"
       data-theme="dark"
       suppressHydrationWarning
-      className={`${GeistSans.variable} ${GeistMono.variable} ${displayFace.variable}`}
+      className={`${GeistSans.variable} ${GeistMono.variable} ${displayFace.variable} ${displayFaceLight.variable}`}
     >
       <head>
         <ThemeScript />
@@ -70,8 +70,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <DeferRenderScript />
       </head>
       <body className="min-h-dvh">
-        {/* The background of every page: grid, halftone, webs and the drawing. */}
-        <SiteBackdrop />
         {/* The site-wide WebSite and Person entities; pages refer to them by @id. */}
         <JsonLd data={siteGraph()} />
         {/* Shown only on the homepage, and only when IgnitionGate switched it on. */}
@@ -88,6 +86,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <EasterEggs />
         <PlumbBob />
         <TerminalDock />
+        {/* The background of every page (fixed, behind everything): grid, halftone, webs and the drawing.
+            Last in the HTML, so the content arrives before it. */}
+        <SiteBackdrop />
         <CommandMenu
           projects={projects.map((p) => ({
             slug: p.slug,

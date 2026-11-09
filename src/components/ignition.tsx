@@ -1,5 +1,6 @@
 import { MONOGRAM_BAR, MONOGRAM_INK } from "@/components/brand";
 import { gearGeometry, gearPath } from "@/lib/engineering/gears";
+import { compactPath } from "@/lib/svg";
 
 /*
  * Ignition: the homepage's opening, the cover of Issue #01. A 24-tooth gear
@@ -156,17 +157,17 @@ export function Ignition() {
               </g>
               {/* Pinion */}
               <g className="ign-g2">
-                <path d={gearPath(g2, 7)} className="ign-tooth" />
+                <path d={compactPath(gearPath(g2, 4))} className="ign-tooth" />
                 <circle r="20" className="ign-hub" />
                 <circle r="8" className="ign-bore" />
               </g>
               {/* Motion blur: a coarse ghost of the outline (it is blurred anyway) trailing behind at speed. */}
               <g className="ign-ghost">
-                <path d={gearPath(g1, 3)} />
+                <path d={compactPath(gearPath(g1, 2))} />
               </g>
               {/* The gear */}
               <g className="ign-g1">
-                <path d={gearPath(g1, 7)} className="ign-tooth" />
+                <path d={compactPath(gearPath(g1, 5))} className="ign-tooth" />
                 <circle r={(g1.rootRadius - 14 + hub) / 2} fill="none" stroke="url(#ign-hatch)" strokeWidth={g1.rootRadius - 14 - hub} />
                 <circle r={g1.rootRadius - 14} className="ign-rim" />
                 <circle r={hub} className="ign-hub" />

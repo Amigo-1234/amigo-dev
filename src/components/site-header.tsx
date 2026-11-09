@@ -7,6 +7,7 @@ import { useEffect, useRef } from "react";
 import { nav, site } from "@/content/site";
 import { cn } from "@/lib/cn";
 import { gearGeometry, gearPath } from "@/lib/engineering/gears";
+import { compactPath } from "@/lib/svg";
 import { sfx } from "@/lib/sound";
 
 import { openCommandMenu } from "./command-menu";
@@ -181,8 +182,8 @@ const DRAWINGS: Record<string, { caption: string; art: React.ReactNode }> = {
     caption: "the workshop",
     art: (
       <g>
-        <path d={gearPath(g1, 5)} transform="translate(78 104)" pathLength={1} />
-        <path d={gearPath(g2, 5)} transform={`translate(${78 + (6 * (14 + 9)) / 2} 104) rotate(20)`} pathLength={1} />
+        <path d={compactPath(gearPath(g1, 3))} transform="translate(78 104)" pathLength={1} />
+        <path d={compactPath(gearPath(g2, 3))} transform={`translate(${78 + (6 * (14 + 9)) / 2} 104) rotate(20)`} pathLength={1} />
         <circle cx="78" cy="104" r="8" pathLength={1} />
       </g>
     ),

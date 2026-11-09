@@ -1,4 +1,5 @@
 import { gearGeometry, gearPath } from "@/lib/engineering/gears";
+import { compactPath } from "@/lib/svg";
 
 /*
  * The background of every page: one fixed layer behind the content, in four
@@ -68,7 +69,7 @@ export function SiteBackdrop() {
         <g className="bd-gear-wrap" transform="translate(1385 640)">
           <path className="bd-centre" d="M-150 0H150M0 -150V150" />
           <g className="bd-gear">
-            <path d={gearPath(gear, 3)} />
+            <path d={compactPath(gearPath(gear, 3))} />
             <circle r={gear.rootRadius - 22} />
             <circle r="18" />
           </g>
