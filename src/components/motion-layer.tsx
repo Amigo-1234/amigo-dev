@@ -5,6 +5,7 @@ import { useRef } from "react";
 
 import { FINE_POINTER, MOTION, useGsap } from "@/lib/gsap";
 import { PRINT_DURATION, PRINT_OFFSET, stepped } from "@/lib/motion";
+import { sfx } from "@/lib/sound";
 
 /*
  * Site-wide motion, driven by data attributes so pages stay server-rendered:
@@ -84,6 +85,8 @@ export function MotionLayer() {
             once: true,
             onEnter: () => {
               const ease = stepped(gsap.parseEase("power3.out"), PRINT_DURATION);
+              // A soft paper thud as a panel lands (only with sound on; the engine never stacks repeats).
+              if (panel) sfx("panel");
               if (panel) gsap.to(el, { opacity: 1, scale: 1, rotate: 0, duration: PRINT_DURATION, ease, clearProps: "transform,opacity" });
               if (reg) gsap.to(reg, { "--reg": 0, duration: PRINT_DURATION, ease, delay: panel ? 0.08 : 0 });
             },
@@ -111,6 +114,28 @@ export function MotionLayer() {
                 ease: stepped(gsap.parseEase("power2.inOut"), 1.1),
                 stagger: 0.06,
                 onComplete: () => void gsap.set(strokes, { clearProps: "strokeDasharray,strokeDashoffset" }),
+              }),
+          });
+        }
+
+        // Count: a whole number rolls up from zero, on twos. Anything that isn't a
+        // plain integer (or is already on screen) is left exactly as written.
+        for (const el of gsap.utils.toArray<HTMLElement>("[data-count]")) {
+          const text = el.textContent ?? "";
+          if (!/^\d{1,5}$/.test(text.trim()) || !belowFold(el)) continue;
+          const target = Number(text.trim());
+          const counter = { v: 0 };
+          ScrollTrigger.create({
+            trigger: el,
+            start: "top 90%",
+            once: true,
+            onEnter: () =>
+              void gsap.fromTo(counter, { v: 0 }, {
+                v: target,
+                duration: 0.9,
+                ease: stepped(gsap.parseEase("power2.out"), 0.9),
+                onUpdate: () => void (el.textContent = String(Math.round(counter.v))),
+                onComplete: () => void (el.textContent = text),
               }),
           });
         }

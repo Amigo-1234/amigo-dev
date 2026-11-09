@@ -4,7 +4,7 @@ import Link from "next/link";
 import type { Project, ProjectCardData } from "@/content/projects";
 import { cn } from "@/lib/cn";
 
-import { ShotFrame, StatusPill } from "./ui";
+import { StatusPill } from "./ui";
 
 /** Used where a project has no public screenshots. Never imitates a UI. */
 function NoScreenshot({ project, className }: { project: Pick<Project, "name" | "kind" | "tint">; className?: string }) {
@@ -35,83 +35,6 @@ function HoverChip({ children }: { children: React.ReactNode }) {
     >
       {children} <span className="text-accent">→</span>
     </span>
-  );
-}
-
-/** Large alternating feature used on the home page. */
-export function FeaturedProject({ project, index }: { project: Project; index: number }) {
-  const [primary, secondary] = [project.shots.find((s) => s.device === "desktop"), project.shots.find((s) => s.device === "mobile")];
-  const flip = index % 2 === 1;
-
-  return (
-    <article className="reveal group relative grid items-center gap-8 md:grid-cols-12 md:gap-12">
-      <Link
-        href={`/projects/${project.slug}`}
-        className={cn("relative block md:col-span-7", flip && "md:order-2")}
-        aria-label={`${project.name} case study`}
-        tabIndex={-1}
-      >
-        <div
-          aria-hidden="true"
-          className="absolute inset-0 -z-10 rounded-[2rem] opacity-0 blur-3xl md:-inset-6 transition-opacity duration-700 group-hover:opacity-20"
-          style={{ background: project.tint }}
-        />
-        <div data-speed="4">
-          {primary ? (
-            <ShotFrame
-              shot={primary}
-              tint={project.tint}
-              sizes="(min-width: 1024px) 760px, (min-width: 768px) 58vw, 100vw"
-              className="transition-transform duration-700 ease-[var(--ease-out-expo)] group-hover:-translate-y-1"
-            />
-          ) : (
-            <NoScreenshot project={project} />
-          )}
-        </div>
-        <HoverChip>Open case study</HoverChip>
-        {secondary && (
-          <div
-            data-speed="-14"
-            className={cn(
-              "absolute -bottom-8 hidden w-[24%] transition-transform duration-700 ease-[var(--ease-out-expo)] group-hover:-translate-y-2 sm:block",
-              flip ? "-left-4" : "-right-4",
-            )}
-          >
-            <ShotFrame shot={secondary} sizes="200px" className="max-w-none rounded-[1.4rem] p-1 [&>div]:rounded-[1.1rem]" />
-          </div>
-        )}
-      </Link>
-
-      <div className={cn("md:col-span-5", flip && "md:order-1")}>
-        <div className="flex flex-wrap items-center gap-3">
-          <span data-scramble className="font-mono text-xs text-accent">
-            {String(index + 1).padStart(2, "0")}
-          </span>
-          <StatusPill label={project.status.label} tone={project.status.tone} />
-        </div>
-        <h3 className="mt-5 font-serif text-title">
-          <Link href={`/projects/${project.slug}`} className="link-underline">
-            {project.name}
-          </Link>
-        </h3>
-        {project.client && <p className="mt-2 text-sm text-fg-subtle">For {project.client}</p>}
-        <p className="mt-4 text-lg leading-relaxed text-fg-muted">{project.summary}</p>
-        <ul className="mt-6 flex flex-wrap gap-x-4 gap-y-1.5 font-mono text-xs text-fg-subtle">
-          {project.stack.slice(0, 5).map((s) => (
-            <li key={s}>{s}</li>
-          ))}
-        </ul>
-        <Link
-          href={`/projects/${project.slug}`}
-          className="mt-8 inline-flex items-center gap-2 text-sm font-medium text-fg"
-        >
-          <span className="link-underline">Read the case study</span>
-          <span aria-hidden="true" className="transition-transform duration-300 group-hover:translate-x-1">
-            →
-          </span>
-        </Link>
-      </div>
-    </article>
   );
 }
 

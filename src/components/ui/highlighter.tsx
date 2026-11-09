@@ -1,8 +1,7 @@
 "use client"
 
-import { useLayoutEffect, useRef } from "react"
+import { useEffect, useLayoutEffect, useRef, useState, useSyncExternalStore } from "react"
 import type React from "react"
-import { useInView, useReducedMotion } from "motion/react"
 import { annotate } from "rough-notation"
 import { type RoughAnnotation } from "rough-notation/lib/model"
 
@@ -40,12 +39,10 @@ export function Highlighter({
 }: HighlighterProps) {
   const elementRef = useRef<HTMLSpanElement>(null)
   // [AMIGODEV] Reduced motion: the mark appears already drawn.
-  const reduce = useReducedMotion()
+  const reduce = usePrefersReducedMotion()
 
-  const isInView = useInView(elementRef, {
-    once: true,
-    margin: "-10%",
-  })
+  // [AMIGODEV] In-view and reduced-motion checks without the motion library.
+  const isInView = useInViewOnce(elementRef)
 
   // If isView is false, always show. If isView is true, wait for inView
   const shouldShow = !isView || isInView
@@ -105,3 +102,37 @@ export function Highlighter({
   )
 }
 
+
+/** True once the element has come within 10% of the viewport (and stays true). */
+function useInViewOnce(ref: React.RefObject<HTMLElement | null>) {
+  const [seen, setSeen] = useState(false)
+  useEffect(() => {
+    const el = ref.current
+    if (!el || seen) return
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setSeen(true)
+          io.disconnect()
+        }
+      },
+      { rootMargin: "-10%" }
+    )
+    io.observe(el)
+    return () => io.disconnect()
+  }, [ref, seen])
+  return seen
+}
+
+const REDUCE = "(prefers-reduced-motion: reduce)"
+function usePrefersReducedMotion() {
+  return useSyncExternalStore(
+    (cb) => {
+      const mq = matchMedia(REDUCE)
+      mq.addEventListener("change", cb)
+      return () => mq.removeEventListener("change", cb)
+    },
+    () => matchMedia(REDUCE).matches,
+    () => false
+  )
+}

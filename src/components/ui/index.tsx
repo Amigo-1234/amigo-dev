@@ -64,6 +64,11 @@ export function SectionHeading({
 }) {
   return (
     <div className={cn("grid gap-6 md:grid-cols-12 md:gap-10", className)}>
+      {/* A strand of silk across the top of the page: it inks itself in as the section arrives. */}
+      <svg aria-hidden="true" data-ink viewBox="0 0 1000 28" preserveAspectRatio="none" className="silk-seam md:col-span-12">
+        <path d="M0 3 Q 500 30 1000 3" />
+        <path d="M640 15 L 662 3 M 640 15 L 652 28" />
+      </svg>
       {/* The narration box names the section; the title prints into register as it arrives. */}
       <div className="md:col-span-3 md:pt-2">
         <Caption>

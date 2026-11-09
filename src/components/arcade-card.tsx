@@ -9,7 +9,7 @@ export function ArcadeCard() {
   return (
     <Link
       href="/play"
-      className="group glass mt-8 flex items-center gap-4 rounded-2xl p-3 pr-5 transition-transform duration-300 hover:-translate-y-0.5"
+      className="group panel flex items-center gap-4 p-3 pr-5 transition-transform duration-300 hover:-translate-y-0.5"
     >
       <span className="relative grid size-16 shrink-0 place-items-center overflow-hidden rounded-xl bg-[#0b0b0c]">
         <span aria-hidden="true" className="game-scanlines absolute inset-0" />

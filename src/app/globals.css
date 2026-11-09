@@ -1214,6 +1214,542 @@ html[data-ignited] #main {
 }
 
 /* ------------------------------------------------------------------ */
+/* Chapters and back issues (components/chapters.tsx)                 */
+/* ------------------------------------------------------------------ */
+
+/* A rubber stamp. */
+.stamp {
+  display: inline-block;
+  padding: 0.3rem 0.6rem 0.25rem;
+  border: 2px solid currentColor;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  transform: rotate(-3deg);
+  box-shadow: inset 0 0 0 2px var(--ink-raised), inset 0 0 0 3px currentColor;
+}
+.stamp--live {
+  color: var(--ok);
+}
+.stamp--building {
+  color: var(--warn);
+}
+.stamp--concept {
+  color: var(--fg-subtle);
+}
+
+.chapter {
+  display: grid;
+  gap: 1.25rem;
+}
+.chapter__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1.25rem;
+}
+.chapter__head h3 {
+  flex: 1 1 18rem;
+}
+.chapter__title-link {
+  text-decoration: none;
+}
+.chapter__title-link:hover {
+  color: var(--accent);
+}
+/* The page: panels in gutters. Phones read it as a vertical strip. */
+.chapter__grid {
+  display: grid;
+  gap: 0.75rem;
+}
+@media (min-width: 64rem) {
+  .chapter__grid {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    grid-template-areas:
+      "s s s s s s s p p p p p"
+      "s s s s s s s h h h h h"
+      "t t t t t t c c c c c c";
+  }
+  .chapter__grid--flip {
+    grid-template-areas:
+      "p p p p p s s s s s s s"
+      "h h h h h s s s s s s s"
+      "c c c c c c t t t t t t";
+  }
+  .chapter__splash {
+    grid-area: s;
+  }
+  .chapter__problem {
+    grid-area: p;
+  }
+  .chapter__how {
+    grid-area: h;
+  }
+  .chapter__twist {
+    grid-area: t;
+  }
+  .chapter__spec {
+    grid-area: c;
+  }
+}
+.chapter .panel {
+  padding: 1.25rem;
+}
+@media (min-width: 48rem) {
+  .chapter .panel {
+    padding: 1.5rem 1.6rem;
+  }
+}
+.chapter__splash {
+  overflow: hidden;
+  display: grid;
+  align-content: center;
+  gap: 1rem;
+  background:
+    radial-gradient(120% 90% at 80% 20%, color-mix(in srgb, var(--tint) 32%, transparent), transparent 65%),
+    var(--ink-raised);
+}
+.chapter__splash-dots {
+  position: absolute;
+  inset: 0 0 auto auto;
+  width: 55%;
+  height: 70%;
+  opacity: 0.3;
+}
+.chapter__shot {
+  transition: transform 0.5s var(--ease-out-expo);
+}
+.chapter__splash:hover .chapter__shot {
+  transform: translateY(-4px) rotate(-0.4deg);
+}
+.chapter__phone {
+  position: absolute;
+  right: 1rem;
+  bottom: 3.5rem;
+  width: 18%;
+  max-width: 9rem;
+  overflow: hidden;
+  border: 2px solid var(--frame);
+  border-radius: 0.9rem;
+  box-shadow: 6px 6px 0 rgb(0 0 0 / 0.35);
+}
+@media (max-width: 40rem) {
+  .chapter__phone {
+    display: none;
+  }
+}
+.chapter__splash-caption {
+  position: relative;
+  max-width: 44ch;
+  padding: 0.45rem 0.7rem;
+  background: var(--sfx);
+  color: var(--sfx-fg);
+  border: 2px solid var(--sfx-fg);
+  font-size: 0.875rem;
+  line-height: 1.45;
+}
+.chapter__label {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.chapter__label--blue {
+  color: var(--blueprint);
+}
+.chapter__lead {
+  margin-top: 0.75rem;
+  font-size: 1.0625rem;
+  line-height: 1.55;
+}
+.chapter__body {
+  margin-top: 0.75rem;
+  color: var(--fg-muted);
+  line-height: 1.6;
+}
+.chapter__parts {
+  display: grid;
+  gap: 0.7rem;
+  margin-top: 0.85rem;
+}
+.chapter__parts li {
+  display: grid;
+  grid-template-columns: 1.6rem minmax(0, 1fr);
+  gap: 0.6rem;
+}
+.chapter__part-no {
+  display: grid;
+  place-items: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  border: 1.5px solid var(--blueprint);
+  border-radius: 50%;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  color: var(--blueprint);
+}
+.chapter__part-name {
+  display: block;
+  font-weight: 600;
+  font-size: 0.9375rem;
+}
+.chapter__part-detail {
+  display: block;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--fg-muted);
+}
+.chapter__facts {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin-top: 0.85rem;
+}
+.chapter__facts div {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 0.25rem;
+  border-top: 2px solid var(--frame);
+  padding-top: 0.5rem;
+}
+.chapter__facts dd {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(2rem, 1.5rem + 1.6vw, 2.8rem);
+  line-height: 0.9;
+  font-variant-numeric: tabular-nums;
+}
+.chapter__facts dt {
+  font-size: 0.75rem;
+  line-height: 1.35;
+  color: var(--fg-muted);
+}
+.chapter__stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-top: 1rem;
+}
+.chapter__stack li {
+  padding: 0.15rem 0.5rem;
+  border: 1px solid var(--line-strong);
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  color: var(--fg-muted);
+}
+.chapter__cta {
+  display: inline-flex;
+  gap: 0.5rem;
+  margin-top: 1.25rem;
+  padding: 0.55rem 1rem;
+  background: var(--fg);
+  color: var(--ink);
+  font-weight: 600;
+  font-size: 0.875rem;
+  box-shadow: 4px 4px 0 var(--accent);
+  transition:
+    transform 0.12s,
+    box-shadow 0.12s;
+}
+.chapter__cta:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 6px 6px 0 var(--accent);
+}
+
+/* Back issues: a rack of covers. */
+.back-issues {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 16.5rem), 1fr));
+  gap: 1rem;
+}
+.back-issue {
+  min-width: 0;
+}
+.back-issue__link {
+  position: relative;
+  display: grid;
+  grid-template-rows: auto auto auto 1fr;
+  gap: 0.6rem;
+  height: 100%;
+  padding: 0.75rem 0.75rem 1rem;
+  border: 2px solid var(--frame);
+  background:
+    radial-gradient(circle, color-mix(in srgb, var(--tint) 55%, transparent) 0 1.4px, transparent 1.9px) 0 0 / 8px 8px,
+    linear-gradient(160deg, color-mix(in srgb, var(--tint) 28%, var(--ink-raised)), var(--ink-raised) 60%);
+  transition:
+    transform 0.2s var(--ease-out-expo),
+    box-shadow 0.2s;
+}
+.back-issue__link:hover,
+.back-issue__link:focus-visible {
+  transform: translate(-3px, -3px) rotate(-0.6deg);
+  box-shadow: 7px 7px 0 var(--accent);
+}
+.back-issue__masthead {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+}
+.back-issue__no {
+  color: var(--fg);
+}
+.back-issue__art {
+  display: block;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border: 2px solid var(--frame);
+  background: var(--ink-sunken);
+}
+.back-issue__art img {
+  transition: transform 0.6s var(--ease-out-expo);
+}
+.back-issue__link:hover .back-issue__art img {
+  transform: scale(1.04);
+}
+.back-issue__title {
+  font-size: 1.85rem;
+  line-height: 0.9;
+}
+.back-issue__summary {
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--fg-muted);
+}
+.back-issue__stamp {
+  position: absolute;
+  top: 2.4rem;
+  right: 0.4rem;
+  background: var(--ink-raised);
+}
+
+/* ------------------------------------------------------------------ */
+/* Homepage, Issue #01 (app/page.tsx)                                 */
+/* ------------------------------------------------------------------ */
+
+/* The silk seam that opens each section. */
+.silk-seam {
+  width: 100%;
+  height: 1.75rem;
+  overflow: visible;
+  fill: none;
+  stroke: var(--fg-subtle);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+  opacity: 0.7;
+}
+.silk-seam path {
+  vector-effect: non-scaling-stroke;
+}
+
+/* The cover: a halftone burst behind the web in the top corner. */
+.cover__dots {
+  top: -2rem;
+  right: -2rem;
+  width: min(48rem, 70vw);
+  height: 30rem;
+  opacity: 0.22;
+  mask-image: radial-gradient(circle at 100% 0, #000, transparent 70%);
+}
+/* Cover credits: the issue's credits box, ruled like a title block. */
+.cover-credits {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  border: 2px solid var(--frame);
+  background: var(--ink);
+  font-size: 0.8125rem;
+}
+.cover-credits > div {
+  min-width: 0;
+  padding: 0.65rem 0.85rem;
+  border-right: 1px solid var(--line-strong);
+  border-bottom: 1px solid var(--line-strong);
+}
+.cover-credits > div:nth-child(2n) {
+  border-right: 0;
+}
+.cover-credits > div:nth-last-child(-n + 2) {
+  border-bottom: 0;
+}
+@media (min-width: 48rem) {
+  .cover-credits {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    font-size: 0.875rem;
+  }
+  .cover-credits > div {
+    border-bottom: 0;
+    border-right: 1px solid var(--line-strong);
+  }
+  .cover-credits > div:last-child {
+    border-right: 0;
+  }
+}
+.cover-credits dt {
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--fg-subtle);
+}
+.cover-credits dd {
+  margin-top: 0.3rem;
+  color: var(--fg);
+}
+
+/* The caption tape: the skills belt between ruled edges. */
+.caption-tape {
+  border-block: 2px solid var(--frame);
+  background: var(--ink-sunken);
+}
+
+/* The exploded assembly sits on drafting paper. */
+.assembly {
+  position: relative;
+  padding: clamp(0.75rem, 2vw, 1.5rem);
+  border: 2px solid var(--frame);
+  background-color: var(--ink);
+  background-image:
+    linear-gradient(to right, var(--grid) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid) 1px, transparent 1px);
+  background-size: 1.5rem 1.5rem;
+}
+
+/* Four panels: one strip. */
+.four-panels {
+  display: grid;
+  gap: 0.75rem;
+}
+@media (min-width: 40rem) {
+  .four-panels {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (min-width: 64rem) {
+  .four-panels {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+.four-panel {
+  display: grid;
+  height: 100%;
+  padding: 1.25rem 1.25rem 1.5rem;
+  overflow: hidden;
+}
+.four-panel__no {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  color: var(--fg-subtle);
+}
+.four-panel__sfx {
+  position: absolute;
+  top: 0.9rem;
+  right: 1rem;
+  font-size: 1.6rem;
+}
+.four-panel__art {
+  width: 7.5rem;
+  height: 7.5rem;
+  margin: 1.25rem auto 0.5rem;
+  fill: none;
+  stroke: var(--blueprint);
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.four-panel__verb {
+  font-size: clamp(2.4rem, 1.8rem + 2vw, 3.4rem);
+  line-height: 0.9;
+}
+.four-panel__note {
+  margin-top: 0.6rem;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--fg-muted);
+}
+
+/* The equipment manifest: a parts list, row by row. */
+.manifest {
+  display: grid;
+  gap: 0.75rem;
+}
+.manifest__row {
+  display: grid;
+  gap: 1rem 1.5rem;
+  padding: 1.25rem;
+  border: 2px solid var(--frame);
+  background: var(--ink-raised);
+}
+@media (min-width: 64rem) {
+  .manifest__row {
+    grid-template-columns: 5rem minmax(0, 1.1fr) minmax(0, 1.4fr) minmax(0, 0.8fr);
+    align-items: start;
+    padding: 1.5rem;
+  }
+}
+.manifest__item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+.manifest__no {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 2.6rem;
+  line-height: 0.9;
+  color: var(--accent);
+}
+.manifest__parts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  align-content: start;
+}
+.manifest__parts li {
+  padding: 0.2rem 0.55rem;
+  border: 1px solid var(--line-strong);
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  color: var(--fg-muted);
+}
+.manifest__seen {
+  font-size: 0.8125rem;
+  color: var(--fg-muted);
+}
+
+/* The origin story's panels. */
+.origin-panel {
+  padding: 1.5rem;
+}
+@media (min-width: 48rem) {
+  .origin-panel {
+    padding: 2rem 2.25rem;
+    min-height: 15rem;
+  }
+}
+.origin-panel--next {
+  border-style: dashed;
+  border-color: var(--accent);
+}
+
+/* Commissions: a hover lifts the panel off the page like a sticker. */
+.commission {
+  transition:
+    transform 0.2s var(--ease-out-expo),
+    box-shadow 0.2s;
+}
+.commission:hover {
+  transform: translate(-3px, -3px);
+  box-shadow: 6px 6px 0 var(--blueprint);
+}
+
+/* ------------------------------------------------------------------ */
 /* The site menu: three print plates                                  */
 /* ------------------------------------------------------------------ */
 
@@ -1764,12 +2300,6 @@ html[data-ignition="launch"] .plumb {
   color: var(--fg-subtle);
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
-}
-
-/* ComicText starts invisible for its entrance; without JavaScript there is no entrance. */
-html:not(.js) .comic-text {
-  opacity: 1 !important;
-  transform: skewX(-10deg) !important;
 }
 
 @media print {
