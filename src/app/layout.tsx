@@ -6,7 +6,8 @@ import { EasterEggs } from "@/components/easter-eggs";
 import { MenuScript } from "@/components/menu-script";
 import { MotionLayer } from "@/components/motion-layer";
 import { SiteFooter } from "@/components/site-footer";
-import { SpiderDrop } from "@/components/spider-drop";
+import { PlumbBob } from "@/components/plumb-bob";
+import { TerminalDock } from "@/components/terminal-dock";
 import { SiteHeader } from "@/components/site-header";
 import { Ignition, IgnitionGate } from "@/components/ignition";
 import { ThemeScript } from "@/components/theme";
@@ -82,7 +83,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <SiteFooter />
         <MotionLayer />
         <EasterEggs />
-        <SpiderDrop />
+        <PlumbBob />
+        <TerminalDock />
         <CommandMenu
           projects={projects.map((p) => ({
             slug: p.slug,

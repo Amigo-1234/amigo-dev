@@ -2,11 +2,12 @@ import { MONOGRAM_BAR, MONOGRAM_INK } from "@/components/brand";
 import { gearGeometry, gearPath } from "@/lib/engineering/gears";
 
 /*
- * Ignition: the homepage's opening. A 24-tooth gear meshes with a 12-tooth
- * pinion on the blueprint. Tap the gear and the engine spools up (speed, rev
- * counter, vibration, motion blur), then both gears roll off the sheet at
- * true rolling speed, the sheet opens like a pair of valves and the site rises
- * into place.
+ * Ignition: the homepage's opening, the cover of Issue #01. A 24-tooth gear
+ * meshes with a 12-tooth pinion as the cover art, under the title and two
+ * choices: enter with sound or without (sound is never on unless chosen).
+ * Either one (or the gear itself) starts the engine: it spools up (speed,
+ * rev counter, vibration, motion blur), both gears roll off at true rolling
+ * speed, the cover opens like a pair of valves and the site rises into place.
  *
  * It must answer the very first tap, long before React has hydrated a heavy
  * page on a slow phone, so it is plain JavaScript inlined in the HTML (the same
@@ -19,13 +20,19 @@ import { gearGeometry, gearPath } from "@/lib/engineering/gears";
  *                 the page-transition wrapper, whose transform would otherwise
  *                 trap position: fixed); hidden unless the gate switched it on
  *
- * It runs once per tab session, and is skipped for reduced motion, search
- * crawlers and automated browsers (add ?ignition to force it).
+ * It runs on a visitor's first visit (and once per tab until they have been
+ * through it), and is skipped for reduced motion, search crawlers and
+ * automated browsers (add ?ignition to force it). The sound choice is stored
+ * and the AudioContext is unlocked inside the click itself, so the score can
+ * start even before React has loaded; lib/sound.ts takes it from there.
  */
 
 const STORAGE = "amigodev-ignition";
+/** Set once a visitor has been through the cover; later visits go straight to the site. */
+const ENTERED = "amigodev-entered";
+const SOUND = "amigodev-sound";
 
-const gate = `(function(){try{var h=document.documentElement;if(location.pathname!=="/")return;var force=/[?&]ignition\\b/.test(location.search);var seen=false;try{seen=sessionStorage.getItem("${STORAGE}")==="done"}catch(e){}var ua=navigator.userAgent||"";if(!force&&(seen||navigator.webdriver||/bot|crawl|spider|slurp|preview|facebookexternalhit|lighthouse/i.test(ua)||matchMedia("(prefers-reduced-motion: reduce)").matches))return;h.setAttribute("data-ignition","idle");h.style.overflow="hidden"}catch(e){}})();`;
+const gate = `(function(){try{var h=document.documentElement;if(location.pathname!=="/")return;var force=/[?&]ignition\\b/.test(location.search);var seen=false;try{seen=sessionStorage.getItem("${STORAGE}")==="done"||localStorage.getItem("${ENTERED}")==="1"}catch(e){}var ua=navigator.userAgent||"";if(!force&&(seen||navigator.webdriver||/bot|crawl|spider|slurp|preview|facebookexternalhit|lighthouse/i.test(ua)||matchMedia("(prefers-reduced-motion: reduce)").matches))return;h.setAttribute("data-ignition","idle");h.style.overflow="hidden"}catch(e){}})();`;
 
 export function IgnitionGate() {
   return <script dangerouslySetInnerHTML={{ __html: gate }} />;
@@ -45,7 +52,8 @@ const controller = `(function(){
 var d=document,h=d.documentElement,o=d.getElementById("ignition");
 if(!o||h.getAttribute("data-ignition")!=="idle")return;
 var N1=${N1},N2=${N2},B=${BETA},R1=${g1.pitchRadius},R2=${g2.pitchRadius},TIP=${g1.tipRadius},WMAX=26,SPOOL=1150,LAUNCH=1000;
-var btn=o.querySelector("[data-ign-start]"),skip=o.querySelector("[data-ign-skip]"),rpm=o.querySelector(".ign-rpm");
+var btn=o.querySelector("[data-ign-start]"),skip=o.querySelector("[data-ign-skip]"),rpm=o.querySelector(".ign-rpm"),choices=o.querySelectorAll("[data-ign-sound]");
+var emit=function(n){try{window.dispatchEvent(new CustomEvent("amigodev:ignition",{detail:n}))}catch(e){}};
 var th=0,w=0.5,state="idle",t0=0,tl=0,last=0,raf=0,x1=0,x2=0,v1=0,v2=0,thl=0,tpl=0,inerted=[];
 var mesh=function(a){return B+Math.PI-Math.PI/N2-(N1/N2)*(a-B)};
 var set=function(k,v){o.style.setProperty(k,v)};
@@ -65,7 +73,7 @@ function frame(t){
   set("--ign-p",e.toFixed(3));
   var r=Math.round(e*3200+(p>.6?Math.random()*60:0));rpm&&rpm.setAttribute("data-rpm",("0000"+r).slice(-4));
   th+=w*dt;
-  if(p>=1){state="launch";tl=t;thl=th;tpl=mesh(th);v1=900;v2=-760;h.setAttribute("data-ignition","launch");set("--ign-sx","0px");set("--ign-sy","0px")}
+  if(p>=1){state="launch";tl=t;thl=th;tpl=mesh(th);v1=900;v2=-760;h.setAttribute("data-ignition","launch");set("--ign-sx","0px");set("--ign-sy","0px");emit("launch")}
  }else if(state==="launch"){
   // Wheelspin, then grip: once on the ground each gear rolls without slipping (turn = distance / radius).
   v1+=700*dt;v2-=600*dt;x1+=v1*dt;x2+=v2*dt;th=thl+x1/R1;
@@ -74,25 +82,33 @@ function frame(t){
  draw();raf=requestAnimationFrame(frame);
 }
 function start(){
- if(state!=="idle")return;state="spool";t0=performance.now();h.setAttribute("data-ignition","spool");
+ if(state!=="idle")return;state="spool";t0=performance.now();h.setAttribute("data-ignition","spool");emit("spool");
  try{navigator.vibrate&&navigator.vibrate([10,60,14,40,20])}catch(e){}
 }
 function finish(){
  cancelAnimationFrame(raf);state="done";lock(false);
  h.setAttribute("data-ignition","off");h.setAttribute("data-ignited","");h.style.overflow="";
- try{sessionStorage.setItem("${STORAGE}","done")}catch(e){}
+ try{sessionStorage.setItem("${STORAGE}","done");localStorage.setItem("${ENTERED}","1")}catch(e){}
  var m=d.getElementById("main");if(m)m.focus({preventScroll:true});
  setTimeout(function(){h.removeAttribute("data-ignited")},1200);
  d.removeEventListener("keydown",key,true);
 }
 function key(e){if(e.key==="Escape"){e.preventDefault();finish()}}
+// The choice is made inside the click, so the browser lets audio start: store it, unlock audio if wanted, then start.
+function choose(on){
+ try{localStorage.setItem("${SOUND}",on?"on":"off")}catch(e){}
+ if(on){try{var AC=window.AudioContext||window.webkitAudioContext;var c=window.__amigoAudio||new AC();window.__amigoAudio=c;if(c.resume)c.resume()}catch(e){}}
+ try{window.dispatchEvent(new Event("amigodev:sound"))}catch(e){}
+ start();
+}
+[].forEach.call(choices,function(b){b.addEventListener("click",function(){choose(b.getAttribute("data-ign-sound")==="on")})});
 btn&&btn.addEventListener("click",start);
 skip&&skip.addEventListener("click",finish);
 d.addEventListener("keydown",key,true);
 lock(true);draw();raf=requestAnimationFrame(frame);
 // This runs before the rest of the page is parsed: lock it again once it all exists.
 if(d.readyState==="loading")d.addEventListener("DOMContentLoaded",function(){if(state!=="done")lock(true)});
-try{btn&&btn.focus({preventScroll:true})}catch(e){}
+try{(choices[0]||btn).focus({preventScroll:true})}catch(e){}
 })();`;
 
 export function Ignition() {
@@ -115,7 +131,7 @@ export function Ignition() {
             <path d={MONOGRAM_INK} fill="currentColor" fillRule="evenodd" />
             <path d={MONOGRAM_BAR} fill="var(--accent)" />
           </svg>
-          AMIGODEV · Engine 01
+          AMIGODEV · Issue #01
         </p>
         <button type="button" data-ign-skip className="ign-skip">
           Skip intro <span aria-hidden="true">→</span>
@@ -124,7 +140,7 @@ export function Ignition() {
 
       <div className="ign-stage">
         <div className="ign-rig">
-          <button type="button" data-ign-start className="ign-start" aria-label="Start the engine and open the site">
+          <button type="button" data-ign-start className="ign-start" aria-label="Start the engine and open the site, keeping your sound setting">
             <svg viewBox="-150 -150 300 300" aria-hidden="true" className="ign-svg">
               <defs>
                 <pattern id="ign-hatch" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
@@ -167,6 +183,24 @@ export function Ignition() {
       </div>
 
       <div className="ign-foot">
+        <div className="ign-cover">
+          <p className="ign-kicker">Written, drawn &amp; built by Muftau Idris</p>
+          <h2 id="ign-title" className="ign-title reg">
+            The engineer behind the mask
+          </h2>
+          <div className="ign-choices">
+            <button type="button" data-ign-sound="on" className="ign-choice ign-choice--primary">
+              Enter with sound
+            </button>
+            <button type="button" data-ign-sound="off" className="ign-choice">
+              Enter without sound
+            </button>
+          </div>
+          <p id="ign-desc" className="ign-desc">
+            Full-stack developer &amp; Mechanical Engineering student. Sound stays off unless you choose it; M mutes at any
+            time. Press Escape to skip.
+          </p>
+        </div>
         <div className="ign-gauge" aria-hidden="true">
           <span className="ign-rpm" data-rpm="0000" />
           <span className="ign-unit">RPM</span>
@@ -174,12 +208,6 @@ export function Ignition() {
             <span className="ign-fill" />
           </span>
         </div>
-        <h2 id="ign-title" className="ign-title">
-          Tap the gear to start the engine
-        </h2>
-        <p id="ign-desc" className="ign-desc">
-          Muftau Idris · Full-stack developer &amp; Mechanical Engineering student. Press Escape to skip.
-        </p>
       </div>
       <script dangerouslySetInnerHTML={{ __html: controller }} />
     </div>

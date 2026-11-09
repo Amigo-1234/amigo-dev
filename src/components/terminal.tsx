@@ -5,18 +5,16 @@ import { useRouter } from "next/navigation";
 import { useEffect, useId, useRef, useState } from "react";
 
 import { site } from "@/content/site";
+import { isSoundOn, setSound, sfx } from "@/lib/sound";
 
+import { terminalData as data } from "./terminal-data";
+import { TerminalBar } from "./terminal-bar";
 import { toggleTheme } from "./theme-toggle";
 
 /*
  * A small terminal with a fixed set of commands. Input is only ever matched
  * against the list below; nothing a visitor types is evaluated or executed.
  */
-
-export type TerminalData = {
-  projects: { slug: string; name: string; summary: string }[];
-  skills: { title: string; items: string[] }[];
-};
 
 type Line = { id: number; kind: "input" | "output" | "error"; content: React.ReactNode };
 
@@ -27,11 +25,17 @@ const COMMANDS: { name: string; description: string; hidden?: boolean }[] = [
   { name: "about", description: "who I am" },
   { name: "projects", description: "list case studies" },
   { name: "open", description: "open a project or page, e.g. open eksu" },
+  { name: "cat", description: "read a project's summary, e.g. cat kandy" },
+  { name: "stack", description: "a project's technology, e.g. stack eksu" },
+  { name: "status", description: "what I'm building right now" },
+  { name: "lab", description: "the workshop's experiments" },
   { name: "skills", description: "what I work with" },
   { name: "contact", description: "how to reach me" },
   { name: "hire", description: "go to the contact form" },
   { name: "play", description: "launch DEBUG.EXE" },
-  { name: "theme", description: "switch light/dark" },
+  { name: "theme", description: "switch the day/night edition" },
+  { name: "sound", description: "sound on or off" },
+  { name: "menu", description: "open the site menu" },
   { name: "date", description: "my local time" },
   { name: "clear", description: "clear the screen" },
   { name: "whoami", description: "", hidden: true },
@@ -49,23 +53,27 @@ const PAGES: Record<string, string> = { home: "/", about: "/about", projects: "/
 const timeFormat = new Intl.DateTimeFormat("en-GB", { timeZone: site.timeZone, weekday: "long", hour: "2-digit", minute: "2-digit" });
 
 function Cmd({ children }: { children: React.ReactNode }) {
-  return <span className="text-accent">{children}</span>;
+  return <span className="term-cmd">{children}</span>;
 }
+
+/** Tap-to-run suggestions under the prompt: the easiest way in on a phone. */
+const SUGGESTIONS = ["help", "projects", "status", "cat amigo-world", "lab", "sound on"];
 
 export function Welcome() {
   return (
     <>
       <p className="text-fg">
-        AMIGODEV shell <span className="text-fg-subtle">v2.1</span>
+        AMIGODEV shell <span className="term-dim">v3.0</span>
       </p>
-      <p className="text-fg-muted">
-        Type <Cmd>help</Cmd> to see what I can do. Try <Cmd>projects</Cmd>, <Cmd>skills</Cmd> or <Cmd>open eksu</Cmd>.
+      <p className="term-dim">
+        Type <Cmd>help</Cmd> to see what I can do, or tap a suggestion below. Tab completes, ↑ and ↓ recall. Open this
+        terminal from any page with the <Cmd>`</Cmd> key.
       </p>
     </>
   );
 }
 
-export function Terminal({ data }: { data: TerminalData }) {
+export function Terminal({ autoFocus = false, bar = true, className }: { autoFocus?: boolean; bar?: boolean; className?: string }) {
   const router = useRouter();
   const inputId = useId();
   const inputRef = useRef<HTMLInputElement>(null);
@@ -81,6 +89,10 @@ export function Terminal({ data }: { data: TerminalData }) {
     if (body) body.scrollTop = body.scrollHeight;
   }, [lines]);
 
+  useEffect(() => {
+    if (autoFocus) inputRef.current?.focus({ preventScroll: true });
+  }, [autoFocus]);
+
   const print = (kind: Line["kind"], content: React.ReactNode) =>
     setLines((prev) => [...prev, { id: nextId.current++, kind, content }].slice(-60));
 
@@ -90,6 +102,7 @@ export function Terminal({ data }: { data: TerminalData }) {
   function run(raw: string) {
     const input = raw.trim().slice(0, MAX_INPUT);
     if (!input) return;
+    sfx("click");
     print("input", input);
     setHistory((h) => [...h, input].slice(-30));
     setCursor(-1);
@@ -163,6 +176,85 @@ export function Terminal({ data }: { data: TerminalData }) {
         }
         break;
       }
+      case "cat":
+      case "stack": {
+        const project = arg ? findProject(arg) : undefined;
+        if (!project) {
+          print("error", arg ? `no project called “${arg}”. Try: projects` : `${command} what? Try: ${command} ${data.projects[0].slug}`);
+          break;
+        }
+        print(
+          "output",
+          command === "cat" ? (
+            <div>
+              <p className="text-fg">{project.name}</p>
+              <p className="term-dim">{project.summary}</p>
+              <p className="term-dim">
+                status: <span className="text-fg">{project.status}</span>
+                {project.live && (
+                  <>
+                    {" "}
+                    · live:{" "}
+                    <a href={project.live} target="_blank" rel="noopener noreferrer" className="text-fg underline underline-offset-4">
+                      {project.live.replace(/^https?:\/\//, "")}
+                    </a>
+                  </>
+                )}
+              </p>
+              <p className="term-dim">
+                more: <Cmd>stack {project.slug}</Cmd> · <Cmd>open {project.slug}</Cmd>
+              </p>
+            </div>
+          ) : (
+            <p>
+              <span className="text-fg">{project.name}: </span>
+              <span className="term-dim">{project.stack.join(" · ")}</span>
+            </p>
+          ),
+        );
+        break;
+      }
+      case "status":
+        print(
+          "output",
+          <div className="space-y-1.5">
+            <p className="term-dim">On the bench, as of {data.building.asOf}:</p>
+            {data.building.items.map((b) => (
+              <p key={b.slug}>
+                <span className="text-fg">{b.name}</span> <span className="term-dim">(last commit {b.lastCommit})</span>
+                <br />
+                <span className="term-dim">next: {b.next}</span>
+              </p>
+            ))}
+          </div>,
+        );
+        break;
+      case "lab":
+        print(
+          "output",
+          <ul className="space-y-0.5">
+            {data.lab.map((e) => (
+              <li key={e.code}>
+                <span className="term-dim">{e.code} </span>
+                <Link href={e.href} className="text-fg underline-offset-4 hover:underline">
+                  {e.title}
+                </Link>
+                <span className="term-dim"> · {e.kind}</span>
+              </li>
+            ))}
+          </ul>,
+        );
+        break;
+      case "sound": {
+        const want = arg === "on" ? true : arg === "off" ? false : !isSoundOn();
+        setSound(want);
+        print("output", want ? "sound on. Music fades in; press M anywhere to mute." : "sound off.");
+        break;
+      }
+      case "menu":
+        print("output", "opening the menu …");
+        document.querySelector<HTMLElement>("[data-menu-open]")?.click();
+        break;
       case "skills":
         print(
           "output",
@@ -252,20 +344,27 @@ export function Terminal({ data }: { data: TerminalData }) {
       if (match) setValue(`open ${match.slug}`);
       return;
     }
+    for (const verb of ["cat ", "stack "]) {
+      if (v.startsWith(verb)) {
+        const match = data.projects.find((p) => p.slug.startsWith(v.slice(verb.length)));
+        if (match) setValue(verb + match.slug);
+        return;
+      }
+    }
     const match = COMMANDS.find((c) => !c.hidden && c.name.startsWith(v));
-    if (match) setValue(match.name + (match.name === "open" ? " " : ""));
+    if (match) setValue(match.name + (["open", "cat", "stack"].includes(match.name) ? " " : ""));
   }
 
   return (
-    <div className="glass overflow-hidden rounded-2xl font-mono text-[0.8125rem] leading-relaxed">
-      <TerminalBar />
+    <div className={className ?? "terminal-screen"}>
+      {bar && <TerminalBar />}
       <div
         ref={bodyRef}
         role="log"
         aria-live="polite"
         aria-label="Terminal output"
         onClick={() => inputRef.current?.focus()}
-        className="h-80 overflow-y-auto px-4 pb-2 pt-4 sm:px-5"
+        className="terminal-body overflow-y-auto px-4 pb-2 pt-4 sm:px-5"
       >
         {lines.map((line) => (
           <div key={line.id} className="mb-2 break-words">
@@ -274,7 +373,7 @@ export function Terminal({ data }: { data: TerminalData }) {
                 <Prompt /> <span className="text-fg">{line.content}</span>
               </p>
             ) : (
-              <div className={line.kind === "error" ? "text-warn" : undefined}>{line.content}</div>
+              <div className={line.kind === "error" ? "term-error" : undefined}>{line.content}</div>
             )}
           </div>
         ))}
@@ -297,6 +396,7 @@ export function Terminal({ data }: { data: TerminalData }) {
             maxLength={MAX_INPUT}
             onChange={(e) => setValue(e.target.value)}
             onKeyDown={(e) => {
+              if (e.key.length === 1) sfx("tick");
               if (e.key === "Tab" && value.trim()) {
                 e.preventDefault();
                 complete();
@@ -321,10 +421,24 @@ export function Terminal({ data }: { data: TerminalData }) {
             autoCapitalize="none"
             spellCheck={false}
             enterKeyHint="send"
-            className="min-w-0 flex-1 bg-transparent text-base text-fg caret-accent outline-none sm:text-[0.8125rem]"
+            className="term-input min-w-0 flex-1 bg-transparent text-base outline-none sm:text-[0.8125rem]"
             placeholder="type help"
           />
         </form>
+      </div>
+      <div className="term-suggest" aria-label="Suggested commands" role="group">
+        {SUGGESTIONS.map((c) => (
+          <button
+            key={c}
+            type="button"
+            onClick={() => {
+              run(c);
+              inputRef.current?.focus({ preventScroll: true });
+            }}
+          >
+            {c}
+          </button>
+        ))}
       </div>
     </div>
   );
@@ -333,21 +447,8 @@ export function Terminal({ data }: { data: TerminalData }) {
 export function Prompt() {
   return (
     <span aria-hidden="true">
-      <span className="text-accent">amigo@dev</span>
-      <span className="text-fg-subtle"> ~ %</span>
+      <span className="term-cmd">amigo@dev</span>
+      <span className="term-dim"> ~ %</span>
     </span>
-  );
-}
-
-export function TerminalBar() {
-  return (
-    <div className="flex items-center gap-3 border-b border-[var(--glass-border)] px-4 py-2.5">
-      <span aria-hidden="true" className="flex gap-1.5">
-        <span className="size-2.5 rounded-full bg-line-strong" />
-        <span className="size-2.5 rounded-full bg-line-strong" />
-        <span className="size-2.5 rounded-full bg-accent/80" />
-      </span>
-      <span className="text-xs text-fg-subtle">amigo@dev: ~/portfolio</span>
-    </div>
   );
 }

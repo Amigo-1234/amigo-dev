@@ -336,12 +336,7 @@ function Console() {
           <div aria-hidden="true" className="absolute bottom-4 left-0 -z-10 size-56 sm:-left-8 rounded-full bg-accent opacity-20 blur-3xl" />
           <div aria-hidden="true" className="absolute -top-6 right-0 -z-10 h-40 w-64 sm:-right-4 rounded-full bg-fg opacity-[0.06] blur-3xl" />
           <div aria-hidden="true" className="grid-paper absolute -inset-y-8 inset-x-0 -z-10 opacity-80 sm:-inset-x-6 [mask-image:radial-gradient(closest-side,#000,transparent)]" />
-          <TerminalLazy
-            data={{
-              projects: projects.map((p) => ({ slug: p.slug, name: p.name, summary: p.summary })),
-              skills: skills.map((g) => ({ title: g.title, items: [...g.items] })),
-            }}
-          />
+          <TerminalLazy />
         </div>
       </div>
     </section>

@@ -20,11 +20,12 @@ export function Monogram({ className, title }: { className?: string; title?: str
 }
 
 /** Monogram plus the AMIGODEV wordmark and the owner's name. */
-export function Wordmark({ compact = false }: { compact?: boolean }) {
+export function Wordmark({ compact = false, narrow = false }: { compact?: boolean; narrow?: boolean }) {
   return (
     <span className="flex items-center gap-2.5">
       <Monogram className="size-8 text-fg" />
-      <span className="flex flex-col leading-none">
+      {/* narrow: on the smallest phones only the monogram shows, so the header's controls fit. */}
+      <span className={narrow ? "hidden flex-col leading-none min-[400px]:flex" : "flex flex-col leading-none"}>
         <span className="font-sans text-[0.9375rem] font-semibold tracking-[0.16em] text-fg">
           AMIGO<span className="text-accent">DEV</span>
         </span>

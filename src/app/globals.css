@@ -597,17 +597,26 @@
   }
 
   /*
-   * Mobile menu: a short entrance using only opacity and transform (no blur
-   * or other filters), finished within ~240ms. Animations restart each time
-   * the dialog opens because closed dialogs are display: none.
+   * The site menu: three print plates slam in from the right on twos
+   * (steps), each a beat after the last; then the links rise. Animations
+   * restart each time the dialog opens because closed dialogs are
+   * display: none. Under reduced motion none of this runs.
    */
-  .site-menu[open] {
-    animation: menu-in 160ms var(--ease-out-expo) both;
+  .site-menu[open] .site-menu__plate {
+    animation: plate-in 0.42s steps(5, end) both;
   }
-
-  .site-menu[open] .menu-item {
-    animation: menu-item-in 160ms var(--ease-out-expo) both;
-    animation-delay: calc(var(--i, 0) * 12ms);
+  .site-menu[open] .site-menu__plate--c {
+    animation-delay: 0.08s;
+  }
+  .site-menu[open] .site-menu__plate--k {
+    animation-delay: 0.16s;
+  }
+  .site-menu[open] .site-menu__rise {
+    animation: menu-rise 0.7s cubic-bezier(0.65, 0.01, 0.05, 0.99) both;
+    animation-delay: calc(0.3s + var(--i, 0) * 0.05s);
+  }
+  .site-menu[open] .site-menu__close svg {
+    animation: menu-cross 0.6s cubic-bezier(0.65, 0.01, 0.05, 0.99) 0.2s both;
   }
 
   .glow-drift {
@@ -703,17 +712,24 @@ html.js .showcase-panel[data-inactive] {
   }
 }
 
-@keyframes menu-in {
+@keyframes plate-in {
   from {
-    opacity: 0;
-    transform: translateY(-6px);
+    transform: translateX(101%);
   }
 }
 
-@keyframes menu-item-in {
+@keyframes menu-rise {
   from {
-    opacity: 0;
-    transform: translateY(10px);
+    transform: translateY(140%) rotate(8deg);
+  }
+}
+
+@keyframes menu-cross {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(315deg);
   }
 }
 
@@ -835,6 +851,21 @@ html[data-ignition="launch"] .ign {
 .ign-panel--top {
   top: 0;
 }
+/* A comic-cover halftone burst in the corner of each half. */
+.ign-panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle, var(--accent) 0 1.6px, transparent 2.1px) 0 0 / 9px 9px;
+  opacity: 0.35;
+}
+.ign-panel--top::before {
+  mask-image: radial-gradient(circle at 100% 0, #000, transparent 45%);
+}
+.ign-panel--bottom::before {
+  background-image: radial-gradient(circle, var(--blueprint) 0 1.6px, transparent 2.1px);
+  mask-image: radial-gradient(circle at 0 100%, #000, transparent 45%);
+}
 .ign-panel--bottom {
   bottom: 0;
   background-position: 0 100%;
@@ -913,13 +944,13 @@ html[data-ignition="launch"] .ign-panel--bottom {
   pointer-events: none;
 }
 .ign-rig {
-  margin-top: -9vh;
+  margin-top: -30vh;
   transform: translate(var(--ign-sx, 0px), var(--ign-sy, 0px));
 }
 .ign-start {
   position: relative;
   display: block;
-  width: min(62vmin, 25rem);
+  width: min(44vmin, 20rem);
   aspect-ratio: 1;
   padding: 0;
   border: 0;
@@ -1058,16 +1089,100 @@ html[data-ignition="launch"] .ign-foot {
 html[data-ignition="spool"] .ign-rpm {
   color: var(--accent);
 }
+@media (max-height: 640px) {
+  .ign-desc {
+    display: none;
+  }
+}
+/* Phones: a smaller gear set higher, clear of the cover text. */
+@media (max-width: 40rem) {
+  .ign-rig {
+    margin-top: -36vh;
+  }
+  .ign-start {
+    width: min(36vmin, 20rem);
+  }
+}
+/* The cover: kicker, masthead title, the two ways in. */
+.ign-cover {
+  display: grid;
+  justify-items: center;
+  gap: 0.9rem;
+  transition: opacity 0.3s;
+}
+.ign-kicker {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+}
 .ign-title {
-  margin-top: 1.1rem;
-  font-family: var(--font-serif);
-  font-size: clamp(1.6rem, 1.2rem + 1.6vw, 2.5rem);
-  line-height: 1.05;
+  font-family: var(--font-display);
+  font-weight: 900;
+  text-transform: uppercase;
+  font-size: clamp(2.3rem, 1.4rem + 4.2vw, 4.6rem);
+  line-height: 0.88;
+  text-wrap: balance;
+  max-width: 14ch;
+}
+.ign-choices {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-top: 0.35rem;
+}
+.ign-choice {
+  min-height: 3rem;
+  padding: 0 1.35rem;
+  border: 2px solid var(--fg);
+  background: var(--ink);
+  color: var(--fg);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 4px 4px 0 var(--blueprint);
+  transition:
+    transform 0.12s,
+    box-shadow 0.12s;
+}
+.ign-choice--primary {
+  background: var(--fg);
+  color: var(--ink);
+  box-shadow: 4px 4px 0 var(--accent);
+}
+.ign-choice:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 6px 6px 0 var(--blueprint);
+}
+.ign-choice--primary:hover {
+  box-shadow: 6px 6px 0 var(--accent);
+}
+.ign-choice:active {
+  transform: translate(3px, 3px);
+  box-shadow: 1px 1px 0 var(--accent);
+}
+.ign-choice:focus-visible {
+  outline: 2px solid var(--sfx);
+  outline-offset: 4px;
 }
 .ign-desc {
-  margin-top: 0.6rem;
+  max-width: 34rem;
   font-size: 0.8125rem;
   color: var(--fg-muted);
+}
+/* The gauge replaces the cover text once the engine is running. */
+.ign-gauge {
+  display: none;
+}
+html[data-ignition="spool"] .ign-gauge,
+html[data-ignition="launch"] .ign-gauge {
+  display: inline-grid;
+}
+html[data-ignition="spool"] .ign-cover,
+html[data-ignition="launch"] .ign-cover {
+  display: none;
 }
 
 /* The site rises into place behind the parting sheet. */
@@ -1095,6 +1210,348 @@ html[data-ignited] #main {
   to {
     opacity: 1;
     transform: none;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* The site menu: three print plates                                  */
+/* ------------------------------------------------------------------ */
+
+.site-menu {
+  position: fixed;
+  inset: 0;
+  margin: 0;
+  width: 100%;
+  height: 100dvh;
+  max-width: none;
+  max-height: none;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--fg);
+  overflow: hidden;
+}
+.site-menu::backdrop {
+  background: transparent;
+}
+.site-menu__plate {
+  position: absolute;
+  inset: 0;
+}
+/* The red and blue plates peek out at the left edge: the press slipped. */
+.site-menu__plate--m {
+  background: radial-gradient(circle, rgb(0 0 0 / 0.32) 1.3px, transparent 1.8px) 0 0 / 7px 7px, var(--accent);
+}
+.site-menu__plate--c {
+  left: 10px;
+  background: radial-gradient(circle, rgb(255 255 255 / 0.16) 1.1px, transparent 1.6px) 0 0 / 6px 6px, var(--blueprint);
+}
+.site-menu__plate--k {
+  left: 20px;
+  background: radial-gradient(var(--dot) 1px, transparent 1.35px) 0 0 / 7px 7px, var(--ink);
+  border-left: 2px solid var(--frame);
+}
+.site-menu__inner {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding-left: 20px;
+  overflow-y: auto;
+}
+.site-menu__close {
+  background: var(--ink);
+}
+.site-menu__list {
+  display: grid;
+  gap: 0.15rem;
+}
+.site-menu__item {
+  overflow: hidden;
+  border-bottom: 1px solid var(--line);
+}
+.site-menu__link {
+  display: block;
+  padding-block: 0.35rem;
+}
+.site-menu__rise {
+  display: flex;
+  align-items: baseline;
+  gap: 0.9rem;
+  transform-origin: 0 100%;
+}
+.site-menu__num {
+  width: 1.75rem;
+  flex: none;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.12em;
+  color: var(--fg-subtle);
+}
+.site-menu__label {
+  font-family: var(--font-display);
+  font-weight: 900;
+  text-transform: uppercase;
+  font-size: clamp(2.6rem, 1.6rem + 4.5vw, 5.4rem);
+  line-height: 0.95;
+  transition:
+    color 0.2s,
+    text-shadow 0.25s steps(3);
+}
+.site-menu__caption {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--fg-subtle);
+  transition: color 0.2s;
+}
+.site-menu__link:hover .site-menu__label,
+.site-menu__link:focus-visible .site-menu__label {
+  color: var(--accent);
+  text-shadow:
+    -0.04em 0.02em 0 var(--blueprint),
+    0.03em -0.015em 0 var(--fg);
+}
+.site-menu__link:hover .site-menu__caption,
+.site-menu__link:focus-visible .site-menu__caption {
+  color: var(--fg);
+}
+.site-menu__link[aria-current="page"] .site-menu__label {
+  color: var(--accent);
+}
+
+/* The drawing panel: every link's figure, stacked; the hovered one inks itself. */
+.site-menu__art {
+  position: relative;
+  aspect-ratio: 1;
+  border: 2px solid var(--frame);
+  background-color: var(--blueprint-soft);
+  background-image:
+    linear-gradient(to right, var(--grid) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid) 1px, transparent 1px);
+  background-size: 1.25rem 1.25rem;
+}
+.site-menu__drawing {
+  position: absolute;
+  inset: 8%;
+  width: 84%;
+  height: 84%;
+  fill: none;
+  stroke: var(--blueprint);
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.site-menu__drawing * {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  transition: stroke-dashoffset 0.25s steps(3);
+}
+.site-menu__art-caption {
+  position: absolute;
+  left: 0.75rem;
+  bottom: 0.6rem;
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--fg-subtle);
+}
+.site-menu:has(.site-menu__item:nth-child(1) .site-menu__link:is(:hover, :focus-visible)) .site-menu__drawing[data-for="/"] * {
+  stroke-dashoffset: 0;
+  transition-duration: 0.75s;
+  transition-timing-function: steps(9);
+}
+.site-menu:has(.site-menu__item:nth-child(2) .site-menu__link:is(:hover, :focus-visible)) .site-menu__drawing[data-for="/projects"] * {
+  stroke-dashoffset: 0;
+  transition-duration: 0.75s;
+  transition-timing-function: steps(9);
+}
+.site-menu:has(.site-menu__item:nth-child(3) .site-menu__link:is(:hover, :focus-visible)) .site-menu__drawing[data-for="/about"] * {
+  stroke-dashoffset: 0;
+  transition-duration: 0.75s;
+  transition-timing-function: steps(9);
+}
+.site-menu:has(.site-menu__item:nth-child(4) .site-menu__link:is(:hover, :focus-visible)) .site-menu__drawing[data-for="/lab"] * {
+  stroke-dashoffset: 0;
+  transition-duration: 0.75s;
+  transition-timing-function: steps(9);
+}
+.site-menu:has(.site-menu__item:nth-child(5) .site-menu__link:is(:hover, :focus-visible)) .site-menu__drawing[data-for="/#services"] * {
+  stroke-dashoffset: 0;
+  transition-duration: 0.75s;
+  transition-timing-function: steps(9);
+}
+.site-menu:has(.site-menu__item:nth-child(6) .site-menu__link:is(:hover, :focus-visible)) .site-menu__drawing[data-for="/contact"] * {
+  stroke-dashoffset: 0;
+  transition-duration: 0.75s;
+  transition-timing-function: steps(9);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-menu__drawing * {
+    transition: none;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* The terminal: a dark screen in both editions                       */
+/* ------------------------------------------------------------------ */
+
+.terminal-screen,
+.terminal-dock__screen {
+  /* A screen is a screen: its own colours, whatever the paper. */
+  --fg: #f2eee6;
+  --fg-muted: #b8b4ad;
+  --fg-subtle: #8f8b84;
+  --accent: #9be564;
+  --warn: #f0c070;
+  --phosphor: #9be564;
+  color: var(--fg);
+  background: #08090b;
+  border: 2px solid var(--frame);
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  overflow: hidden;
+}
+.terminal-screen {
+  box-shadow: 6px 6px 0 var(--accent-outer, rgb(255 59 78 / 0.9));
+}
+.terminal-body {
+  height: 20rem;
+  background-image: repeating-linear-gradient(to bottom, rgb(255 255 255 / 0.018) 0 1px, transparent 1px 3px);
+}
+.term-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.6rem 1rem;
+  border-bottom: 1px solid rgb(242 238 230 / 0.12);
+  color: #8f8b84;
+}
+.term-cmd {
+  color: var(--phosphor);
+}
+.term-dim {
+  color: var(--fg-muted);
+}
+.term-error {
+  color: var(--warn);
+}
+.term-input {
+  color: var(--fg);
+  caret-color: var(--phosphor);
+}
+.term-suggest {
+  display: flex;
+  gap: 0.4rem;
+  overflow-x: auto;
+  padding: 0.55rem 1rem 0.7rem;
+  border-top: 1px solid rgb(242 238 230 / 0.1);
+  scrollbar-width: none;
+}
+.term-suggest button {
+  flex: none;
+  padding: 0.2rem 0.6rem;
+  border: 1px solid rgb(155 229 100 / 0.35);
+  color: var(--phosphor);
+  font: inherit;
+  font-size: 0.75rem;
+  white-space: nowrap;
+  transition: background-color 0.15s;
+}
+.term-suggest button:hover,
+.term-suggest button:focus-visible {
+  background: rgb(155 229 100 / 0.12);
+}
+
+/* The header's terminal button: a prompt with a blinking block cursor. */
+.term-launch {
+  color: var(--fg);
+}
+.term-launch__prompt {
+  color: var(--accent);
+}
+.term-launch__cursor {
+  display: inline-block;
+  width: 0.5em;
+  height: 1em;
+  margin-left: 0.15em;
+  vertical-align: -0.12em;
+  background: currentColor;
+  animation: term-blink 1.1s steps(1) infinite;
+}
+@keyframes term-blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+/* The dock: slides up over the page you are reading. */
+.terminal-dock {
+  margin: auto auto 0;
+  width: min(56rem, 100%);
+  max-width: none;
+  max-height: none;
+  padding: 0 max(0.75rem, env(safe-area-inset-right, 0px)) max(0.75rem, env(safe-area-inset-bottom, 0px)) max(0.75rem, env(safe-area-inset-left, 0px));
+  background: transparent;
+  overflow: visible;
+}
+.terminal-dock::backdrop {
+  background: rgb(0 0 0 / 0.45);
+}
+.terminal-dock[open] {
+  animation: dock-in 0.42s var(--ease-out-expo) both;
+}
+.terminal-dock__screen {
+  box-shadow: 0 -2px 0 var(--accent), 8px 8px 0 rgb(0 0 0 / 0.5);
+}
+.terminal-dock .terminal-body {
+  height: min(52vh, 26rem);
+}
+.terminal-dock__close {
+  margin-left: auto;
+  padding: 0.15rem 0.55rem;
+  border: 1px solid rgb(242 238 230 / 0.25);
+  color: #d8d4cd;
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.terminal-dock__close:hover {
+  border-color: #f2eee6;
+}
+@keyframes dock-in {
+  from {
+    transform: translateY(105%);
+  }
+}
+
+/* Sound meter: three bars bouncing on twos while sound is on. */
+.sound-meter rect {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: meter 0.75s steps(9) infinite alternate;
+}
+.sound-meter rect:nth-child(2) {
+  animation-duration: 0.6s;
+}
+.sound-meter rect:nth-child(3) {
+  animation-duration: 0.9s;
+}
+@keyframes meter {
+  from {
+    transform: scaleY(0.35);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .term-launch__cursor,
+  .sound-meter rect,
+  .terminal-dock[open] {
+    animation: none;
   }
 }
 
@@ -1245,71 +1702,68 @@ html[data-ignited] #main {
 }
 
 /* ------------------------------------------------------------------ */
-/* Spider: the thread-hung spider (SpiderDrop) and the hero web        */
+/* The plumb bob: the site's signature (PlumbBob)                     */
 /* ------------------------------------------------------------------ */
 
-.spider-drop {
+.plumb {
   --len: 0px;
   --swing: 0deg;
   position: fixed;
   top: 0;
   right: 1.75rem;
-  /* Under the header, so the thread comes down from behind it. */
+  /* Under the header, so the line comes down from behind it. */
   z-index: 39;
   display: none;
   pointer-events: none;
 }
 @media (hover: hover) and (pointer: fine) and (min-width: 48rem) and (prefers-reduced-motion: no-preference) {
-  .spider-drop {
+  .plumb {
     display: block;
   }
 }
-html[data-ignition="idle"] .spider-drop,
-html[data-ignition="spool"] .spider-drop,
-html[data-ignition="launch"] .spider-drop {
+html[data-ignition="idle"] .plumb,
+html[data-ignition="spool"] .plumb,
+html[data-ignition="launch"] .plumb {
   display: none;
 }
-.spider-drop__swing {
+.plumb__swing {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   transform: rotate(var(--swing));
   transform-origin: 50% 0;
 }
-.spider-drop__thread {
+.plumb__line {
   width: 1px;
   height: var(--len);
   background: linear-gradient(to bottom, transparent, var(--fg-subtle) 30%, var(--fg));
-  opacity: 0.6;
+  opacity: 0.7;
 }
-.spider-drop__body {
-  width: 2.25rem;
-  height: 2.25rem;
-  margin-top: -0.4rem;
+.plumb__bob {
+  width: 1.4rem;
+  height: 2.4rem;
+  margin-top: -0.2rem;
   color: var(--fg);
   cursor: pointer;
   pointer-events: auto;
-  filter: drop-shadow(0 6px 10px rgb(0 0 0 / 0.45));
-  transition: transform 0.3s var(--ease-out-expo);
+  filter: drop-shadow(0 6px 8px rgb(0 0 0 / 0.4));
+  transition: transform 0.25s var(--ease-out-expo);
 }
-.spider-drop__body:hover {
+.plumb__bob:hover {
   transform: scale(1.12);
 }
-.spider-drop__leg {
-  transform-origin: 0 0;
-  animation: spider-leg 2.6s ease-in-out infinite;
-}
-.spider-drop[data-climbing] .spider-drop__leg {
-  animation-duration: 0.16s;
-}
-@keyframes spider-leg {
-  0%,
-  100% {
-    transform: rotate(0deg);
-  }
-  50% {
-    transform: rotate(5deg);
-  }
+/* The depth readout, set against the line like a dimension. */
+.plumb__readout {
+  position: absolute;
+  bottom: 1.1rem;
+  right: 1.15rem;
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.08em;
+  color: var(--fg-subtle);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
 }
 
 /* ComicText starts invisible for its entrance; without JavaScript there is no entrance. */
@@ -1319,7 +1773,7 @@ html:not(.js) .comic-text {
 }
 
 @media print {
-  .spider-drop,
+  .plumb,
   .spider-web {
     display: none !important;
   }
