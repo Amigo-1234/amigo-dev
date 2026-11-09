@@ -4,7 +4,7 @@ import Link from "next/link";
 import type { Project, ProjectCardData } from "@/content/projects";
 import { cn } from "@/lib/cn";
 
-import { StatusPill } from "./ui";
+import { Stamp } from "./chapters";
 
 /** Used where a project has no public screenshots. Never imitates a UI. */
 function NoScreenshot({ project, className }: { project: Pick<Project, "name" | "kind" | "tint">; className?: string }) {
@@ -52,10 +52,11 @@ export function ProjectCard({
   const Heading = headingLevel === 2 ? "h2" : "h3";
 
   return (
-    <article className="group relative flex h-full flex-col">
-      <div className="relative overflow-hidden rounded-xl">
+    // A back-issue cover: the project's colour in halftone, its real screen as the cover art.
+    <article className="issue-card group relative flex h-full flex-col" style={{ "--tint": project.tint } as React.CSSProperties}>
+      <div className="relative overflow-hidden">
         {shot ? (
-          <div className="overflow-hidden rounded-xl border border-line bg-ink-sunken">
+          <div className="overflow-hidden border-2 border-frame bg-ink-sunken">
             <Image
               src={shot.image}
               alt={shot.alt}
@@ -73,7 +74,7 @@ export function ProjectCard({
       <div className="mt-5 flex flex-1 flex-col">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <p className="label">{project.categories.join(" · ")}</p>
-          <StatusPill label={project.status.label} tone={project.status.tone} />
+          <Stamp tone={project.status.tone} label={project.status.label.split("·")[0].trim()} />
         </div>
         <Heading className="mt-3 font-serif text-3xl">
           <Link href={`/projects/${project.slug}`} className="after:absolute after:inset-0 after:content-['']">
@@ -84,7 +85,7 @@ export function ProjectCard({
         <p className="mt-3 text-fg-muted">{project.summary}</p>
         <ul className="mt-auto flex flex-wrap gap-1.5 pt-5" aria-label="Technologies">
           {project.stack.slice(0, 4).map((s) => (
-            <li key={s} className="rounded-full border border-line px-2 py-0.5 text-[0.6875rem] text-fg-muted">
+            <li key={s} className="border border-line-strong px-2 py-0.5 font-mono text-[0.6875rem] text-fg-muted">
               {s}
             </li>
           ))}

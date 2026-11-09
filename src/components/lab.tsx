@@ -109,8 +109,8 @@ export function LabGlyph({ slug }: { slug: string }) {
 
 export function ExperimentCard({ experiment, className }: { experiment: Experiment; className?: string }) {
   return (
-    <article className={cn("group relative flex flex-col rounded-2xl border border-line bg-ink-raised p-2 transition-colors hover:border-line-strong", className)}>
-      <div className="relative grid aspect-[16/10] place-items-center overflow-hidden rounded-xl border border-line bg-ink-sunken">
+    <article className={cn("group panel relative flex flex-col p-2 transition-[transform,box-shadow] duration-200 hover:-translate-x-[3px] hover:-translate-y-[3px] hover:shadow-[6px_6px_0_var(--blueprint)]", className)}>
+      <div className="blueprint relative grid aspect-[16/10] place-items-center overflow-hidden">
         <div aria-hidden="true" className="grid-paper absolute inset-0 opacity-70" />
         <div aria-hidden="true" className="relative grid size-full place-items-center">
           <LabGlyph slug={experiment.slug} />
@@ -125,7 +125,7 @@ export function ExperimentCard({ experiment, className }: { experiment: Experime
           {experiment.kind} · works in your browser
         </p>
         <h3 className="mt-3 font-serif text-3xl leading-none">
-          <Link href={experiment.href} className="after:absolute after:inset-0 after:rounded-2xl after:content-['']">
+          <Link href={experiment.href} className="after:absolute after:inset-0 after:content-['']">
             <span className="link-underline">{experiment.title}</span>
           </Link>
         </h3>

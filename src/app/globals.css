@@ -1459,6 +1459,23 @@ html[data-ignited] #main {
   box-shadow: 6px 6px 0 var(--accent);
 }
 
+/* The projects index's cards: covers on the rack. */
+.issue-card {
+  padding: 0.75rem 0.75rem 1.1rem;
+  border: 2px solid var(--frame);
+  background:
+    radial-gradient(circle, color-mix(in srgb, var(--tint) 50%, transparent) 0 1.3px, transparent 1.8px) 0 0 / 8px 8px,
+    linear-gradient(165deg, color-mix(in srgb, var(--tint) 24%, var(--ink-raised)), var(--ink-raised) 55%);
+  transition:
+    transform 0.2s var(--ease-out-expo),
+    box-shadow 0.2s;
+}
+.issue-card:hover,
+.issue-card:focus-within {
+  transform: translate(-3px, -3px) rotate(-0.4deg);
+  box-shadow: 7px 7px 0 var(--accent);
+}
+
 /* Back issues: a rack of covers. */
 .back-issues {
   display: grid;
@@ -2092,6 +2109,141 @@ html[data-ignited] #main {
 }
 
 /* ------------------------------------------------------------------ */
+/* The backdrop: halftone, web, grid and drawing (SiteBackdrop)        */
+/* ------------------------------------------------------------------ */
+
+.backdrop {
+  --sp: 0;
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+  contain: strict;
+}
+html {
+  --sp: 0;
+}
+.backdrop__grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(to right, var(--grid) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid) 1px, transparent 1px),
+    linear-gradient(to right, var(--grid) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid) 1px, transparent 1px);
+  background-size: 1.5rem 1.5rem, 1.5rem 1.5rem, 7.5rem 7.5rem, 7.5rem 7.5rem;
+  opacity: 0.45;
+  mask-image: radial-gradient(ellipse 90% 80% at 50% 45%, transparent 30%, #000 85%);
+}
+.backdrop__dots {
+  position: absolute;
+  width: 46vmax;
+  height: 46vmax;
+  opacity: 0.18;
+}
+.backdrop__dots--red {
+  top: -10vmax;
+  right: -10vmax;
+  background: radial-gradient(circle, var(--accent) 0 1.4px, transparent 1.9px) 0 0 / 9px 9px;
+  mask-image: radial-gradient(circle at 70% 30%, #000, transparent 62%);
+}
+.backdrop__dots--blue {
+  bottom: -12vmax;
+  left: -12vmax;
+  background: radial-gradient(circle, var(--blueprint) 0 1.4px, transparent 1.9px) 0 0 / 9px 9px;
+  mask-image: radial-gradient(circle at 30% 70%, #000, transparent 62%);
+}
+.backdrop__web {
+  position: absolute;
+  width: min(38rem, 70vw);
+  height: auto;
+  fill: none;
+  stroke: var(--fg);
+  stroke-width: 1;
+  opacity: 0.07;
+  vector-effect: non-scaling-stroke;
+}
+.backdrop__web path {
+  vector-effect: non-scaling-stroke;
+}
+.backdrop__web--tl {
+  top: 0;
+  left: 0;
+  transform: translateY(calc(var(--sp) * -60px));
+}
+.backdrop__web--br {
+  right: 0;
+  bottom: 0;
+  transform: translateY(calc(var(--sp) * 40px)) rotate(180deg);
+}
+.backdrop__sheet {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke: var(--construction);
+  stroke-width: 1;
+  opacity: 0.4;
+}
+.backdrop__sheet * {
+  vector-effect: non-scaling-stroke;
+}
+.bd-construct {
+  stroke-dasharray: 1;
+  stroke-dashoffset: calc(1 - min(1, var(--sp) * 1.6));
+  stroke: var(--fg-subtle);
+  opacity: 0.45;
+}
+.bd-construct--late {
+  stroke-dashoffset: calc(1 - max(0, min(1, (var(--sp) - 0.3) * 1.6)));
+}
+.bd-construct--blue {
+  stroke: var(--blueprint);
+  stroke-dashoffset: calc(1 - min(1, var(--sp) * 1.2));
+}
+.bd-gear {
+  transform-box: fill-box;
+  transform-origin: center;
+  transform: rotate(calc(var(--sp) * 220deg));
+}
+.bd-centre {
+  stroke-dasharray: 14 4 3 4;
+}
+.bd-note {
+  fill: var(--fg-subtle);
+  stroke: none;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+}
+.bd-hatch {
+  stroke: var(--hatch);
+}
+.bd-hatch-box {
+  stroke: var(--construction);
+}
+.bd-reg {
+  stroke: var(--accent);
+  opacity: 0.6;
+}
+/* Phones: the drawing would sit under the text, so only the paper, dots and webs stay. */
+@media (max-width: 80rem) {
+  .backdrop__sheet {
+    display: none;
+  }
+  .backdrop__web {
+    opacity: 0.05;
+  }
+}
+@media print {
+  .backdrop {
+    display: none;
+  }
+}
+
+/* ------------------------------------------------------------------ */
 /* Comic system (src/components/comic)                                */
 /* ------------------------------------------------------------------ */
 
@@ -2154,6 +2306,17 @@ html[data-ignited] #main {
   box-shadow: 3px 3px 0 var(--accent);
 }
 
+/* A narration box holding a sentence rather than a label. */
+.caption-box--prose {
+  display: block;
+  padding: 0.6rem 0.85rem;
+  font-family: var(--font-sans);
+  font-size: 0.9375rem;
+  letter-spacing: 0;
+  text-transform: none;
+  line-height: 1.5;
+}
+
 /* Sound-effect lettering. */
 .sfx {
   display: inline-block;
@@ -2205,8 +2368,8 @@ html[data-ignited] #main {
 .reg {
   --reg: 0;
   text-shadow:
-    calc(-0.028em - var(--reg) * 0.16em) calc(0.012em + var(--reg) * 0.07em) 0 var(--accent),
-    calc(0.024em + var(--reg) * 0.13em) calc(-0.01em - var(--reg) * 0.06em) 0 var(--blueprint);
+    calc(-0.028em - var(--reg) * 0.08em) calc(0.012em + var(--reg) * 0.035em) 0 var(--accent),
+    calc(0.024em + var(--reg) * 0.065em) calc(-0.01em - var(--reg) * 0.03em) 0 var(--blueprint);
 }
 
 /* Drafting paper with registration crosshairs in the four corners. */

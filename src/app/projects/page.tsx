@@ -5,6 +5,7 @@ import { ProjectFilter } from "@/components/project-filter";
 import { ProjectShowcase } from "@/components/project-showcase";
 import { categories, projects, smallerWork, toCard, toShowcase } from "@/content/projects";
 import { pageMetadata } from "@/lib/metadata";
+import { Caption } from "@/components/comic";
 
 export const metadata: Metadata = pageMetadata({
   path: "/projects",
@@ -20,9 +21,9 @@ export default function ProjectsPage() {
 
   return (
     <div className="shell pt-12 md:pt-20">
-      <header className="grid gap-8 border-b border-line pb-12 md:grid-cols-12 md:pb-16">
+      <header className="grid gap-8 border-b-2 border-frame pb-12 md:grid-cols-12 md:pb-16">
         <div className="md:col-span-8">
-          <p className="label">Index of work · {projects.length} case studies</p>
+          <Caption>Back issues · {projects.length} case studies</Caption>
           <h1 className="reg mt-6 font-serif text-display">
             Projects<span className="text-accent">.</span>
           </h1>
@@ -56,7 +57,7 @@ export default function ProjectsPage() {
       </header>
 
       <section aria-labelledby="featured-heading" className="pt-12 md:pt-16">
-        <h2 id="featured-heading" className="label">
+        <h2 id="featured-heading" className="caption-box">
           Featured systems
         </h2>
         <div className="mt-8">
@@ -64,8 +65,8 @@ export default function ProjectsPage() {
         </div>
       </section>
 
-      <section aria-labelledby="all-heading" className="defer-render mt-28 border-t border-line pt-10 md:mt-36">
-        <h2 id="all-heading" className="label mb-8">
+      <section aria-labelledby="all-heading" className="defer-render mt-28 border-t-2 border-frame pt-10 md:mt-36">
+        <h2 id="all-heading" className="caption-box mb-8">
           Every case study
         </h2>
         <ProjectFilter
@@ -85,16 +86,16 @@ export default function ProjectsPage() {
         </p>
       </section>
 
-      <section aria-labelledby="smaller-heading" className="defer-render mt-28 border-t border-line pt-10">
+      <section aria-labelledby="smaller-heading" className="defer-render mt-28 border-t-2 border-frame pt-10">
         <div className="flex flex-wrap items-end justify-between gap-4">
-          <h2 id="smaller-heading" className="label">
+          <h2 id="smaller-heading" className="caption-box">
             Client websites
           </h2>
           <p className="text-sm text-fg-subtle">Smaller static builds, live on their clients&rsquo; domains.</p>
         </div>
-        <ul className="mt-8 grid gap-px overflow-hidden rounded-xl border border-line bg-line sm:grid-cols-2">
+        <ul className="mt-8 grid gap-3 sm:grid-cols-2">
           {smallerWork.map((item) => (
-            <li key={item.name} className="flex flex-col bg-ink p-6">
+            <li key={item.name} data-print="panel" className="panel flex flex-col p-6">
               <p className="label">
                 {item.sector} · {item.year}
               </p>

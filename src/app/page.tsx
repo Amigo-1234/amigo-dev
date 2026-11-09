@@ -304,7 +304,7 @@ function Capabilities() {
         ))}
       </div>
 
-      <Panel data-print="panel" className="mt-4 border-dashed p-6 md:p-8">
+      <Panel data-print="panel" className="origin-panel--next mt-4 p-6 md:p-8">
         <div className="grid gap-6 md:grid-cols-12 md:items-center">
           <div className="md:col-span-4">
             <p className="label text-accent">Currently learning · still being inked</p>

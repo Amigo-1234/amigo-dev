@@ -4,6 +4,7 @@ import Link from "next/link";
 import { ExperimentCard } from "@/components/lab";
 import { experiments } from "@/content/lab";
 import { pageMetadata } from "@/lib/metadata";
+import { Caption } from "@/components/comic";
 
 export const metadata: Metadata = pageMetadata({
   path: "/lab",
@@ -28,7 +29,7 @@ export default function LabPage() {
       <div className="shell pt-12 md:pt-20">
         <header className="grid gap-8 border-b border-line pb-12 md:grid-cols-12 md:pb-16">
           <div className="md:col-span-8">
-            <p className="label">AMIGODEV Lab · Sheet L-01</p>
+            <Caption>The workshop · AMIGODEV Lab</Caption>
             <h1 className="reg mt-6 font-serif text-display">
               The <em className="text-accent">Lab.</em>
             </h1>
@@ -40,7 +41,7 @@ export default function LabPage() {
         </header>
 
         <section aria-labelledby="bench-heading" className="pt-12 md:pt-16">
-          <h2 id="bench-heading" className="label">
+          <h2 id="bench-heading" className="caption-box">
             On the bench · {experiments.length} working
           </h2>
 
@@ -67,7 +68,7 @@ export default function LabPage() {
 
           <div className="mt-6 grid gap-6 lg:grid-cols-3">
             <ExperimentCard experiment={game} className="lg:col-span-2 lg:[&>div:first-child]:aspect-[3/1]" />
-            <div className="flex flex-col justify-between rounded-2xl border border-dashed border-line-strong p-6">
+            <div className="panel origin-panel--next flex flex-col justify-between p-6">
               <div>
                 <p className="label">Bench space</p>
                 <p className="mt-3 font-serif text-3xl leading-tight">The next experiment goes here.</p>
@@ -83,13 +84,13 @@ export default function LabPage() {
           </div>
         </section>
 
-        <section aria-labelledby="rules-heading" className="mt-24 border-t border-line pt-10 md:mt-32">
-          <h2 id="rules-heading" className="label">
+        <section aria-labelledby="rules-heading" className="mt-24 border-t-2 border-frame pt-10 md:mt-32">
+          <h2 id="rules-heading" className="caption-box">
             Lab rules
           </h2>
-          <ol className="mt-6 grid gap-px overflow-hidden rounded-xl border border-line bg-line md:grid-cols-3">
+          <ol className="mt-6 grid gap-3 md:grid-cols-3">
             {rules.map(([title, body], i) => (
-              <li key={title} className="bg-ink p-6">
+              <li key={title} data-print="panel" className="panel panel--blueprint p-6">
                 <p className="font-mono text-xs text-accent">{String(i + 1).padStart(2, "0")}</p>
                 <p className="mt-3 font-medium text-fg">{title}</p>
                 <p className="mt-2 text-sm text-fg-muted">{body}</p>

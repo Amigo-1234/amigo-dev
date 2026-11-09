@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 
 import { posts } from "@/content/writing";
 import { pageMetadata } from "@/lib/metadata";
+import { Caption } from "@/components/comic";
 
 export const metadata: Metadata = pageMetadata({
   path: "/writing",
@@ -19,7 +20,7 @@ export default function WritingPage() {
 
   return (
     <div className="shell pt-12 md:pt-20">
-      <p className="label">Writing</p>
+      <Caption>Letters page · Writing</Caption>
       <h1 className="reg mt-6 font-serif text-display">Notes from the build.</h1>
       <ul className="mt-16 border-t border-line">
         {sorted.map((post) => (

@@ -7,6 +7,7 @@ import { MenuScript } from "@/components/menu-script";
 import { MotionLayer } from "@/components/motion-layer";
 import { SiteFooter } from "@/components/site-footer";
 import { PlumbBob } from "@/components/plumb-bob";
+import { SiteBackdrop } from "@/components/site-backdrop";
 import { TerminalDock } from "@/components/terminal-dock";
 import { SiteHeader } from "@/components/site-header";
 import { Ignition, IgnitionGate } from "@/components/ignition";
@@ -69,6 +70,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <DeferRenderScript />
       </head>
       <body className="min-h-dvh">
+        {/* The background of every page: grid, halftone, webs and the drawing. */}
+        <SiteBackdrop />
         {/* The site-wide WebSite and Person entities; pages refer to them by @id. */}
         <JsonLd data={siteGraph()} />
         {/* Shown only on the homepage, and only when IgnitionGate switched it on. */}

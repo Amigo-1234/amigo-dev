@@ -4,6 +4,7 @@ import { ContactForm } from "@/components/contact-form";
 import { LocalTime } from "@/components/local-time";
 import { site } from "@/content/site";
 import { pageMetadata } from "@/lib/metadata";
+import { Caption } from "@/components/comic";
 
 export const metadata: Metadata = pageMetadata({
   path: "/contact",
@@ -16,7 +17,7 @@ export default function ContactPage() {
     <div className="shell pt-12 md:pt-20">
       <div className="grid gap-16 lg:grid-cols-12 lg:gap-12">
         <div className="lg:col-span-5">
-          <p className="label">Contact · Sheet 03</p>
+          <Caption>Signal me · Contact</Caption>
           <h1 className="reg mt-6 font-serif text-display">
             Let&apos;s <em className="text-accent">talk.</em>
           </h1>

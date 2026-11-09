@@ -110,7 +110,7 @@ export function ContactForm() {
 
   if (status.state === "sent") {
     return (
-      <div role="status" className="rounded-xl border border-line p-8 md:p-10">
+      <div role="status" className="panel panel--red p-8 md:p-10">
         <p className="label text-ok">Message sent</p>
         <p className="mt-4 font-serif text-4xl">Thank you{fields.name ? `, ${fields.name.split(" ")[0]}` : ""}.</p>
         <p className="mt-3 text-fg-muted">I&apos;ll reply to {fields.email || "you"} as soon as I can.</p>
@@ -128,7 +128,7 @@ export function ContactForm() {
     );
   }
 
-  const field = "mt-2 w-full rounded-lg border bg-surface px-4 py-3 text-base text-fg outline-none transition-colors placeholder:text-fg-subtle focus:border-accent focus:bg-transparent";
+  const field = "mt-2 w-full border-2 bg-ink-raised px-4 py-3 text-base text-fg outline-none transition-colors placeholder:text-fg-subtle focus:border-accent focus:bg-transparent";
 
   return (
     <form
@@ -156,7 +156,7 @@ export function ContactForm() {
             onChange={update("name")}
             aria-invalid={Boolean(errors.name)}
             aria-describedby={errors.name ? "name-error" : undefined}
-            className={cn(field, errors.name ? "border-accent" : "border-line")}
+            className={cn(field, errors.name ? "border-accent" : "border-line-strong")}
           />
           {errors.name && (
             <p id="name-error" className="mt-2 text-sm text-accent">
@@ -179,7 +179,7 @@ export function ContactForm() {
             onChange={update("email")}
             aria-invalid={Boolean(errors.email)}
             aria-describedby={errors.email ? "email-error" : undefined}
-            className={cn(field, errors.email ? "border-accent" : "border-line")}
+            className={cn(field, errors.email ? "border-accent" : "border-line-strong")}
           />
           {errors.email && (
             <p id="email-error" className="mt-2 text-sm text-accent">
@@ -196,7 +196,7 @@ export function ContactForm() {
             <label
               key={t}
               className={cn(
-                "cursor-pointer rounded-full border px-4 py-2.5 text-sm transition-colors has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-accent",
+                "cursor-pointer border-2 px-4 py-2.5 text-sm transition-colors has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-accent",
                 fields.topic === t ? "border-fg bg-fg text-ink" : "border-line text-fg-muted hover:border-line-strong hover:text-fg",
               )}
             >
@@ -226,7 +226,7 @@ export function ContactForm() {
           placeholder="What are you building, and what do you need help with?"
           aria-invalid={Boolean(errors.message)}
           aria-describedby={errors.message ? "message-error" : undefined}
-          className={cn(field, "resize-y", errors.message ? "border-accent" : "border-line")}
+          className={cn(field, "resize-y", errors.message ? "border-accent" : "border-line-strong")}
         />
         {errors.message && (
           <p id="message-error" className="mt-2 text-sm text-accent">
@@ -242,7 +242,7 @@ export function ContactForm() {
       </div>
 
       {status.state === "failed" && (
-        <div role="alert" className="rounded-lg border border-accent/50 bg-accent-soft p-4 text-sm">
+        <div role="alert" className="border-2 border-accent bg-accent-soft p-4 text-sm">
           <p className="font-medium text-fg">Your message wasn&apos;t sent. {status.detail}</p>
           <p className="mt-1 text-fg-muted">
             Nothing is lost:{" "}
@@ -258,7 +258,7 @@ export function ContactForm() {
         <button
           type="submit"
           disabled={status.state === "sending"}
-          className="inline-flex h-12 items-center gap-2 rounded-full bg-fg px-7 text-sm font-medium text-ink transition-[transform,opacity] hover:-translate-y-0.5 disabled:translate-y-0 disabled:opacity-60"
+          className="inline-flex h-12 items-center gap-2 bg-fg px-7 text-sm font-semibold text-ink shadow-[4px_4px_0_var(--accent)] transition-[transform,box-shadow,opacity] hover:-translate-x-px hover:-translate-y-px hover:shadow-[6px_6px_0_var(--accent)] active:translate-x-[3px] active:translate-y-[3px] active:shadow-[1px_1px_0_var(--accent)] disabled:translate-y-0 disabled:opacity-60"
         >
           {status.state === "sending" ? (
             <>

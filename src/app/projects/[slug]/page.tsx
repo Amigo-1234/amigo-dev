@@ -3,7 +3,9 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { ArchitectureDiagram } from "@/components/architecture-diagram";
-import { JsonLd, ShotFrame, StatusPill, Tag } from "@/components/ui";
+import { Stamp } from "@/components/chapters";
+import { Caption, Halftone, Panel, Registration } from "@/components/comic";
+import { JsonLd, ShotFrame, Tag } from "@/components/ui";
 import { getAdjacentProject, getPreviousProject, getProject, projects } from "@/content/projects";
 import { site } from "@/content/site";
 import { contentUpdated } from "@/content/updated";
@@ -30,13 +32,14 @@ export async function generateMetadata({ params }: PageProps<"/projects/[slug]">
   });
 }
 
+/** One page of the chapter: a page number in a caption box, a heading that prints into register. */
 function Section({ n, title, children, id }: { n: number; title: string; children: React.ReactNode; id: string }) {
   return (
-    <section aria-labelledby={id} className="defer-render reveal grid gap-6 border-t border-line pt-10 md:grid-cols-12 md:gap-10 md:pt-14">
+    <section aria-labelledby={id} className="defer-render grid gap-6 border-t-2 border-frame pt-10 md:grid-cols-12 md:gap-10 md:pt-14">
       <div className="md:col-span-4">
-        <p className="font-mono text-xs text-accent">{String(n).padStart(2, "0")}</p>
-        <h2 id={id} className="mt-3 scroll-mt-28 font-serif text-[2.25rem] leading-none">
-          {title}
+        <Caption>Page {String(n).padStart(2, "0")}</Caption>
+        <h2 id={id} data-print className="mt-4 scroll-mt-28 font-serif text-[2.6rem] leading-[0.9]">
+          <Registration>{title}</Registration>
         </h2>
       </div>
       <div className="md:col-span-8">{children}</div>
@@ -77,7 +80,7 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
       <JsonLd data={caseStudyGraph(project)} />
 
       <header className="relative isolate overflow-hidden">
-        <div aria-hidden="true" className="grid-paper fade-edges absolute inset-0 -z-10" />
+        <Halftone tone="red" from="right" className="absolute right-0 top-0 -z-10 h-[34rem] w-[min(46rem,80vw)] opacity-25" />
         <div
           aria-hidden="true"
           className="absolute top-40 left-1/2 -z-10 size-[44rem] -translate-x-1/2 rounded-full opacity-[0.14] blur-[120px]"
@@ -98,9 +101,9 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
             </ol>
           </nav>
 
-          <div className="mt-10 flex flex-wrap items-center gap-3">
-            <StatusPill label={project.status.label} tone={project.status.tone} />
-            <span className="label">{project.kind}</span>
+          <div className="mt-10 flex flex-wrap items-center gap-4">
+            <Caption>Chapter · {project.kind}</Caption>
+            <Stamp tone={project.status.tone} label={project.status.label} />
           </div>
           <h1 className="reg rise mt-6 font-serif text-display">{project.name}</h1>
           <p className="rise mt-8 max-w-3xl text-xl leading-relaxed text-fg-muted md:text-2xl" style={{ "--i": 1 } as React.CSSProperties}>
@@ -115,7 +118,7 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
             <time dateTime={contentUpdated.caseStudies}>{reviewed}</time>
           </p>
 
-          <dl className="rise mt-12 grid border border-line text-sm sm:grid-cols-2 lg:grid-cols-4" style={{ "--i": 2 } as React.CSSProperties}>
+          <dl className="rise mt-12 grid border-2 border-frame bg-ink text-sm sm:grid-cols-2 lg:grid-cols-4" style={{ "--i": 2 } as React.CSSProperties}>
             <div className="border-b border-line p-4 sm:border-r lg:border-b-0">
               <dt className="label">My role</dt>
               <dd className="mt-2 text-fg">{project.role}</dd>
@@ -147,12 +150,12 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
           </dl>
 
           {project.facts.length > 0 && (
-            <dl className="rise mt-6 grid grid-cols-2 gap-px overflow-hidden rounded-xl border border-line bg-line md:grid-cols-4" style={{ "--i": 3 } as React.CSSProperties}>
+            <dl className="rise mt-4 grid grid-cols-2 gap-3 md:grid-cols-4" style={{ "--i": 3 } as React.CSSProperties}>
               {project.facts.map((f) => (
-                <div key={f.label} className="bg-ink px-4 py-4">
+                <div key={f.label} className="panel px-4 py-4">
                   <dt className="sr-only">{f.label}</dt>
                   <dd>
-                    <span className="block font-serif text-4xl leading-none text-fg">{f.value}</span>
+                    <span data-count className="block font-serif text-5xl leading-none text-fg">{f.value}</span>
                     <span className="mt-2 block text-xs text-fg-muted">{f.label}</span>
                   </dd>
                 </div>
@@ -165,7 +168,7 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
               <a
                 key={sec.id}
                 href={`#${sec.id}`}
-                className="inline-flex h-9 shrink-0 items-center rounded-full border border-line px-3.5 text-sm text-fg-muted transition-colors hover:border-line-strong hover:text-fg"
+                className="inline-flex h-9 shrink-0 items-center border-2 border-frame bg-ink px-3.5 font-mono text-xs uppercase tracking-[0.1em] text-fg-muted transition-colors hover:bg-sfx hover:text-sfx-fg"
               >
                 {sec.title}
               </a>
@@ -230,11 +233,13 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
         </Section>
 
         <Section n={step("features")} title={title("features")} id="features">
-          <ul className="grid gap-px overflow-hidden rounded-xl border border-line bg-line sm:grid-cols-2">
+          <ul className="grid gap-3 sm:grid-cols-2">
             {project.features.map((f) => (
-              <li key={f.title} className="bg-ink p-6">
-                <h3 className="font-medium text-fg">{f.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-fg-muted">{f.body}</p>
+              <li key={f.title} className="min-w-0">
+                <Panel data-print="panel" className="h-full p-6">
+                  <h3 className="font-medium text-fg">{f.title}</h3>
+                  <p className="mt-2 text-sm leading-relaxed text-fg-muted">{f.body}</p>
+                </Panel>
               </li>
             ))}
           </ul>
@@ -249,7 +254,7 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
               </figure>
             ))}
             {mobileGallery.length > 0 && (
-              <div className="ticks grid gap-10 rounded-xl border border-line bg-ink-sunken px-6 py-12 sm:grid-cols-2 lg:grid-cols-3">
+              <div className="blueprint grid gap-10 px-6 py-12 sm:grid-cols-2 lg:grid-cols-3">
                 {mobileGallery.map((shot) => (
                   <figure key={shot.alt}>
                     <ShotFrame shot={shot} sizes="272px" />
@@ -264,8 +269,8 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
         <Section n={step("challenges")} title={title("challenges")} id="challenges">
           <ol className="space-y-6">
             {project.challenges.map((c) => (
-              <li key={c.title} className="rounded-xl border border-line p-6 md:p-8">
-                <h3 className="font-serif text-2xl">{c.title}</h3>
+              <li key={c.title} data-print="panel" className="panel panel--red p-6 md:p-8">
+                <h3 className="font-serif text-3xl leading-none">{c.title}</h3>
                 <div className="mt-5 grid gap-5 md:grid-cols-2">
                   <div>
                     <p className="label">Problem</p>
@@ -329,17 +334,22 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
               </div>
             )}
           </div>
-          {project.state.note && <p className="mt-8 border-l-2 border-accent pl-4 text-fg">{project.state.note}</p>}
+          {project.state.note && <p className="caption-box caption-box--prose mt-8 max-w-2xl">{project.state.note}</p>}
         </Section>
       </div>
 
       <nav aria-label="More projects" className="defer-render shell mt-28 md:mt-40">
-        <div className="grid gap-px overflow-hidden rounded-xl border border-line bg-line md:grid-cols-2">
+        <Caption>To be continued</Caption>
+        <div className="mt-5 grid gap-3 md:grid-cols-2">
           {[
             { p: previous, label: "Previous project", arrow: "←" },
             { p: next, label: "Next project", arrow: "→" },
           ].map(({ p, label, arrow }) => (
-            <Link key={label} href={`/projects/${p.slug}`} className="group block bg-ink p-6 md:p-8">
+            <Link
+              key={label}
+              href={`/projects/${p.slug}`}
+              className="panel group block p-6 transition-[transform,box-shadow] duration-200 hover:-translate-x-[3px] hover:-translate-y-[3px] hover:shadow-[6px_6px_0_var(--accent)] md:p-8"
+            >
               <span className="label">{label}</span>
               <span className={`mt-4 flex items-end justify-between gap-6 ${arrow === "←" ? "flex-row-reverse" : ""}`}>
                 <span className="font-serif text-4xl transition-colors group-hover:text-accent md:text-5xl">{p.name}</span>

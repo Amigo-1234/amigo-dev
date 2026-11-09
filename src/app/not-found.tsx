@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 
 import { SearchButton } from "@/components/search-button";
 import { ButtonLink } from "@/components/ui";
+import { Caption } from "@/components/comic";
 
 // Next.js adds its own noindex to not-found responses, but the static 404 page
 // also inherits the layout's "index, follow"; this keeps every tag on it noindex.
@@ -13,12 +14,12 @@ export const metadata: Metadata = {
 export default function NotFound() {
   return (
     <section className="relative isolate overflow-hidden">
-      <div aria-hidden="true" className="grid-paper fade-edges absolute inset-0 -z-10" />
+
       <div className="shell grid min-h-[70vh] items-center gap-12 py-16 lg:grid-cols-12">
         <div className="lg:col-span-7">
-          <p className="label">Error 404 · Sheet missing</p>
+          <Caption>Error 404 · Missing page</Caption>
           <h1 className="reg mt-6 font-serif text-display">
-            This drawing <em className="text-accent">doesn&apos;t exist.</em>
+            Lost in the <em className="text-accent">multiverse</em> of URLs.
           </h1>
           <p className="mt-8 max-w-lg text-lg leading-relaxed text-fg-muted">
             The page may have moved when this site was rebuilt, or the link has a typo. Everything that used to live

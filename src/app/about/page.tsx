@@ -9,6 +9,7 @@ import { projects } from "@/content/projects";
 import { site } from "@/content/site";
 import { pageMetadata } from "@/lib/metadata";
 import { profilePageGraph } from "@/lib/schema";
+import { Caption } from "@/components/comic";
 
 export const metadata: Metadata = pageMetadata({
   path: "/about",
@@ -90,7 +91,7 @@ export default function AboutPage() {
         <div aria-hidden="true" className="grid-paper fade-edges absolute inset-0 -z-10" />
         <div className="shell grid items-start gap-14 pt-12 md:pt-20 lg:grid-cols-12 lg:gap-10">
           <div className="lg:col-span-7">
-            <p className="label">About · Sheet 02</p>
+            <Caption>Origin story · Issue #01</Caption>
             <h1 className="reg mt-6 font-serif text-display">
               {/* The {" "} keeps words apart in the raw HTML text crawlers read; it doesn't change the layout. */}
               <span className="rise block">An engineering</span>{" "}
@@ -136,7 +137,7 @@ export default function AboutPage() {
 
       <section aria-label="My story" className="shell mt-20 md:mt-28">
         <div className="grid gap-10 md:grid-cols-12">
-          <p className="label md:col-span-3">The short version</p>
+          <div className="md:col-span-3"><Caption>The short version</Caption></div>
           <div className="space-y-6 md:col-span-9">
             {story.map((p, i) => (
               <p
@@ -186,9 +187,9 @@ export default function AboutPage() {
           }
           intro="English is my working language. Spanish and French I'm learning, and my Arabic is basic and growing."
         />
-        <ul className="mt-14 grid gap-px overflow-hidden rounded-xl border border-line bg-line sm:grid-cols-2 lg:grid-cols-4">
+        <ul className="mt-14 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
           {languages.map((l) => (
-            <li key={l.name} className="reveal flex flex-col bg-ink p-6 md:p-8">
+            <li key={l.name} data-print="panel" className="panel flex flex-col p-6 md:p-8">
               <p lang={l.lang} dir={l.dir} className="font-serif text-5xl text-fg">
                 {l.greeting}
               </p>
@@ -216,7 +217,7 @@ export default function AboutPage() {
             ["Say what is real.", "I describe software as it is: what is live, what is tested and what is still a plan."],
             ...aiWorkflow.principles.slice(0, 1).map((p) => [p, "AI tools speed me up. Review, testing and responsibility stay with me."]),
           ].map(([title, body], i) => (
-            <li key={title} className="reveal rounded-xl border border-line p-6 md:p-8">
+            <li key={title} data-print="panel" className="panel p-6 md:p-8">
               <p className="font-mono text-xs text-accent">{String(i + 1).padStart(2, "0")}</p>
               <h3 className="mt-6 font-serif text-3xl leading-tight">{title}</h3>
               <p className="mt-3 text-fg-muted">{body}</p>
@@ -254,7 +255,7 @@ export default function AboutPage() {
       <section aria-label="Work and profiles" className="shell mt-28 md:mt-36">
         <div className="grid gap-12 border-t border-line pt-10 md:grid-cols-12 md:gap-10">
           <div className="md:col-span-7">
-            <h2 className="label">Selected work</h2>
+            <h2 className="caption-box">Selected work</h2>
             <ul className="mt-5 border-t border-line">
               {featured.map((p) => (
                 <li key={p.slug} className="border-b border-line">
@@ -272,7 +273,7 @@ export default function AboutPage() {
             </ul>
           </div>
           <div className="md:col-span-5">
-            <h2 className="label">Find me elsewhere</h2>
+            <h2 className="caption-box">Find me elsewhere</h2>
             <ul className="mt-5 border-t border-line text-sm">
               {[
                 { label: "GitHub", handle: "@Amigo-1234", href: site.social.github },
