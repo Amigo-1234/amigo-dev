@@ -23,7 +23,7 @@ export default function ProjectsPage() {
       <header className="grid gap-8 border-b border-line pb-12 md:grid-cols-12 md:pb-16">
         <div className="md:col-span-8">
           <p className="label">Index of work · {projects.length} case studies</p>
-          <h1 className="mt-6 font-serif text-display">
+          <h1 className="reg mt-6 font-serif text-display">
             Projects<span className="text-accent">.</span>
           </h1>
         </div>

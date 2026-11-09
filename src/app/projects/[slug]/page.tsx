@@ -102,7 +102,7 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
             <StatusPill label={project.status.label} tone={project.status.tone} />
             <span className="label">{project.kind}</span>
           </div>
-          <h1 className="rise mt-6 font-serif text-display">{project.name}</h1>
+          <h1 className="reg rise mt-6 font-serif text-display">{project.name}</h1>
           <p className="rise mt-8 max-w-3xl text-xl leading-relaxed text-fg-muted md:text-2xl" style={{ "--i": 1 } as React.CSSProperties}>
             {project.intro}
           </p>

@@ -4,6 +4,7 @@ import { usePathname } from "next/navigation";
 import { useRef } from "react";
 
 import { FINE_POINTER, MOTION, useGsap } from "@/lib/gsap";
+import { PRINT_DURATION, PRINT_OFFSET, stepped } from "@/lib/motion";
 
 /*
  * Site-wide motion, driven by data attributes so pages stay server-rendered:
@@ -17,6 +18,9 @@ import { FINE_POINTER, MOTION, useGsap } from "@/lib/gsap";
  *   [data-magnetic]    leans toward the pointer (fine pointers only)
  *   [data-light]       sets --mx/--my for pointer-following light
  *   .spotlight         same, for cards
+ *   [data-print]       its .reg text prints into register, on twos;
+ *                      data-print="panel" also slams the panel in
+ *   [data-ink]         its SVG strokes draw themselves, on twos
  *
  * Everything is set up when the browser is idle after a page renders (so it
  * never competes with hydration) and reverted on navigation. Content is visible without JavaScript; elements already on
@@ -61,6 +65,53 @@ export function MotionLayer() {
             start: "top 88%",
             once: true,
             onEnter: () => void gsap.to(items, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out", stagger: 0.035 }),
+          });
+        }
+
+        // Print: colour plates start out of register and snap together, on twos.
+        // Text never hides for this (it is readable throughout); panels also
+        // slam in from a slight tilt.
+        for (const el of gsap.utils.toArray<HTMLElement>("[data-print]")) {
+          // Already on screen when motion starts (after the first interaction): leave it be.
+          if (!belowFold(el)) continue;
+          const panel = el.dataset.print === "panel";
+          const reg = el.matches(".reg") ? el : el.querySelector<HTMLElement>(".reg");
+          if (panel) gsap.set(el, { opacity: 0, scale: 0.94, rotate: -1.2 });
+          if (reg) gsap.set(reg, { "--reg": PRINT_OFFSET });
+          ScrollTrigger.create({
+            trigger: el,
+            start: "top 88%",
+            once: true,
+            onEnter: () => {
+              const ease = stepped(gsap.parseEase("power3.out"), PRINT_DURATION);
+              if (panel) gsap.to(el, { opacity: 1, scale: 1, rotate: 0, duration: PRINT_DURATION, ease, clearProps: "transform,opacity" });
+              if (reg) gsap.to(reg, { "--reg": 0, duration: PRINT_DURATION, ease, delay: panel ? 0.08 : 0 });
+            },
+          });
+        }
+
+        // Ink: SVG strokes draw themselves, on twos, when they scroll into view.
+        for (const el of gsap.utils.toArray<SVGElement>("[data-ink]")) {
+          if (!belowFold(el)) continue;
+          const strokes = Array.from(el.querySelectorAll<SVGGeometryElement>("path, line, circle, polyline, rect")).filter(
+            (s) => typeof s.getTotalLength === "function",
+          );
+          for (const s of strokes) {
+            const len = s.getTotalLength();
+            gsap.set(s, { strokeDasharray: len, strokeDashoffset: len });
+          }
+          ScrollTrigger.create({
+            trigger: el,
+            start: "top 85%",
+            once: true,
+            onEnter: () =>
+              void gsap.to(strokes, {
+                strokeDashoffset: 0,
+                duration: 1.1,
+                ease: stepped(gsap.parseEase("power2.inOut"), 1.1),
+                stagger: 0.06,
+                onComplete: () => void gsap.set(strokes, { clearProps: "strokeDasharray,strokeDashoffset" }),
+              }),
           });
         }
 

@@ -3,6 +3,7 @@ import Link from "next/link";
 
 import type { Shot, StatusTone } from "@/content/projects";
 import { cn } from "@/lib/cn";
+import { Caption, Registration } from "@/components/comic";
 
 type ButtonProps = {
   href: string;
@@ -63,14 +64,17 @@ export function SectionHeading({
 }) {
   return (
     <div className={cn("grid gap-6 md:grid-cols-12 md:gap-10", className)}>
-      <div className="flex items-center gap-3 md:col-span-3 md:items-start md:pt-3">
-        <span className="font-mono text-xs text-accent">{index}</span>
-        <span aria-hidden="true" className="h-px w-8 bg-line-strong" />
-        <span className="label">{label}</span>
+      {/* The narration box names the section; the title prints into register as it arrives. */}
+      <div className="md:col-span-3 md:pt-2">
+        <Caption>
+          <span>{index}</span>
+          <span aria-hidden="true">·</span>
+          <span>{label}</span>
+        </Caption>
       </div>
       <div className="md:col-span-9">
-        <h2 id={id} className="font-serif text-headline">
-          {title}
+        <h2 id={id} data-print className="font-serif text-headline">
+          <Registration>{title}</Registration>
         </h2>
         {intro && <div className="mt-5 max-w-2xl text-lg leading-relaxed text-fg-muted">{intro}</div>}
       </div>

@@ -15,7 +15,7 @@ import { projects } from "@/content/projects";
 import { site } from "@/content/site";
 import { siteGraph } from "@/lib/schema";
 
-import { GeistMono, GeistSans, instrumentSerif } from "./fonts";
+import { displayFace, GeistMono, GeistSans } from "./fonts";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -59,7 +59,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       lang="en"
       data-theme="dark"
       suppressHydrationWarning
-      className={`${GeistSans.variable} ${GeistMono.variable} ${instrumentSerif.variable}`}
+      className={`${GeistSans.variable} ${GeistMono.variable} ${displayFace.variable}`}
     >
       <head>
         <ThemeScript />

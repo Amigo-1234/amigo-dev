@@ -25,12 +25,17 @@ export const GeistMono = localFont({
   fallback: ["ui-monospace", "SFMono-Regular", "Menlo", "monospace"],
 });
 
-export const instrumentSerif = localFont({
+/*
+ * Display face: Big Shoulders Display (SIL OFL 1.1, licence in src/fonts), an
+ * industrial condensed face that reads as both a comic-cover masthead and
+ * machine-shop signage. Headings only, so two weights are enough.
+ */
+export const displayFace = localFont({
   src: [
-    { path: "../fonts/instrument-serif-latin-400-normal.woff2", weight: "400", style: "normal" },
-    { path: "../fonts/instrument-serif-latin-400-italic.woff2", weight: "400", style: "italic" },
+    { path: "../fonts/big-shoulders-display-latin-700-normal.woff2", weight: "700", style: "normal" },
+    { path: "../fonts/big-shoulders-display-latin-900-normal.woff2", weight: "900", style: "normal" },
   ],
-  variable: "--font-instrument-serif",
+  variable: "--font-display-face",
   display: "swap",
-  fallback: ["Iowan Old Style", "Georgia", "serif"],
+  fallback: ["Impact", "Haettenschweiler", "Arial Narrow", "sans-serif"],
 });

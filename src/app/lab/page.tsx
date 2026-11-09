@@ -29,7 +29,7 @@ export default function LabPage() {
         <header className="grid gap-8 border-b border-line pb-12 md:grid-cols-12 md:pb-16">
           <div className="md:col-span-8">
             <p className="label">AMIGODEV Lab · Sheet L-01</p>
-            <h1 className="mt-6 font-serif text-display">
+            <h1 className="reg mt-6 font-serif text-display">
               The <em className="text-accent">Lab.</em>
             </h1>
           </div>

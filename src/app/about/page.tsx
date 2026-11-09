@@ -91,7 +91,7 @@ export default function AboutPage() {
         <div className="shell grid items-start gap-14 pt-12 md:pt-20 lg:grid-cols-12 lg:gap-10">
           <div className="lg:col-span-7">
             <p className="label">About · Sheet 02</p>
-            <h1 className="mt-6 font-serif text-display">
+            <h1 className="reg mt-6 font-serif text-display">
               {/* The {" "} keeps words apart in the raw HTML text crawlers read; it doesn't change the layout. */}
               <span className="rise block">An engineering</span>{" "}
               <span className="rise block" style={{ "--i": 1 } as React.CSSProperties}>

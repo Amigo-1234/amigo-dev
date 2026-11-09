@@ -17,7 +17,7 @@ export default function NotFound() {
       <div className="shell grid min-h-[70vh] items-center gap-12 py-16 lg:grid-cols-12">
         <div className="lg:col-span-7">
           <p className="label">Error 404 · Sheet missing</p>
-          <h1 className="mt-6 font-serif text-display">
+          <h1 className="reg mt-6 font-serif text-display">
             This drawing <em className="text-accent">doesn&apos;t exist.</em>
           </h1>
           <p className="mt-8 max-w-lg text-lg leading-relaxed text-fg-muted">

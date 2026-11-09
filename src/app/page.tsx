@@ -130,7 +130,7 @@ function Hero() {
             <span data-hero-label>{site.role}</span>
           </p>
 
-          <h1 id="hero-title" className="mt-5 font-serif text-display sm:mt-7">
+          <h1 id="hero-title" className="reg mt-5 font-serif text-display sm:mt-7">
             {lines.map((line, i) => (
               // Each line is masked so it can rise from below its own baseline. The " "
               // after it keeps words apart in the raw HTML text; it has no visual effect.

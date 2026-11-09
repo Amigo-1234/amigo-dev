@@ -17,7 +17,7 @@ export default function ContactPage() {
       <div className="grid gap-16 lg:grid-cols-12 lg:gap-12">
         <div className="lg:col-span-5">
           <p className="label">Contact · Sheet 03</p>
-          <h1 className="mt-6 font-serif text-display">
+          <h1 className="reg mt-6 font-serif text-display">
             Let&apos;s <em className="text-accent">talk.</em>
           </h1>
           <p className="mt-8 max-w-md text-lg leading-relaxed text-fg-muted">

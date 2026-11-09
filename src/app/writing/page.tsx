@@ -20,7 +20,7 @@ export default function WritingPage() {
   return (
     <div className="shell pt-12 md:pt-20">
       <p className="label">Writing</p>
-      <h1 className="mt-6 font-serif text-display">Notes from the build.</h1>
+      <h1 className="reg mt-6 font-serif text-display">Notes from the build.</h1>
       <ul className="mt-16 border-t border-line">
         {sorted.map((post) => (
           <li key={post.slug} className="border-b border-line py-8">
