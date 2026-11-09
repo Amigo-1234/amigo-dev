@@ -8,39 +8,39 @@
 /* ------------------------------------------------------------------ */
 
 /*
- * Dark theme: cyanotype. Prussian-blue paper with white linework, like a
- * blueprint print; the accent is the redline used for review markups. Every
- * text colour clears WCAG AA (4.5:1) on ink, ink-raised and ink-sunken.
+ * Dark theme (the default): black silk. Near-black ink, white thread, and one
+ * red for the things that matter. Every text colour clears WCAG AA (4.5:1) on
+ * ink, ink-raised and ink-sunken.
  */
 :root,
 [data-theme="dark"] {
   color-scheme: dark;
-  --ink: #0f2846;
-  --ink-raised: #13304f;
-  --ink-sunken: #0b2038;
-  --paper: #e9eff6;
-  --fg: #e9eff6;
-  --fg-muted: #acbdd2;
-  --fg-subtle: #8ea3bd;
-  --line: rgb(233 239 246 / 0.12);
-  --line-strong: rgb(233 239 246 / 0.24);
-  --surface: rgb(233 239 246 / 0.035);
-  --surface-strong: rgb(233 239 246 / 0.06);
-  --accent: #ff8656;
-  --accent-fg: #0b2038;
-  --accent-soft: rgb(255 134 86 / 0.14);
-  --grid: rgb(233 239 246 / 0.06);
-  --shadow: 0 1px 0 rgb(255 255 255 / 0.05) inset, 0 24px 60px -24px rgb(3 12 26 / 0.75);
-  --ok: #86d3a9;
+  --ink: #0a0a0b;
+  --ink-raised: #131316;
+  --ink-sunken: #050506;
+  --paper: #f3f3f1;
+  --fg: #f3f3f1;
+  --fg-muted: #a9a9b0;
+  --fg-subtle: #8c8c94;
+  --line: rgb(243 243 241 / 0.11);
+  --line-strong: rgb(243 243 241 / 0.22);
+  --surface: rgb(243 243 241 / 0.035);
+  --surface-strong: rgb(243 243 241 / 0.06);
+  --accent: #ff4545;
+  --accent-fg: #0a0a0b;
+  --accent-soft: rgb(255 69 69 / 0.14);
+  --grid: rgb(243 243 241 / 0.05);
+  --shadow: 0 1px 0 rgb(255 255 255 / 0.05) inset, 0 24px 60px -24px rgb(0 0 0 / 0.85);
+  --ok: #7fd6a4;
   --warn: #f0c070;
-  --construction: rgb(233 239 246 / 0.3);
-  --hatch: rgb(233 239 246 / 0.16);
-  --glass-bg: rgb(17 42 72 / 0.74);
-  --glass-bg-strong: rgb(17 42 72 / 0.92);
-  --glass-border: rgb(233 239 246 / 0.15);
-  --glass-highlight: rgb(255 255 255 / 0.07);
-  --glass-shadow: 0 1px 0 rgb(255 255 255 / 0.06) inset, 0 18px 40px -22px rgb(3 12 26 / 0.85);
-  --header-bg: rgb(15 40 70 / 0.92);
+  --construction: rgb(243 243 241 / 0.28);
+  --hatch: rgb(243 243 241 / 0.15);
+  --glass-bg: rgb(19 19 22 / 0.74);
+  --glass-bg-strong: rgb(19 19 22 / 0.92);
+  --glass-border: rgb(243 243 241 / 0.13);
+  --glass-highlight: rgb(255 255 255 / 0.06);
+  --glass-shadow: 0 1px 0 rgb(255 255 255 / 0.05) inset, 0 18px 40px -22px rgb(0 0 0 / 0.9);
+  --header-bg: rgb(10 10 11 / 0.9);
 }
 
 [data-theme="light"] {
@@ -55,9 +55,9 @@
   --line-strong: rgb(21 21 19 / 0.2);
   --surface: rgb(21 21 19 / 0.025);
   --surface-strong: rgb(21 21 19 / 0.05);
-  --accent: #b83f17;
+  --accent: #c8102e;
   --accent-fg: #fbf9f4;
-  --accent-soft: rgb(184 63 23 / 0.1);
+  --accent-soft: rgb(200 16 46 / 0.1);
   --grid: rgb(21 21 19 / 0.05);
   --shadow: 0 1px 0 rgb(255 255 255 / 0.6) inset, 0 24px 50px -28px rgb(60 40 20 / 0.35);
   --ok: #2f7a52;
@@ -114,6 +114,27 @@
 
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-in-out-quart: cubic-bezier(0.76, 0, 0.24, 1);
+
+  /* Magic UI Marquee */
+  --animate-marquee: marquee var(--duration) infinite linear;
+  --animate-marquee-vertical: marquee-vertical var(--duration) linear infinite;
+
+  @keyframes marquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(calc(-100% - var(--gap)));
+    }
+  }
+  @keyframes marquee-vertical {
+    from {
+      transform: translateY(0);
+    }
+    to {
+      transform: translateY(calc(-100% - var(--gap)));
+    }
+  }
 }
 
 @theme {
@@ -1021,5 +1042,86 @@ html[data-ignited] #main {
   to {
     opacity: 1;
     transform: none;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Spider: the thread-hung spider (SpiderDrop) and the hero web        */
+/* ------------------------------------------------------------------ */
+
+.spider-drop {
+  --len: 0px;
+  --swing: 0deg;
+  position: fixed;
+  top: 0;
+  right: 1.75rem;
+  /* Under the header, so the thread comes down from behind it. */
+  z-index: 39;
+  display: none;
+  pointer-events: none;
+}
+@media (hover: hover) and (pointer: fine) and (min-width: 48rem) and (prefers-reduced-motion: no-preference) {
+  .spider-drop {
+    display: block;
+  }
+}
+html[data-ignition="idle"] .spider-drop,
+html[data-ignition="spool"] .spider-drop,
+html[data-ignition="launch"] .spider-drop {
+  display: none;
+}
+.spider-drop__swing {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform: rotate(var(--swing));
+  transform-origin: 50% 0;
+}
+.spider-drop__thread {
+  width: 1px;
+  height: var(--len);
+  background: linear-gradient(to bottom, transparent, var(--fg-subtle) 30%, var(--fg));
+  opacity: 0.6;
+}
+.spider-drop__body {
+  width: 2.25rem;
+  height: 2.25rem;
+  margin-top: -0.4rem;
+  color: var(--fg);
+  cursor: pointer;
+  pointer-events: auto;
+  filter: drop-shadow(0 6px 10px rgb(0 0 0 / 0.45));
+  transition: transform 0.3s var(--ease-out-expo);
+}
+.spider-drop__body:hover {
+  transform: scale(1.12);
+}
+.spider-drop__leg {
+  transform-origin: 0 0;
+  animation: spider-leg 2.6s ease-in-out infinite;
+}
+.spider-drop[data-climbing] .spider-drop__leg {
+  animation-duration: 0.16s;
+}
+@keyframes spider-leg {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(5deg);
+  }
+}
+
+/* ComicText starts invisible for its entrance; without JavaScript there is no entrance. */
+html:not(.js) .comic-text {
+  opacity: 1 !important;
+  transform: skewX(-10deg) !important;
+}
+
+@media print {
+  .spider-drop,
+  .spider-web {
+    display: none !important;
   }
 }

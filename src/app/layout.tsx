@@ -6,6 +6,7 @@ import { EasterEggs } from "@/components/easter-eggs";
 import { MenuScript } from "@/components/menu-script";
 import { MotionLayer } from "@/components/motion-layer";
 import { SiteFooter } from "@/components/site-footer";
+import { SpiderDrop } from "@/components/spider-drop";
 import { SiteHeader } from "@/components/site-header";
 import { Ignition, IgnitionGate } from "@/components/ignition";
 import { ThemeScript } from "@/components/theme";
@@ -47,10 +48,8 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: [
-    { media: "(prefers-color-scheme: dark)", color: "#0f2846" },
-    { media: "(prefers-color-scheme: light)", color: "#f4f1ea" },
-  ],
+  // Black is the default theme whatever the system prefers (the toggle offers light).
+  themeColor: "#0a0a0b",
   colorScheme: "dark light",
 };
 
@@ -83,6 +82,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <SiteFooter />
         <MotionLayer />
         <EasterEggs />
+        <SpiderDrop />
         <CommandMenu
           projects={projects.map((p) => ({
             slug: p.slug,

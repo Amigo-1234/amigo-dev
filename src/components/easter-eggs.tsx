@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 
+import { webBurst } from "@/lib/web-burst";
+
 const KONAMI = ["ArrowUp", "ArrowUp", "ArrowDown", "ArrowDown", "ArrowLeft", "ArrowRight", "ArrowLeft", "ArrowRight", "b", "a"];
 
 /*
@@ -16,7 +18,7 @@ export function EasterEggs() {
   useEffect(() => {
     console.log(
       "%cAMIGODEV%c\nHey, fellow developer. This site is Next.js + TypeScript + Tailwind + GSAP.\nTry the terminal on the home page, Ctrl/⌘+K anywhere, or ↑↑↓↓←→←→BA.",
-      "font: 600 20px/1.4 system-ui; color: #f26b3a; letter-spacing: .12em",
+      "font: 600 20px/1.4 system-ui; color: #ff4545; letter-spacing: .12em",
       "font: 13px/1.6 ui-monospace, monospace",
     );
 
@@ -29,6 +31,7 @@ export function EasterEggs() {
         const root = document.documentElement;
         const on = !root.hasAttribute("data-blueprint");
         root.toggleAttribute("data-blueprint", on);
+        if (on) void webBurst({ x: 0.5, y: 0.6 });
         setToast(on ? "Blueprint mode on — every box, drawn. Enter the code again to switch it off." : "Blueprint mode off.");
       }
     };

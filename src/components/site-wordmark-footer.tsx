@@ -11,13 +11,13 @@ import { useTheme } from "./theme-toggle";
 
 /*
  * The site footer: AMIGODEV printed as halftone dots that part around the
- * pointer, in the current theme's own colours (cyanotype or paper, with the
- * redline as the warm colour). Its links are real anchors; same-site ones are
+ * pointer, in the current theme's own colours (black or paper, with the
+ * site red as the warm colour). Its links are real anchors; same-site ones are
  * routed client-side.
  */
 const PALETTES = {
-  dark: { background: "#0b2038", ink: "#e9eff6", warm: "#ff8656" },
-  light: { background: "#ebe7dd", ink: "#151513", warm: "#b83f17" },
+  dark: { background: "#050506", ink: "#f3f3f1", warm: "#ff4545" },
+  light: { background: "#ebe7dd", ink: "#151513", warm: "#c8102e" },
 } as const;
 
 const columns: FooterColumn[] = [

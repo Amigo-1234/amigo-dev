@@ -14,7 +14,7 @@ import { useTheme } from "./theme-toggle";
  * image optimiser, at the size a file is drawn, at its default quality of 75), and the front file is the
  * case study. Open a folder to fan the screens out; any file opens the case
  * study. The folders follow the site theme: milk glass on paper, smoked glass
- * on cyanotype.
+ * on black.
  */
 export type FolderProject = {
   slug: string;
@@ -30,11 +30,11 @@ const hex = (h: string) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16))
 const toHex = (c: number[]) => "#" + c.map((v) => Math.round(Math.max(0, Math.min(255, v))).toString(16).padStart(2, "0")).join("");
 const mix = (a: string, b: string, t: number) => toHex(hex(a).map((v, i) => v + (hex(b)[i] - v) * t));
 
-/** Ink folding through the project's tint, on the site's cyanotype paper. */
+/** Ink folding through the project's tint, on the site's black. */
 function recipeFor(tint: string, i: number): ArtRecipe {
   return {
     style: i % 3 === 1 ? "streak" : "marble",
-    colors: ["#0b2038", mix(tint, "#0b2038", 0.62), mix(tint, "#000000", 0.25), tint, mix(tint, "#ffffff", 0.45), "#e9eff6"],
+    colors: ["#050506", mix(tint, "#050506", 0.62), mix(tint, "#000000", 0.25), tint, mix(tint, "#ffffff", 0.45), "#f3f3f1"],
     scale: 0.7,
     warp: i % 3 === 1 ? 1.5 : 3.2,
     angle: -0.6 + i * 0.9,

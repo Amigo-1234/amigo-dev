@@ -6,9 +6,15 @@ import { HeroMotion } from "@/components/hero-motion";
 import { Portrait, PortraitThumb } from "@/components/portrait";
 import { FeaturedProject } from "@/components/project-cards";
 import { type FolderProject, ProjectFolders } from "@/components/project-folders";
+import { type Screen, ScreensCarousel } from "@/components/screens-carousel";
+import { Signal } from "@/components/signal";
+import { SpiderWeb } from "@/components/spider-web";
 import { SystemExplorer } from "@/components/system-explorer";
 import { TerminalLazy } from "@/components/terminal-lazy";
 import { ButtonLink, JsonLd, SectionHeading } from "@/components/ui";
+import { Highlighter } from "@/components/ui/highlighter";
+import { Marquee } from "@/components/ui/marquee";
+import { ProgressiveBlur } from "@/components/ui/progressive-blur";
 import { building, buildingAsOf } from "@/content/building";
 import { experiments } from "@/content/lab";
 import { projects } from "@/content/projects";
@@ -26,11 +32,15 @@ export default function HomePage() {
     live: p.links.live?.href,
     shots: p.shots.map((s) => ({ src: s.image.src, caption: s.caption, device: s.device })),
   }));
+  const screens: Screen[] = projects.flatMap((p) =>
+    p.shots.map((s) => ({ src: s.image.src, alt: s.alt, project: p.name, slug: p.slug, caption: s.caption.split(/[.,;:—]/)[0].trim() })),
+  );
 
   return (
     <>
       <JsonLd data={homePageGraph()} />
       <Hero />
+      <StackStrip />
       <SystemSection />
 
       <section aria-labelledby="work-heading" className="defer-render shell pt-28 md:pt-40">
@@ -52,9 +62,22 @@ export default function HomePage() {
         </div>
 
         <div className="mt-28 border-t border-line pt-12 md:mt-36">
+          <h3 className="font-serif text-title">Every screen, in one row</h3>
+          <p className="mt-3 max-w-xl text-fg-muted">
+            Real screenshots from every project. Drag or scroll through them, and select the one in the middle to open its
+            case study.
+          </p>
+        </div>
+      </section>
+      <div className="defer-render mt-8">
+        <ScreensCarousel screens={screens} />
+      </div>
+
+      <section aria-labelledby="archive-heading" className="defer-render shell">
+        <div className="mt-16 border-t border-line pt-12 md:mt-24">
           <div className="flex flex-wrap items-end justify-between gap-6">
             <div>
-              <h3 className="font-serif text-title">The archive</h3>
+              <h3 id="archive-heading" className="font-serif text-title">The archive</h3>
               <p className="mt-3 max-w-xl text-fg-muted">
                 Every project in its own folder. Hover to lift the files, click to fan out the real screens, and pick any
                 one to read the case study.
@@ -71,7 +94,7 @@ export default function HomePage() {
       </section>
 
       <CurrentlyBuilding />
-      <Interlude />
+      <Signal />
       <Capabilities />
       <Journey />
       <Console />
@@ -86,11 +109,12 @@ function Hero() {
   const lines: React.ReactNode[] = ["Engineering ideas", "into systems", <>that <em className="text-accent">hold up.</em></>];
   return (
     <HeroMotion className="relative isolate overflow-hidden">
-      <div aria-hidden="true" className="grid-paper fade-edges absolute inset-0 -z-10" />
+      <SpiderWeb className="spider-web absolute inset-0 -z-10" />
       <div
         aria-hidden="true"
-        className="glow-drift absolute -top-40 right-[-10%] -z-10 size-[42rem] rounded-full bg-accent opacity-[0.07] blur-[120px]"
+        className="glow-drift absolute -top-40 right-[-10%] -z-10 size-[42rem] rounded-full bg-accent opacity-[0.08] blur-[120px]"
       />
+      <ProgressiveBlur position="bottom" height="22%" className="-z-[5]" blurLevels={[0.5, 1, 2, 4, 8, 12]} />
 
       <div className="shell grid items-center gap-10 pb-10 pt-8 sm:pt-12 lg:grid-cols-12 lg:gap-10 lg:pb-20 lg:pt-16">
         <div className="lg:col-span-8">
@@ -123,8 +147,15 @@ function Hero() {
           </h1>
 
           <p data-hero data-hero-fade className="mt-5 max-w-xl text-[1.0625rem] leading-relaxed text-fg-muted sm:mt-8 md:text-xl">
-            I build modern web applications, design the databases and permissions behind them, deploy them and keep them
-            running — for schools, businesses and communities in Nigeria.
+            I build{" "}
+            <Highlighter action="underline" color="var(--accent)" strokeWidth={2} iterations={2} padding={1}>
+              modern web applications
+            </Highlighter>
+            , design the{" "}
+            <Highlighter action="highlight" color="var(--accent-soft)" padding={2}>
+              databases and permissions
+            </Highlighter>{" "}
+            behind them, deploy them and keep them running — for schools, businesses and communities in Nigeria.
           </p>
 
           <div data-hero data-hero-fade className="mt-7 grid grid-cols-1 gap-2.5 min-[375px]:grid-cols-[1.2fr_1fr] sm:mt-10 sm:flex sm:flex-wrap sm:items-center sm:gap-3">
@@ -175,6 +206,32 @@ function Hero() {
   );
 }
 
+/** Everything in the toolbox on two slow belts, running opposite ways. */
+function StackStrip() {
+  const items = [...new Set(skills.flatMap((g) => g.items))];
+  const half = Math.ceil(items.length / 2);
+  const rows = [items.slice(0, half), items.slice(half)];
+  return (
+    <section aria-label="Tools and skills" className="relative mt-6 border-y border-line py-3 [mask-image:linear-gradient(to_right,transparent,#000_8%,#000_92%,transparent)]">
+      <ul className="sr-only">
+        {items.map((item) => (
+          <li key={item}>{item}</li>
+        ))}
+      </ul>
+      {rows.map((row, r) => (
+        <Marquee key={r} aria-hidden="true" reverse={r === 1} pauseOnHover className="[--duration:55s] [--gap:0.75rem] motion-reduce:[&>div]:animate-none">
+          {row.map((item) => (
+            <span key={item} className="flex items-center gap-3 whitespace-nowrap font-mono text-xs uppercase tracking-[0.14em] text-fg-muted">
+              <span aria-hidden="true" className="size-1 rounded-full bg-accent" />
+              {item}
+            </span>
+          ))}
+        </Marquee>
+      ))}
+    </section>
+  );
+}
+
 function SystemSection() {
   const projectNames = Object.fromEntries(projects.map((p) => [p.slug, p.name]));
   return (
@@ -193,26 +250,6 @@ function SystemSection() {
       <div className="mt-12 md:mt-16">
         <SystemExplorer projectNames={projectNames} />
       </div>
-    </section>
-  );
-}
-
-function Interlude() {
-  const words = ["Design", "Build", "Deploy", "Maintain"];
-  return (
-    <section aria-label="What I do, in four words" className="defer-render relative mt-28 overflow-hidden border-y border-line py-14 md:mt-40 md:py-20">
-      <p data-drift="8" className="flex w-max items-baseline gap-[0.35em] whitespace-nowrap pl-[6vw] font-serif text-[clamp(3.5rem,12vw,11rem)] leading-none">
-        {words.map((w, i) => (
-          <span key={w} className="flex items-baseline gap-[0.35em]">
-            <span className={i % 2 ? "italic text-accent" : undefined}>{w}</span>
-            {i < words.length - 1 && (
-              <span aria-hidden="true" className="font-mono text-[0.25em] text-fg-subtle">
-                →
-              </span>
-            )}
-          </span>
-        ))}
-      </p>
     </section>
   );
 }
@@ -305,7 +342,7 @@ function Console() {
         </div>
         <div className="reveal relative isolate min-w-0 lg:col-span-7">
           <div aria-hidden="true" className="absolute bottom-4 left-0 -z-10 size-56 sm:-left-8 rounded-full bg-accent opacity-20 blur-3xl" />
-          <div aria-hidden="true" className="absolute -top-6 right-0 -z-10 h-40 w-64 sm:-right-4 rounded-full bg-[#3a6df2] opacity-[0.12] blur-3xl" />
+          <div aria-hidden="true" className="absolute -top-6 right-0 -z-10 h-40 w-64 sm:-right-4 rounded-full bg-fg opacity-[0.06] blur-3xl" />
           <div aria-hidden="true" className="grid-paper absolute -inset-y-8 inset-x-0 -z-10 opacity-80 sm:-inset-x-6 [mask-image:radial-gradient(closest-side,#000,transparent)]" />
           <TerminalLazy
             data={{

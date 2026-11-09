@@ -1,9 +1,10 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { site } from "@/content/site";
 import { cn } from "@/lib/cn";
+import { webBurst } from "@/lib/web-burst";
 
 /*
  * Messages are delivered with EmailJS's REST API from the browser. These IDs
@@ -100,6 +101,12 @@ export function ContactForm() {
       window.clearTimeout(timeout);
     }
   }
+
+  // A sent message gets a burst of tiny spiders (nothing at all with reduced motion).
+  const sent = status.state === "sent";
+  useEffect(() => {
+    if (sent) void webBurst({ x: 0.5, y: 0.45 });
+  }, [sent]);
 
   if (status.state === "sent") {
     return (
