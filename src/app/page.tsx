@@ -3,7 +3,6 @@ import { Fragment } from "react";
 
 import { ArcadeCard } from "@/components/arcade-card";
 import { HeroMotion } from "@/components/hero-motion";
-import { Portrait, PortraitThumb } from "@/components/portrait";
 import { FeaturedProject } from "@/components/project-cards";
 import { type FolderProject, ProjectFolders } from "@/components/project-folders";
 import { type Screen, ScreensCarousel } from "@/components/screens-carousel";
@@ -118,9 +117,8 @@ function Hero() {
 
       <div className="shell grid items-center gap-10 pb-10 pt-8 sm:pt-12 lg:grid-cols-12 lg:gap-10 lg:pb-20 lg:pt-16">
         <div className="lg:col-span-8">
-          {/* Phones and tablets: a compact byline with the portrait, instead of a large photo */}
-          <div data-hero className="flex items-center gap-3.5 lg:hidden">
-            <PortraitThumb className="w-[3.25rem] ring-1 ring-line" />
+          {/* Phones and tablets: a compact byline */}
+          <div data-hero className="lg:hidden">
             <p className="min-w-0">
               <span className="block font-serif text-[1.375rem] leading-none text-fg">{site.name}</span>
               <span className="label mt-1.5 block">{site.role}</span>
@@ -174,12 +172,6 @@ function Hero() {
               </ButtonLink>
             )}
           </div>
-        </div>
-
-        {/* Large screens: the editorial portrait beside the headline. Not preloaded,
-            so phones (where it is hidden) never download it. */}
-        <div data-hero data-hero-portrait className="hidden w-full max-w-[19rem] justify-self-end pr-7 lg:col-span-4 lg:block">
-          <Portrait sizes="(min-width: 1024px) 19rem, 1px" />
         </div>
       </div>
 

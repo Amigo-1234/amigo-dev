@@ -1,6 +1,5 @@
 import type { StaticImageData } from "next/image";
 
-import portraitImage from "@/assets/portrait/muftau-idris.jpg";
 
 /**
  * Site-wide facts. Everything here is public and was confirmed by the owner
@@ -36,11 +35,7 @@ export const site = {
    * place. To add one: put the image in src/assets/portrait/, import it here
    * and set { image, alt, focus } (focus is a CSS object-position, e.g. "50% 30%").
    */
-  portrait: {
-    image: portraitImage,
-    alt: "Muftau Idris in a black suit, white shirt, tie and dark-rimmed glasses, seated in a leather chair in a warmly lit, wood-panelled room.",
-    focus: "50% 30%",
-  } as { image: StaticImageData; alt: string; focus: string } | null,
+  portrait: null as { image: StaticImageData; alt: string; focus: string } | null,
 } as const;
 
 export const nav = [
