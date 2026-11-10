@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 
 import { ContactForm } from "@/components/contact-form";
 import { LocalTime } from "@/components/local-time";
+import { Services } from "@/components/profile-sections";
 import { site } from "@/content/site";
 import { pageMetadata } from "@/lib/metadata";
 import { Caption } from "@/components/comic";
@@ -14,6 +15,7 @@ export const metadata: Metadata = pageMetadata({
 
 export default function ContactPage() {
   return (
+    <>
     <div className="shell pt-12 md:pt-20">
       <div className="grid gap-16 lg:grid-cols-12 lg:gap-12">
         <div className="lg:col-span-5">
@@ -75,5 +77,7 @@ export default function ContactPage() {
         </div>
       </div>
     </div>
+      <Services index="01" />
+    </>
   );
 }

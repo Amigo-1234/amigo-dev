@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import { LocalTime } from "@/components/local-time";
+import { Capabilities, SystemSection, WorkingWithAI } from "@/components/profile-sections";
 import { Portrait } from "@/components/portrait";
 import { ButtonLink, JsonLd, SectionHeading } from "@/components/ui";
 import { aiWorkflow, interests, journey, languages, story } from "@/content/profile";
@@ -175,9 +176,12 @@ export default function AboutPage() {
         </ol>
       </section>
 
+      <SystemSection index="02" />
+      <Capabilities index="03" />
+
       <section aria-labelledby="languages-heading" className="shell mt-28 md:mt-40">
         <SectionHeading
-          index="02"
+          index="04"
           label="Languages"
           id="languages-heading"
           title={
@@ -210,7 +214,7 @@ export default function AboutPage() {
       </section>
 
       <section aria-labelledby="principles-heading" className="shell mt-28 md:mt-40">
-        <SectionHeading index="03" label="How I work" id="principles-heading" title={<>A few things I <em className="text-accent">hold to.</em></>} />
+        <SectionHeading index="05" label="How I work" id="principles-heading" title={<>A few things I <em className="text-accent">hold to.</em></>} />
         <ol className="mt-14 grid gap-6 md:grid-cols-3">
           {[
             ["Rules live on the server.", "Prices, permissions and records are checked where the data lives, never only in the interface."],
@@ -226,9 +230,11 @@ export default function AboutPage() {
         </ol>
       </section>
 
+      <WorkingWithAI index="06" />
+
       <section aria-labelledby="interests-heading" className="shell mt-28 md:mt-40">
         <SectionHeading
-          index="04"
+          index="07"
           label="Off the clock"
           id="interests-heading"
           title={

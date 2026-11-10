@@ -4,16 +4,18 @@ import { useEffect, useRef } from "react";
 
 import { sfx } from "@/lib/sound";
 
+import { SpiderBotArt } from "./spider-bot";
+
 /*
- * The site's signature: a plumb bob on a line of silk, hanging from the
- * header in the right margin. A drafting weight (the oldest way to find true
- * vertical) on a web strand: engineering and the web in one object.
+ * The site's signature: the spider-bot (components/spider-bot.tsx) on a line
+ * of silk, hanging from the header in the right margin like a plumb bob: a
+ * machine, a spider and a web strand in one object.
  *
  * It lets its line out as you read, so its depth is your place on the page,
  * and the readout beside it says how far you are. It swings with how fast you
  * scroll and settles like a real pendulum (the period grows with the length
- * of line). Poke it and it rings like steel on a rule, swings, and is hauled
- * up its line before dropping back.
+ * of line). While the page moves, its legs scuttle; poke it and it clanks,
+ * kicks, swings, and climbs its line before dropping back.
  *
  * Decorative (aria-hidden, no focus stop). Large pointers only, since on a
  * phone it would sit over the text. Hidden with reduced motion and in print.
@@ -34,6 +36,7 @@ export function PlumbBob() {
     let lastY = window.scrollY;
     let haul = 0; // hauled up until this time
     let shown = -1;
+    let still = 0;
 
     const tick = (now: number) => {
       raf = 0;
@@ -44,6 +47,11 @@ export function PlumbBob() {
       // A pendulum: restoring force falls with length (g/L), scrolling shoves it.
       const k = 2.2 / Math.max(60, len) ** 0.5;
       const dy = window.scrollY - lastY;
+      if (dy !== 0) {
+        el.classList.add("is-crawling");
+        clearTimeout(still);
+        still = window.setTimeout(() => el.classList.remove("is-crawling"), 180);
+      }
       lastY = window.scrollY;
       av += -angle * k * 0.12 - dy * 0.05;
       av *= 0.94;
@@ -67,6 +75,9 @@ export function PlumbBob() {
       sfx("clank");
       av += 4.5;
       haul = performance.now() + 2200;
+      el.classList.remove("is-poked");
+      void el.offsetWidth;
+      el.classList.add("is-poked");
       wake();
     };
 
@@ -77,6 +88,7 @@ export function PlumbBob() {
     wake();
     return () => {
       cancelAnimationFrame(raf);
+      clearTimeout(still);
       bob?.removeEventListener("pointerdown", poke);
       removeEventListener("scroll", wake);
       removeEventListener("resize", wake);
@@ -90,14 +102,9 @@ export function PlumbBob() {
         <span className="plumb__readout" data-readout>
           00%
         </span>
-        <svg data-bob viewBox="-14 -6 28 48" className="plumb__bob">
-          {/* The knot on the silk, the cap, and the turned steel body tapering to a point. */}
-          <circle cx="0" cy="-2.5" r="2" fill="none" stroke="currentColor" strokeWidth="1.2" />
-          <rect x="-5" y="0" width="10" height="5" rx="1" fill="var(--blueprint)" />
-          <path d="M-9 6h18l-2 14L0 40l-7-20z" fill="currentColor" />
-          <path d="M-9 6h18M-8 11h16" stroke="var(--ink)" strokeWidth="1" />
-          <path d="M3 8l-1 12" stroke="var(--accent)" strokeWidth="1.6" strokeLinecap="round" />
-        </svg>
+        <span data-bob className="plumb__bob">
+          <SpiderBotArt line={false} className="h-full w-full" />
+        </span>
       </div>
     </div>
   );

@@ -30,7 +30,19 @@ export function Stamp({ tone, label, className }: { tone: StatusTone; label: str
  * One featured project as a page of panels: the splash (its real screen), the
  * problem, how the system works, the part that was hard, and its spec plate.
  */
-export function Chapter({ project, index }: { project: Project; index: number }) {
+export function Chapter({
+  project,
+  index,
+  headingLevel = 3,
+  label = "Chapter",
+}: {
+  project: Project;
+  index: number;
+  headingLevel?: 2 | 3;
+  /** What the narration box calls this page ("Chapter", "Page"). */
+  label?: string;
+}) {
+  const Heading = headingLevel === 2 ? "h2" : "h3";
   const desktop = project.shots.find((s) => s.device === "desktop");
   const phone = project.shots.find((s) => s.device === "mobile");
   const flip = index % 2 === 1;
@@ -41,14 +53,16 @@ export function Chapter({ project, index }: { project: Project; index: number })
   return (
     <article className="chapter" style={{ "--tint": project.tint } as React.CSSProperties} aria-labelledby={`chapter-${project.slug}`}>
       <header className="chapter__head">
-        <Caption>Chapter {n}</Caption>
-        <h3 id={`chapter-${project.slug}`} data-print className="font-serif text-title">
+        <Caption>
+          {label} {n}
+        </Caption>
+        <Heading id={`chapter-${project.slug}`} data-print className="font-serif text-title">
           <Registration>
             <Link href={href} className="chapter__title-link">
               {project.name}
             </Link>
           </Registration>
-        </h3>
+        </Heading>
         <Stamp tone={project.status.tone} label={project.status.label} />
       </header>
 
@@ -121,8 +135,8 @@ export function Chapter({ project, index }: { project: Project; index: number })
               <li key={s}>{s}</li>
             ))}
           </ul>
-          <Link href={href} className="chapter__cta">
-            Read chapter {n} <span aria-hidden="true">→</span>
+          <Link href={href} className="btn-comic btn-comic--solid chapter__cta">
+            Full case study <span aria-hidden="true">→</span>
           </Link>
         </Panel>
       </div>
@@ -134,14 +148,14 @@ export function Chapter({ project, index }: { project: Project; index: number })
  * Every project as the cover of a back issue: number, title, status stamp and
  * a real screen as the cover art, printed in the project's own colour.
  */
-export function BackIssues({ projects }: { projects: Project[] }) {
+export function BackIssues({ projects, hrefFor = (p) => `/projects/${p.slug}` }: { projects: Project[]; hrefFor?: (p: Project) => string }) {
   return (
     <ul className="back-issues">
       {projects.map((p, i) => {
         const art = p.shots.find((s) => s.device === "desktop") ?? p.shots[0];
         return (
           <li key={p.slug} data-print="panel" className="back-issue" style={{ "--tint": p.tint } as React.CSSProperties}>
-            <Link href={`/projects/${p.slug}`} className="back-issue__link">
+            <Link href={hrefFor(p)} className="back-issue__link">
               <span className="back-issue__masthead">
                 <span className="back-issue__no">#{String(i + 1).padStart(2, "0")}</span>
                 <span className="back-issue__kind">{p.kind}</span>

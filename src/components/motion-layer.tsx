@@ -37,7 +37,8 @@ export function MotionLayer() {
       const mm = gsap.matchMedia();
 
       mm.add(MOTION, () => {
-        const belowFold = (el: Element) => el.getBoundingClientRect().top > window.innerHeight * 0.92;
+        // Pages of the projects comic make their entrance by turning, so their contents are left alone.
+        const belowFold = (el: Element) => !el.closest("[data-page]") && el.getBoundingClientRect().top > window.innerHeight * 0.92;
 
         // Route change: a thin accent line sweeps across the top.
         if (!first.current && bar.current) {

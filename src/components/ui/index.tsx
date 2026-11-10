@@ -15,16 +15,11 @@ type ButtonProps = {
   className?: string;
 };
 
-export function ButtonLink({ href, children, variant = "solid", external, magnetic = variant !== "ghost", className }: ButtonProps) {
-  const classes = cn(
-    "group inline-flex h-12 items-center justify-center gap-2 rounded-full px-6 text-sm font-medium transition-[transform,background-color,border-color,color] duration-300 ease-[var(--ease-out-expo)] hover:-translate-y-0.5",
-    variant === "solid" && "bg-fg text-ink",
-    variant === "outline" && "border border-line-strong text-fg hover:border-fg",
-    variant === "ghost" && "px-3 text-fg-muted hover:text-fg",
-    className,
-  );
+export function ButtonLink({ href, children, variant = "solid", external, magnetic = false, className }: ButtonProps) {
+  // Comic buttons (globals.css, .btn-comic): inked frame, offset shadow, a POW burst on hover.
+  const classes = cn("btn-comic", `btn-comic--${variant}`, className);
   const arrow = (
-    <span aria-hidden="true" className="transition-transform duration-300 group-hover:translate-x-0.5">
+    <span aria-hidden="true" className="btn-comic__arrow">
       {external ? "↗" : "→"}
     </span>
   );

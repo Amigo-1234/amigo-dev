@@ -3,6 +3,8 @@
 import { useSyncExternalStore } from "react";
 
 import { cn } from "@/lib/cn";
+import { sfx } from "@/lib/sound";
+import { crackTo } from "@/lib/theme-crack";
 
 type Theme = "light" | "dark";
 
@@ -25,8 +27,11 @@ export function setTheme(theme: Theme) {
   }
 }
 
+/** Switches edition with a web-shatter across the screen (lib/theme-crack.ts). */
 export function toggleTheme() {
-  setTheme(readTheme() === "dark" ? "light" : "dark");
+  const next = readTheme() === "dark" ? "light" : "dark";
+  sfx("clank");
+  crackTo(() => setTheme(next));
 }
 
 export function useTheme() {
@@ -44,7 +49,7 @@ export function ThemeToggle({ className }: { className?: string }) {
       aria-label={`Switch to ${next} theme`}
       title={`Switch to ${next} theme`}
       className={cn(
-        "group relative inline-flex size-10 items-center justify-center rounded-full border border-line text-fg-muted transition-colors hover:border-line-strong hover:text-fg",
+        "group relative inline-flex items-center justify-center text-fg-muted",
         className,
       )}
     >

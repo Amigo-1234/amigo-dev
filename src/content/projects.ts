@@ -649,50 +649,6 @@ export const smallerWork: {
   },
 ];
 
-export type ProjectCardData = Pick<Project, "slug" | "name" | "summary" | "status" | "categories" | "stack" | "kind" | "tint" | "client"> & {
-  cover?: Shot;
-};
-
-export type ShowcaseData = Pick<Project, "slug" | "name" | "summary" | "status" | "categories" | "stack" | "kind" | "tint" | "facts"> & {
-  cover?: Shot;
-  phone?: Shot;
-};
-
-/** The subset of a project the featured showcase needs. */
-export function toShowcase(p: Project): ShowcaseData {
-  return {
-    slug: p.slug,
-    name: p.name,
-    summary: p.summary,
-    status: p.status,
-    categories: p.categories,
-    stack: p.stack,
-    kind: p.kind,
-    tint: p.tint,
-    facts: p.facts,
-    cover: p.shots.find((s) => s.device === "desktop"),
-    phone: p.shots.find((s) => s.device === "mobile"),
-  };
-}
-
-/** The subset of a project that cards need, so client components don't receive whole case studies. */
-export function toCard(p: Project): ProjectCardData {
-  return {
-    slug: p.slug,
-    name: p.name,
-    summary: p.summary,
-    status: p.status,
-    categories: p.categories,
-    stack: p.stack,
-    kind: p.kind,
-    tint: p.tint,
-    client: p.client,
-    cover: p.shots.find((s) => s.device === "desktop"),
-  };
-}
-
-export const categories: Category[] = ["Web application", "Website", "Education", "Sports", "Community", "Commerce", "Concept"];
-
 export function getProject(slug: string) {
   return projects.find((p) => p.slug === slug);
 }

@@ -20,7 +20,7 @@ export function SoundToggle({ className }: { className?: string }) {
       onClick={() => setSound(!on)}
       title={on ? "Sound on (M to mute)" : "Sound off (M to turn on)"}
       className={cn(
-        "sound-toggle inline-flex size-10 items-center justify-center rounded-full border border-line text-fg-muted transition-colors hover:border-line-strong hover:text-fg",
+        "sound-toggle inline-flex items-center justify-center text-fg-muted",
         on && "text-fg",
         className,
       )}
