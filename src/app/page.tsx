@@ -14,6 +14,7 @@ import { Highlighter } from "@/components/ui/highlighter";
 import { projects } from "@/content/projects";
 import { skills } from "@/content/profile";
 import { site } from "@/content/site";
+import { cn } from "@/lib/cn";
 import { homePageGraph } from "@/lib/schema";
 
 /*
@@ -92,11 +93,15 @@ function Cover() {
             <ButtonLink href="/about" variant="outline" className="whitespace-nowrap px-4 sm:px-6">
               About me
             </ButtonLink>
-            <ButtonLink href="/contact" variant="ghost" className="justify-self-start px-0 min-[375px]:col-span-2 sm:px-3">
+            <ButtonLink
+              href="/contact"
+              variant="ghost"
+              className={cn("justify-self-start px-0 sm:px-3", !site.resume && "min-[375px]:col-span-2")}
+            >
               Get in touch
             </ButtonLink>
             {site.resume && (
-              <ButtonLink href={site.resume} variant="ghost" external>
+              <ButtonLink href={site.resume} variant="ghost" external className="justify-self-start px-0 sm:px-3">
                 Résumé
               </ButtonLink>
             )}

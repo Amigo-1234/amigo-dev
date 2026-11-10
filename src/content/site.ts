@@ -29,7 +29,7 @@ export const site = {
   },
   xHandle: "@amigooone1",
   /** Path to a verified CV in /public. The CV button only appears when this is set. */
-  resume: null as string | null,
+  resume: "/Muftau-Idris-Resume.pdf" as string | null,
   /**
    * Portrait supplied by the owner. While null, a branded card is shown in its
    * place. To add one: put the image in src/assets/portrait/, import it here
