@@ -156,7 +156,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section aria-labelledby="path-heading" className="shell mt-28 md:mt-40">
+      <section aria-labelledby="path-heading" className="shell mt-28 md:mt-40" data-buddy="Every hero has an origin story. This is his: engineering first, then code.">
         <SectionHeading index="01" label="Path" id="path-heading" title={<>How I got <em className="text-accent">here.</em></>} />
         <ol className="relative mt-14 ml-1 border-l border-line">
           {journey.map((step, i) => {
@@ -232,7 +232,7 @@ export default function AboutPage() {
 
       <WorkingWithAI index="06" />
 
-      <section aria-labelledby="interests-heading" className="shell mt-28 md:mt-40">
+      <section aria-labelledby="interests-heading" className="shell mt-28 md:mt-40" data-buddy="Off the clock: football, chess and too many tabs open.">
         <SectionHeading
           index="07"
           label="Off the clock"

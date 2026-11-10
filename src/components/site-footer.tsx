@@ -66,7 +66,7 @@ export function SiteFooter() {
   return (
     <footer className="finale defer-render">
       {/* The call. */}
-      <section aria-labelledby="finale-title" className="shell finale__call">
+      <section aria-labelledby="finale-title" className="shell finale__call" data-buddy="End of the line, friend. Say hi? I'll swing your message over myself.">
         <Caption>With great code comes great responsibility</Caption>
         <h2 id="finale-title" className="finale__title">
           Swing by. <span className="finale__title-hot">Let&apos;s build.</span>
@@ -105,6 +105,12 @@ export function SiteFooter() {
             </svg>
             <span>
               © {year} {site.name} · Nigeria · <LocalTime />
+              {" · "}
+              {/* A full page load on purpose: the intro's gate runs in <head>, before React. */}
+              {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
+              <a href="/?ignition" className="finale__replay">
+                Replay the intro
+              </a>
               <span className="finale__konami" title="Try it on your keyboard">
                 {" "}
                 · ↑↑↓↓←→←→BA
@@ -131,7 +137,7 @@ export function SiteFooter() {
       </div>
 
       {/* The last shot: the city at night, the hero on a ledge, working late. */}
-      <div className="finale__scene" aria-hidden="true">
+      <div className="finale__scene" aria-hidden="true" data-anim-zone>
         <Skyline seed={29} className="finale__city" />
         <div className="finale__roof">
           <span className="finale__roof-sign">AMIGODEV · NIGERIA</span>

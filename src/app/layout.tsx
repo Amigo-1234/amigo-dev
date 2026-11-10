@@ -6,7 +6,9 @@ import { EasterEggs } from "@/components/easter-eggs";
 import { MenuScript } from "@/components/menu-script";
 import { MotionLayer } from "@/components/motion-layer";
 import { SiteFooter } from "@/components/site-footer";
+import { OffscreenPause } from "@/components/offscreen-pause";
 import { PlumbBob } from "@/components/plumb-bob";
+import { SwingBuddy } from "@/components/swing-buddy";
 import { SiteBackdrop } from "@/components/site-backdrop";
 import { TerminalDock } from "@/components/terminal-dock";
 import { SiteHeader } from "@/components/site-header";
@@ -85,6 +87,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <MotionLayer />
         <EasterEggs />
         <PlumbBob />
+        <SwingBuddy />
+        <OffscreenPause />
         <TerminalDock />
         {/* The background of every page (fixed, behind everything): grid, halftone, webs and the drawing.
             Last in the HTML, so the content arrives before it. */}

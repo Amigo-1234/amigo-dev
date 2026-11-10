@@ -47,9 +47,8 @@ function Section({ n, title, children, id }: { n: number; title: string; childre
   );
 }
 
-const reviewed = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" }).format(
-  new Date(`${contentUpdated.caseStudies}T00:00:00Z`),
-);
+const formatDay = (iso: string) =>
+  new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" }).format(new Date(`${iso}T00:00:00Z`));
 
 export default async function ProjectPage({ params }: PageProps<"/projects/[slug]">) {
   const { slug } = await params;
@@ -115,7 +114,7 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
               {site.name}
             </Link>{" "}
             ({site.brand}) · Reviewed against the project&rsquo;s repository on{" "}
-            <time dateTime={contentUpdated.caseStudies}>{reviewed}</time>
+            <time dateTime={project.reviewed ?? contentUpdated.caseStudies}>{formatDay(project.reviewed ?? contentUpdated.caseStudies)}</time>
           </p>
 
           <dl className="rise mt-12 grid border-2 border-frame bg-ink text-sm sm:grid-cols-2 lg:grid-cols-4" style={{ "--i": 2 } as React.CSSProperties}>

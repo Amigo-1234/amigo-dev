@@ -3776,6 +3776,15 @@ html.theme-cracking::view-transition-new(root) {
   height: 1.9rem;
   color: var(--fg);
 }
+.finale__replay {
+  color: var(--fg-muted);
+  text-decoration: underline;
+  text-decoration-color: var(--accent);
+  text-underline-offset: 3px;
+}
+.finale__replay:hover {
+  color: var(--fg);
+}
 .finale__konami {
   display: none;
 }
@@ -4373,6 +4382,138 @@ html.js .comic-page[data-inactive] {
   .reader-bar__now {
     display: none;
   }
+}
+
+/* ------------------------------------------------------------------ */
+/* The companion who swings by (components/swing-buddy.tsx)           */
+/* ------------------------------------------------------------------ */
+
+/* A zero-width rig whose top-left corner is the pivot, far above the screen. */
+.buddy {
+  --L: 100vh;
+  --w: clamp(5.25rem, 9vw, 8.5rem);
+  position: fixed;
+  top: calc(42vh - var(--L));
+  left: 50%;
+  z-index: 45;
+  width: 0;
+  height: var(--L);
+  transform-origin: 0 0;
+  pointer-events: none;
+}
+.buddy__line {
+  position: absolute;
+  top: 0;
+  left: -1px;
+  width: 2px;
+  height: var(--L);
+  background: var(--fg);
+  opacity: 0.85;
+}
+/* His raised hand (70.8% across, 16.4% down his drawing) meets the end of the line. */
+.buddy__hero {
+  position: absolute;
+  top: calc(var(--L) - var(--w) * 1.625 * 0.164);
+  left: calc(var(--w) * -0.708);
+  width: var(--w);
+  padding: 0;
+  background: none;
+  border: 0;
+  pointer-events: auto;
+  cursor: pointer;
+}
+.buddy__art {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+/* The balloon sits towards the middle of the screen and stays level while he tilts. */
+.buddy__balloon {
+  position: absolute;
+  top: calc(var(--L) + var(--w) * 0.15);
+  width: max-content;
+  max-width: min(16rem, 62vw);
+  rotate: calc(var(--r, 0deg) * -1);
+  opacity: 0;
+  scale: 0.6;
+  transition:
+    opacity 0.15s,
+    scale 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  pointer-events: none;
+}
+.buddy__balloon[data-show] {
+  opacity: 1;
+  scale: 1;
+}
+.buddy[data-side="left"] .buddy__balloon {
+  left: calc(var(--w) * 0.45);
+  transform-origin: 0 0;
+}
+.buddy[data-side="right"] .buddy__balloon {
+  right: calc(var(--w) * 0.45);
+  transform-origin: 100% 0;
+}
+.buddy[data-side="left"] .balloon::after {
+  left: -0.55rem;
+  border-width: 0 0 2px 2px;
+  transform: rotate(45deg) skew(10deg, 10deg);
+}
+.buddy[data-side="right"] .balloon::after {
+  right: -0.55rem;
+  border-width: 2px 2px 0 0;
+  transform: rotate(45deg) skew(10deg, 10deg);
+}
+@media (prefers-reduced-motion: reduce) {
+  .buddy {
+    display: none;
+  }
+}
+@media print {
+  .buddy {
+    display: none;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Phones: keep scrolling smooth                                       */
+/* ------------------------------------------------------------------ */
+
+/*
+ * Touch devices pay for every frame of a blur, a filter over something that
+ * moves, or an animation nobody can see. So on coarse pointers and small
+ * screens: solid bars instead of blurred glass, no drifting 120px glow, no
+ * filters on moving art, and the purely decorative loops off.
+ */
+@media (max-width: 63.99rem), (pointer: coarse) {
+  .nav-panel,
+  .reader-bar {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    background: var(--ink-raised);
+  }
+  .glow-drift {
+    display: none;
+  }
+  .swinger,
+  .finale__hero {
+    filter: none;
+  }
+  .roof__window,
+  .slinger__glow,
+  .tool__silk,
+  .tool__sticker {
+    animation: none !important;
+  }
+}
+
+/* Anything decorative stops moving while its scene is off screen (OffscreenPause). */
+[data-anim-zone][data-offscreen],
+[data-anim-zone][data-offscreen] * {
+  animation-play-state: paused !important;
+}
+.swinger__idle {
+  will-change: transform;
 }
 
 @media print {

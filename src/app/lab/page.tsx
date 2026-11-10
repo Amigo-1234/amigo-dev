@@ -27,7 +27,7 @@ export default function LabPage() {
     <div className="relative isolate">
       <div aria-hidden="true" className="grid-paper fade-edges absolute inset-x-0 top-0 -z-10 h-[38rem]" />
       <div className="shell pt-12 md:pt-20">
-        <header className="grid gap-8 border-b border-line pb-12 md:grid-cols-12 md:pb-16">
+        <header className="grid gap-8 border-b border-line pb-12 md:grid-cols-12 md:pb-16" data-buddy="Welcome to the lab. The calculators are real, so handle with care.">
           <div className="md:col-span-8">
             <Caption>The workshop · AMIGODEV Lab</Caption>
             <h1 className="reg mt-6 font-serif text-display">

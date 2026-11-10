@@ -6,12 +6,18 @@ import eksuMatchMobile from "@/assets/projects/eksu-sports-hub/match-m.webp";
 import eksuTableMobile from "@/assets/projects/eksu-sports-hub/table-m.webp";
 import kandyHome from "@/assets/projects/kandys-treats/home-d.webp";
 import kandyMenu from "@/assets/projects/kandys-treats/menu-d.webp";
+import kandyPlate from "@/assets/projects/kandys-treats/plate-d.webp";
+import kandyHomeMobile from "@/assets/projects/kandys-treats/home-m.webp";
+import kandyMenuMobile from "@/assets/projects/kandys-treats/menu-m.webp";
 import markazResults from "@/assets/projects/markaz-il-ginna/results-d.webp";
 import markazEntry from "@/assets/projects/markaz-il-ginna/entry-d.webp";
 import markazArabicMobile from "@/assets/projects/markaz-il-ginna/ar-m.webp";
 import markazArabicResultsMobile from "@/assets/projects/markaz-il-ginna/ar-results-m.webp";
 import markazHomeMobile from "@/assets/projects/markaz-il-ginna/home-m.webp";
+import biaHome from "@/assets/projects/bia-jupeb/home-d.webp";
 import biaFees from "@/assets/projects/bia-jupeb/fees-d.webp";
+import biaCbt from "@/assets/projects/bia-jupeb/cbt-d.webp";
+import biaHomeMobile from "@/assets/projects/bia-jupeb/home-m.webp";
 import biaTimetableMobile from "@/assets/projects/bia-jupeb/timetable-m.webp";
 import haqslamPrayer from "@/assets/projects/haqslam/prayer-d.webp";
 import haqslamLibrary from "@/assets/projects/haqslam/library-d.webp";
@@ -22,6 +28,12 @@ import amigoWorld from "@/assets/projects/amigo-world/world-d.webp";
 import amigoFeedMobile from "@/assets/projects/amigo-world/feed-m.webp";
 import amigoWorldMobile from "@/assets/projects/amigo-world/world-m.webp";
 import amigoDmMobile from "@/assets/projects/amigo-world/dm-m.webp";
+import maverickHome from "@/assets/projects/maverick/home-d.webp";
+import maverickProduct from "@/assets/projects/maverick/product-d.webp";
+import maverickMenu from "@/assets/projects/maverick/menu-d.webp";
+import maverickShop from "@/assets/projects/maverick/all-d.webp";
+import maverickHomeMobile from "@/assets/projects/maverick/home-m.webp";
+import maverickProductMobile from "@/assets/projects/maverick/product-m.webp";
 
 /*
  * Every statement in this file was checked against the project's own
@@ -65,6 +77,8 @@ export type Project = {
   links: { live?: { href: string; label: string }; source?: string };
   /** Brand colour of the project, used only for subtle tints. */
   tint: string;
+  /** ISO date this case study was checked against its repository, when later than the site-wide review. */
+  reviewed?: string;
   featured: boolean;
   shots: Shot[];
   overview: string[];
@@ -272,8 +286,11 @@ export const projects: Project[] = [
     tint: "#d6337a",
     featured: true,
     shots: [
-      { image: kandyHome, device: "desktop", alt: "Kandy's Treats home page with a plate of jollof rice and chicken, a food search box and delivery information.", caption: "Customer storefront. Local build; the menu renders from the bundled snapshot of the real menu." },
-      { image: kandyMenu, device: "desktop", alt: "The full menu with category filters and dish cards showing prices per scoop.", caption: "Menu with category filters and per-scoop pricing." },
+      { image: kandyHome, device: "desktop", alt: "Kandy's Treats home page: the headline \"Craving peppered gizzard? The vessel is ON.\" beside a plate of jollof rice and grilled chicken with price tags for meat pie, flat delivery and peppered gizzard, a food search box and popular dishes.", caption: "The storefront, live. The headline cycles through what's on the menu." },
+      { image: kandyPlate, device: "desktop", alt: "The Jollof Rice (per scoop) page with a photo of the dish, a ₦500 price, a list of proteins to add with their prices, a quantity stepper and an Add to basket button.", caption: "Build your plate: rice by the scoop, proteins added as their own lines." },
+      { image: kandyMenu, device: "desktop", alt: "The full menu headed \"Everything coming out of the kitchen\", with a search box, category chips with food icons, filters for favourites, in stock today and under ₦1,000, and dish cards with sold-out states.", caption: "The menu: categories, filters and what's sold out today." },
+      { image: kandyHomeMobile, device: "mobile", alt: "The storefront on a phone: the plate of jollof and chicken above the headline \"Craving chicken & chips? The vessel is ON.\" with a bottom tab bar.", caption: "The storefront on a phone, with app-style tabs." },
+      { image: kandyMenuMobile, device: "mobile", alt: "The menu on a phone with a search box, scrollable category chips, filters and the first dish cards.", caption: "Ordering on a phone." },
     ],
     overview: [
       "Kandy's Treats sells Nigerian food by the scoop: you build a plate from rice, proteins and sides, choose delivery or pickup, and pay. The platform covers that customer journey and the work behind it.",
@@ -437,8 +454,11 @@ export const projects: Project[] = [
     tint: "#c8102e",
     featured: false,
     shots: [
-      { image: biaFees, device: "desktop", alt: "Fees page section with a flexible payment structure card listing three instalments beside registration requirements and an important notice.", caption: "The fees page: the instalment plan and what to bring, from the academy's official documents. Local production build." },
-      { image: biaTimetableMobile, device: "mobile", alt: "Mobile class timetable with semester tabs, day pills and the current day's sessions highlighted under a Today badge.", caption: "The timetable highlights today's classes and the current slot." },
+      { image: biaHome, device: "desktop", alt: "BIA JUPEB home page: the headline \"Your direct route to 200 Level.\" on ruled paper beside a photo of a full class in session, the academy's seal, a slideshow counter and an announcement bar about the fee balance deadline.", caption: "The home page, live: a photo slideshow of real classes beside the programme in one sentence." },
+      { image: biaFees, device: "desktop", alt: "The fees page headed \"Clear fees, published in full.\" with the 2026/2027 registration fee, science programme fee and physical tutorial fee, and cards for the two ways to enrol.", caption: "Fees published in full, from the academy's official payment advice." },
+      { image: biaCbt, device: "desktop", alt: "The CBT practice page on a red banner, \"Practise smarter for JUPEB & JAMB.\", with a Start practising button and three numbered features: practice questions, exam-style testing and instant grading.", caption: "The page that sends candidates to the academy's CBT practice platform." },
+      { image: biaHomeMobile, device: "mobile", alt: "The home page on a phone with the class photo, the seal and the headline below it.", caption: "The home page on a phone." },
+      { image: biaTimetableMobile, device: "mobile", alt: "The class timetable on a phone with semester tabs, a row of day pills with Tuesday selected and Tuesday's sessions under a Today badge.", caption: "The timetable highlights today's classes." },
     ],
     overview: [
       "Families comparing JUPEB centres want plain answers: what the programme is, what it costs, when classes hold and how to apply. The site is organised around those questions.",
@@ -548,6 +568,72 @@ export const projects: Project[] = [
       { date: "2025", title: "The static site in use", body: "The society's site for most of the year, hand-built HTML, CSS and JavaScript." },
       { date: "Oct 2026", title: "Version 2 on haqslam.com.ng", body: "Rebuilt in Next.js with calculated prayer times, the library reader, verified content and redirects from every old address." },
     ],
+  },
+  {
+    slug: "maverick",
+    name: "MAVERICK",
+    client: "MAVERICK, a Nigerian menswear brand",
+    kind: "Client project",
+    categories: ["Website", "Commerce"],
+    status: { label: "Preview · checkout in test mode", tone: "building" },
+    summary: "An online store for a Nigerian menswear brand: oversized graphic tees, ringers and long sleeves, with a bag, checkout and ordering on WhatsApp.",
+    intro:
+      "MAVERICK makes oversized graphic tees, ringers and long sleeves under the line \"Different by choice\". The store presents Drop 01 the way the brand looks: garments hanging on a rail, front and back, in black, white and electric blue.",
+    role: "Design, development, image processing and testing",
+    stack: ["Next.js 16", "React 19", "TypeScript", "Tailwind CSS 4", "GSAP", "sharp", "Vercel"],
+    links: { live: { href: "https://maverickshoppps.vercel.app", label: "maverickshoppps.vercel.app" } },
+    tint: "#2f55ff",
+    reviewed: "2026-11-10",
+    featured: false,
+    shots: [
+      { image: maverickHome, device: "desktop", alt: "MAVERICK home page: \"Different by choice.\" above a metal clothing rail with six tees hanging on hangers with price tags, the white Peel Tee in front, and Shop the drop and Lookbook buttons.", caption: "The home page: Drop 01 on a clothing rail. The rail is a supplied component; the garment cut-outs on it were made from the brand's photos." },
+      { image: maverickProduct, device: "desktop", alt: "The Strike Tee product page with a large photo of the black tee with blue drip lettering, front and back thumbnails, colourway and size buttons, Add to bag and Order on WhatsApp.", caption: "A product page: front and back, sizes, and two ways to buy." },
+      { image: maverickMenu, device: "desktop", alt: "The full-screen menu open over a product page, with numbered links in large condensed type for Shop all, New in, Tees, Ringers, Long sleeves, Lookbook, About and Contact, and the brand's social handles.", caption: "The full-screen menu, animated with GSAP." },
+      { image: maverickShop, device: "desktop", alt: "The Shop all page with collection tabs, colour filters, a sort menu and product cards for the Strike Tee, Layered Long Sleeve, Peel Tee and Horned M Ringer with prices.", caption: "Shop all: collections, colour filter and sorting." },
+      { image: maverickHomeMobile, device: "mobile", alt: "The home page on a phone, with the clothing rail and the Peel Tee in front.", caption: "The rail on a phone." },
+      { image: maverickProductMobile, device: "mobile", alt: "The Strike Tee on a phone, with Front and Back buttons under the photo and thumbnails below.", caption: "Front and back, a tap apart." },
+    ],
+    overview: [
+      "A streetwear brand sells on how it looks. The store had to feel like the brand first and work like a shop second: browse a drop, see each piece front and back, pick a size and buy.",
+      "Many customers in Nigeria would rather order in a chat than at a checkout, so every product can also be ordered on WhatsApp with the piece and size already typed in.",
+    ],
+    problem: [
+      "The brand had product photos on studio backgrounds and a logo, and needed a store that shows Drop 01 at its best on a phone, with a buying route its customers already use.",
+    ],
+    approach: [
+      "I built it with Next.js, keeping every product in one catalogue file, so names, prices, sizes and images change in one place.",
+      "A script cuts each garment out of its studio photo and pairs the front and back on matching transparent canvases for the clothing rail; another traces the logo into a vector.",
+      "End-to-end checks in Chrome cover the bag, sorting, search, checkout, WhatsApp ordering, the phone layout and the menu.",
+    ],
+    architecture: [
+      { label: "Store", detail: "Next.js App Router pages for the home page, collections, products, bag, checkout, search and the brand pages." },
+      { label: "Catalogue", detail: "One typed file holds the products; another holds currency, delivery rates, returns, the size chart and contact details." },
+      { label: "Images", detail: "sharp scripts cut garments out of their backgrounds and trace the logo, from the brand's own photos." },
+      { label: "Quality", detail: "Two end-to-end test scripts run against a production build." },
+    ],
+    features: [
+      { title: "Clothing rail hero", body: "Drop 01 hangs on a rail, front and back, using cut-outs made from the brand's photos." },
+      { title: "Collections", body: "All, New in, Tees, Ringers and Long sleeves, with a colour filter and sorting." },
+      { title: "Product pages", body: "Front and back gallery, colourways, sizes, Add to bag, and Order on WhatsApp with the details filled in." },
+      { title: "Bag and checkout", body: "A slide-out bag and a full bag page, then a checkout that currently runs in test mode." },
+      { title: "Full-screen menu", body: "A GSAP menu with numbered links, piece counts and the brand's socials." },
+      { title: "The brand pages", body: "Lookbook, About, Size guide, Shipping and returns, FAQ and Contact, plus search." },
+    ],
+    challenges: [
+      { title: "Studio photos onto a rail", problem: "The garment photos had studio backgrounds, and the rail needs front and back cut-outs at exactly the same size.", solution: "A sharp script samples each photo's border to find the background, flood-fills it away, drops stray specks and places each front and back pair on matching transparent canvases." },
+      { title: "Not taking money too early", problem: "Prices, delivery rates and stock are still being confirmed with the brand.", solution: "Checkout runs in test mode and takes no payment until a payment provider is connected, and WhatsApp ordering works now." },
+    ],
+    state: {
+      done: ["Store built and deployed: home, collections, products, bag, checkout, search and brand pages", "Garment cut-outs and vector logo from the brand's own images", "End-to-end tests for shopping and the menu"],
+      next: ["Final prices, stock, delivery rates and size chart from the brand", "Paystack or Flutterwave for real payments", "Newsletter and contact forms connected to an email service"],
+      note: "Built in November 2026. Prices and delivery rates shown are placeholders until the brand confirms them.",
+    },
+    facts: [
+      { value: "8", label: "products in Drop 01" },
+      { value: "2", label: "end-to-end test suites" },
+      { value: "Nov 2026", label: "built" },
+    ],
+    timeline: [{ date: "9 Nov 2026", title: "Store built", body: "From the brand's photos and logo to a deployed store with a test-mode checkout." }],
   },
   {
     slug: "fara-hotel-suites",

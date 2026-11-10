@@ -146,7 +146,7 @@ export function ComicReader({ pages, children }: { pages: PageInfo[]; children: 
 
   return (
     <div className="reader">
-      <div ref={book} className="book">
+      <div ref={book} className="book" data-buddy="Welcome to the comic! Turn pages with ← → or a swipe.">
         {children}
       </div>
 

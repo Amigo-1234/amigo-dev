@@ -32,7 +32,7 @@ export function Workbench() {
   const markaz = phone("markaz-il-ginna");
 
   return (
-    <section aria-labelledby="bench-heading" className="defer-render shell pt-16 md:pt-24">
+    <section aria-labelledby="bench-heading" className="defer-render shell pt-16 md:pt-24" data-buddy="Go on, grab a phone and drag it around. I won't tell.">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
           <Caption>Scene 02 · The workbench</Caption>

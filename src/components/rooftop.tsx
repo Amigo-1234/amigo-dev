@@ -74,7 +74,7 @@ export const WAYS = [
 
 export function Rooftop() {
   return (
-    <section aria-labelledby="roof-heading" className="roof defer-render">
+    <section aria-labelledby="roof-heading" className="roof defer-render" data-anim-zone data-buddy="My favourite rooftop. Every project gets built these four ways.">
       <Skyline seed={11} className="roof__city" />
 
       <div className="shell relative">

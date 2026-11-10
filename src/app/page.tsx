@@ -106,7 +106,7 @@ function Cover() {
       </div>
 
       {/* The hero swings in on a web line; the tools hang from a strand below. Both sway when you scroll. */}
-      <SwingRig className="cover__stage">
+      <SwingRig className="cover__stage" data-anim-zone="">
         <div className="swinger" aria-hidden="true">
           <div className="swinger__idle">
             <WebSlingerArt className="swinger__art" />
@@ -123,7 +123,7 @@ function Cover() {
 function NowShowing() {
   const featured = projects.filter((p) => p.featured);
   return (
-    <section aria-labelledby="showing-heading" className="defer-render shell pt-20 md:pt-28">
+    <section aria-labelledby="showing-heading" className="defer-render shell pt-20 md:pt-28" data-buddy="Four real projects. Pick a cover and the comic opens right on that page!">
       <div className="flex flex-wrap items-end justify-between gap-6">
         <div>
           <Caption>Scene 03 · Now showing</Caption>
@@ -161,7 +161,7 @@ function EndCredits() {
     ["Coming next", site.direction],
   ];
   return (
-    <section aria-labelledby="credits-heading" className="end-credits defer-render letterbox relative isolate mt-24 overflow-hidden md:mt-32">
+    <section aria-labelledby="credits-heading" className="end-credits defer-render letterbox relative isolate mt-24 overflow-hidden md:mt-32" data-buddy="Roll credits! Stay for the after-credits scene. Spoiler: it's a contact button.">
       <Halftone tone="blue" from="bottom" className="absolute inset-x-0 bottom-0 -z-10 h-1/2 opacity-40" />
       <div className="shell py-20 text-center md:py-28">
         <Caption className="mx-auto">Scene 05 · Roll credits</Caption>
