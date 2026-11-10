@@ -86,7 +86,11 @@ export type Project = {
   approach: string[];
   architecture: { label: string; detail: string }[];
   features: { title: string; body: string }[];
-  challenges: { title: string; problem: string; solution: string }[];
+  /**
+   * The hard problems, each cast as the issue's villain: `villain` is a
+   * playful alias for the comic (not a claim); problem and solution are facts.
+   */
+  challenges: { title: string; villain?: string; problem: string; solution: string }[];
   /** What exists today versus what is planned. Rendered as the Outcome. */
   state: { done: string[]; next?: string[]; note?: string };
   /** Verified, countable facts from the repository (no performance or business claims). */
@@ -153,10 +157,14 @@ export const projects: Project[] = [
       { title: "Moderation", body: "Reports, suspension, warnings, blocking, rate limits and an admin queue with an audit log." },
     ],
     challenges: [
-      { title: "Rebuilding without breaking the live app", problem: "Existing users were on Firebase; a big-bang switch would risk their accounts and posts.", solution: "A DataSource seam, a repeatable read-only migration toolchain (extract, audit, migrate, diff) with a runbook, and the Firebase build kept as an instant rollback." },
-      { title: "Private messages that stay private", problem: "Administrators and the database should not be able to read conversations.", solution: "Messages are encrypted on the device with the Matrix cryptography library compiled to WebAssembly; the server stores ciphertext, encrypted photos included, and contacts can verify each other's keys." },
-      { title: "Proving it works, not assuming it", problem: "Messaging, push and media cross the browser, edge functions, the database and storage, so unit tests alone can't show they work.", solution: "Live end-to-end checks drive two real accounts through DMs in Chromium and WebKit, plus media, push, blocking and Worlds journeys, from eight GitHub Actions workflows against preview and production." },
-      { title: "Photos on slow networks", problem: "Full-size images made the feed slow on mobile data.", solution: "Feed-sized copies, tiny blurred previews stored with each post and cacheable signed links. The project's performance log records the first feed photo on a 4G profile going from 6.0 s to 4.0 s." },
+      { title: "Rebuilding without breaking the live app",
+        villain: "The Breaking Change", problem: "Existing users were on Firebase; a big-bang switch would risk their accounts and posts.", solution: "A DataSource seam, a repeatable read-only migration toolchain (extract, audit, migrate, diff) with a runbook, and the Firebase build kept as an instant rollback." },
+      { title: "Private messages that stay private",
+        villain: "The Eavesdropper", problem: "Administrators and the database should not be able to read conversations.", solution: "Messages are encrypted on the device with the Matrix cryptography library compiled to WebAssembly; the server stores ciphertext, encrypted photos included, and contacts can verify each other's keys." },
+      { title: "Proving it works, not assuming it",
+        villain: "Works-On-My-Machine", problem: "Messaging, push and media cross the browser, edge functions, the database and storage, so unit tests alone can't show they work.", solution: "Live end-to-end checks drive two real accounts through DMs in Chromium and WebKit, plus media, push, blocking and Worlds journeys, from eight GitHub Actions workflows against preview and production." },
+      { title: "Photos on slow networks",
+        villain: "Captain Buffering", problem: "Full-size images made the feed slow on mobile data.", solution: "Feed-sized copies, tiny blurred previews stored with each post and cacheable signed links. The project's performance log records the first feed photo on a 4G profile going from 6.0 s to 4.0 s." },
     ],
     state: {
       done: [
@@ -240,9 +248,12 @@ export const projects: Project[] = [
       { title: "Corrections with history", body: "Mistakes are voided or added as new events; the score is recomputed from the events that remain, and every change is logged." },
     ],
     challenges: [
-      { title: "Keeping the match clock honest", problem: "A ticking counter on each device drifts, and pauses or stoppage time make it worse.", solution: "The minute is derived from timestamps (period start, pauses, offset) and the server's clock, measured once per session, so every screen computes the same minute." },
-      { title: "Updating from a weak connection", problem: "An operator can tap Goal twice, lose signal, or act before the last action reached the server.", solution: "Actions become ordered intents with retry and discard. The console shows the optimistic result immediately, then replays anything still pending on top of the server's state." },
-      { title: "A public site that cannot be written to", problem: "Browsers talk to the database directly in a Supabase app, so a missed check is a public write.", solution: "No table is writable from the browser. Writes exist only as checked database functions, and pgTAP tests assert that anonymous users, operators and non-staff are refused." },
+      { title: "Keeping the match clock honest",
+        villain: "The Clock Drifter", problem: "A ticking counter on each device drifts, and pauses or stoppage time make it worse.", solution: "The minute is derived from timestamps (period start, pauses, offset) and the server's clock, measured once per session, so every screen computes the same minute." },
+      { title: "Updating from a weak connection",
+        villain: "Signal Snatcher", problem: "An operator can tap Goal twice, lose signal, or act before the last action reached the server.", solution: "Actions become ordered intents with retry and discard. The console shows the optimistic result immediately, then replays anything still pending on top of the server's state." },
+      { title: "A public site that cannot be written to",
+        villain: "The Defacer", problem: "Browsers talk to the database directly in a Supabase app, so a missed check is a public write.", solution: "No table is writable from the browser. Writes exist only as checked database functions, and pgTAP tests assert that anonymous users, operators and non-staff are refused." },
     ],
     state: {
       done: [
@@ -321,9 +332,12 @@ export const projects: Project[] = [
       { title: "Per-plate packaging", body: "Takeaway packs are priced per plate from each dish's pack class, with the checkout function and the basket applying the same rule." },
     ],
     challenges: [
-      { title: "Prices the browser cannot change", problem: "A client-calculated total can be edited before it is submitted.", solution: "The server recomputes every figure from the menu table inside the same transaction that creates the order, and the client is denied write access to the tables involved." },
-      { title: "Migrating a live business", problem: "Moving from Firebase to Supabase risked breaking links, accounts and history the kitchen relies on.", solution: "A staged migration: schema and policies first, then features, with legacy Firebase IDs stored alongside new rows so old menu links and accounts still resolve." },
-      { title: "Showing stale prices", problem: "A customer could see a cached price for a dish that had been repriced or sold out.", solution: "Pages render the snapshot immediately, then repaint from live data, and the basket drops lines that no longer exist before checkout." },
+      { title: "Prices the browser cannot change",
+        villain: "The Price Tamperer", problem: "A client-calculated total can be edited before it is submitted.", solution: "The server recomputes every figure from the menu table inside the same transaction that creates the order, and the client is denied write access to the tables involved." },
+      { title: "Migrating a live business",
+        villain: "Doctor Downtime", problem: "Moving from Firebase to Supabase risked breaking links, accounts and history the kitchen relies on.", solution: "A staged migration: schema and policies first, then features, with legacy Firebase IDs stored alongside new rows so old menu links and accounts still resolve." },
+      { title: "Showing stale prices",
+        villain: "Yesterday's Menu", problem: "A customer could see a cached price for a dish that had been repriced or sold out.", solution: "Pages render the snapshot immediately, then repaint from live data, and the basket drops lines that no longer exist before checkout." },
     ],
     state: {
       done: [
@@ -406,9 +420,12 @@ export const projects: Project[] = [
       { title: "Bilingual interface", body: "English and Arabic throughout, right-to-left layout, and both scripts with their own fonts." },
     ],
     challenges: [
-      { title: "Two directions, one codebase", problem: "Mirroring a layout by hand for Arabic doubles the work and drifts over time.", solution: "Logical properties (start/end instead of left/right) mirror components automatically, and typed dictionaries make a missing translation fail the build." },
-      { title: "Mixed-script data", problem: "Latin names inside Arabic pages, and the reverse, scramble their reading order.", solution: "Free text uses bidi-plaintext rendering and dir=auto inputs; IDs, PINs and emails stay left-to-right inside Arabic pages." },
-      { title: "Records that must not be rewritten", problem: "A results system that allows silent edits cannot be trusted.", solution: "Corrections are new records, enforced by database constraints and an audit log, not only by application code." },
+      { title: "Two directions, one codebase",
+        villain: "The Mirror Twin", problem: "Mirroring a layout by hand for Arabic doubles the work and drifts over time.", solution: "Logical properties (start/end instead of left/right) mirror components automatically, and typed dictionaries make a missing translation fail the build." },
+      { title: "Mixed-script data",
+        villain: "Mojibake", problem: "Latin names inside Arabic pages, and the reverse, scramble their reading order.", solution: "Free text uses bidi-plaintext rendering and dir=auto inputs; IDs, PINs and emails stay left-to-right inside Arabic pages." },
+      { title: "Records that must not be rewritten",
+        villain: "The Revisionist", problem: "A results system that allows silent edits cannot be trusted.", solution: "Corrections are new records, enforced by database constraints and an audit log, not only by application code." },
     ],
     state: {
       done: [
@@ -486,8 +503,10 @@ export const projects: Project[] = [
       { title: "Captioned lesson videos", body: "Direction and lesson videos with WebVTT captions." },
     ],
     challenges: [
-      { title: "Not promising what does not exist", problem: "An enquiry form implies someone receives and tracks it.", solution: "Until a backend exists, calls to action go to the admissions phone line and the centre. The data model for tracked enquiries is ready but deliberately not switched on." },
-      { title: "Moving without losing search traffic", problem: "The old site's pages were already indexed.", solution: "Every legacy URL has a permanent redirect to its new page." },
+      { title: "Not promising what does not exist",
+        villain: "Vaporware", problem: "An enquiry form implies someone receives and tracks it.", solution: "Until a backend exists, calls to action go to the admissions phone line and the centre. The data model for tracked enquiries is ready but deliberately not switched on." },
+      { title: "Moving without losing search traffic",
+        villain: "The 404 Phantom", problem: "The old site's pages were already indexed.", solution: "Every legacy URL has a permanent redirect to its new page." },
     ],
     state: {
       done: ["Redesigned site live on the academy's domain", "Fees, timetable, guides, team and success stories", "Redirects from the previous site"],
@@ -550,8 +569,10 @@ export const projects: Project[] = [
       { title: "Contact and donations", body: "Confirmed contact details; bank details are withheld until reconfirmed by the society." },
     ],
     challenges: [
-      { title: "Accuracy over completeness", problem: "It is tempting to fill gaps in history or schedules.", solution: "A content-status document tracks every fact as verified, awaiting confirmation or missing, and the site follows it." },
-      { title: "Retiring an old service worker", problem: "The old site cached itself aggressively, so returning visitors could keep seeing it.", solution: "A replacement worker clears the caches, unregisters itself and reloads open tabs once." },
+      { title: "Accuracy over completeness",
+        villain: "Doctor Guesswork", problem: "It is tempting to fill gaps in history or schedules.", solution: "A content-status document tracks every fact as verified, awaiting confirmation or missing, and the site follows it." },
+      { title: "Retiring an old service worker",
+        villain: "The Zombie Worker", problem: "The old site cached itself aggressively, so returning visitors could keep seeing it.", solution: "A replacement worker clears the caches, unregisters itself and reloads open tabs once." },
     ],
     state: {
       done: ["Version 2 site live", "Prayer times, library, events, gallery, founder and contact pages", "Redirects from the legacy site"],
@@ -620,8 +641,10 @@ export const projects: Project[] = [
       { title: "The brand pages", body: "Lookbook, About, Size guide, Shipping and returns, FAQ and Contact, plus search." },
     ],
     challenges: [
-      { title: "Studio photos onto a rail", problem: "The garment photos had studio backgrounds, and the rail needs front and back cut-outs at exactly the same size.", solution: "A sharp script samples each photo's border to find the background, flood-fills it away, drops stray specks and places each front and back pair on matching transparent canvases." },
-      { title: "Not taking money too early", problem: "Prices, delivery rates and stock are still being confirmed with the brand.", solution: "Checkout runs in test mode and takes no payment until a payment provider is connected, and WhatsApp ordering works now." },
+      { title: "Studio photos onto a rail",
+        villain: "The Background Blob", problem: "The garment photos had studio backgrounds, and the rail needs front and back cut-outs at exactly the same size.", solution: "A sharp script samples each photo's border to find the background, flood-fills it away, drops stray specks and places each front and back pair on matching transparent canvases." },
+      { title: "Not taking money too early",
+        villain: "Premature Checkout", problem: "Prices, delivery rates and stock are still being confirmed with the brand.", solution: "Checkout runs in test mode and takes no payment until a payment provider is connected, and WhatsApp ordering works now." },
     ],
     state: {
       done: ["Store built and deployed: home, collections, products, bag, checkout, search and brand pages", "Garment cut-outs and vector logo from the brand's own images", "End-to-end tests for shopping and the menu"],
@@ -674,7 +697,8 @@ export const projects: Project[] = [
       { title: "Reservation enquiry", body: "Dates, guests and room interest, with query-string prefill and a copyable summary." },
     ],
     challenges: [
-      { title: "Honest by design", problem: "A concept site could be mistaken for the hotel's official site.", solution: "An unofficial notice in the footer, noindex on every page and a private deployment." },
+      { title: "Honest by design",
+        villain: "The Overpromise", problem: "A concept site could be mistaken for the hotel's official site.", solution: "An unofficial notice in the footer, noindex on every page and a private deployment." },
     ],
     state: {
       done: ["Complete static site with QA notes"],

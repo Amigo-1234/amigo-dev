@@ -9,9 +9,11 @@ import { SiteFooter } from "@/components/site-footer";
 import { OffscreenPause } from "@/components/offscreen-pause";
 import { PlumbBob } from "@/components/plumb-bob";
 import { SwingBuddy } from "@/components/swing-buddy";
+import { WebShooter } from "@/components/web-shooter";
 import { SiteBackdrop } from "@/components/site-backdrop";
 import { TerminalDock } from "@/components/terminal-dock";
 import { SiteHeader } from "@/components/site-header";
+import { EyeTracker } from "@/components/eye-tracker";
 import { Ignition, IgnitionGate } from "@/components/ignition";
 import { ThemeScript } from "@/components/theme";
 import { JsonLd } from "@/components/ui";
@@ -89,6 +91,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <PlumbBob />
         <SwingBuddy />
         <OffscreenPause />
+        <EyeTracker />
+        <WebShooter />
         <TerminalDock />
         {/* The background of every page (fixed, behind everything): grid, halftone, webs and the drawing.
             Last in the HTML, so the content arrives before it. */}

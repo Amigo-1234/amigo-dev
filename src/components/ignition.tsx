@@ -13,27 +13,27 @@ import { compactPath } from "@/lib/svg";
  * It must answer the very first tap, long before React has hydrated a heavy
  * page on a slow phone, so it is plain JavaScript inlined in the HTML (the same
  * approach as MenuScript). All live state goes on <html> attributes and CSS
- * variables on the overlay; React's own markup is never rewritten, so
- * hydration is unaffected.
+ * variables on the overlay (which React is told to leave alone). The rest of
+ * the page is never touched: focus is held inside the cover by a trap in this
+ * script rather than by marking React's elements inert, so hydration matches.
  *
  *   IgnitionGate  in <head>: decides before first paint whether to run
  *   Ignition      the overlay and its controller, in the root layout (outside
  *                 the page-transition wrapper, whose transform would otherwise
  *                 trap position: fixed); hidden unless the gate switched it on
  *
- * It runs on a visitor's first visit (and once per tab until they have been
- * through it), and is skipped for reduced motion, search crawlers and
- * automated browsers (add ?ignition to force it). The sound choice is stored
+ * It runs once per visit: each new tab or browser session opens on the cover,
+ * and moving around the site afterwards never brings it back (sessionStorage).
+ * It is skipped for reduced motion, search crawlers and automated browsers
+ * (add ?ignition to force it). The sound choice is stored
  * and the AudioContext is unlocked inside the click itself, so the score can
  * start even before React has loaded; lib/sound.ts takes it from there.
  */
 
 const STORAGE = "amigodev-ignition";
-/** Set once a visitor has been through the cover; later visits go straight to the site. */
-const ENTERED = "amigodev-entered";
 const SOUND = "amigodev-sound";
 
-const gate = `(function(){try{var h=document.documentElement;if(location.pathname!=="/")return;var force=/[?&]ignition\\b/.test(location.search);var seen=false;try{seen=sessionStorage.getItem("${STORAGE}")==="done"||localStorage.getItem("${ENTERED}")==="1"}catch(e){}var ua=navigator.userAgent||"";if(!force&&(seen||navigator.webdriver||/bot|crawl|spider|slurp|preview|facebookexternalhit|lighthouse/i.test(ua)||matchMedia("(prefers-reduced-motion: reduce)").matches))return;h.setAttribute("data-ignition","idle");h.style.overflow="hidden"}catch(e){}})();`;
+const gate = `(function(){try{var h=document.documentElement;if(location.pathname!=="/")return;var force=/[?&]ignition\\b/.test(location.search);var seen=false;try{seen=sessionStorage.getItem("${STORAGE}")==="done"}catch(e){}var ua=navigator.userAgent||"";if(!force&&(seen||navigator.webdriver||/bot|crawl|spider|slurp|preview|facebookexternalhit|lighthouse/i.test(ua)||matchMedia("(prefers-reduced-motion: reduce)").matches))return;h.setAttribute("data-ignition","idle");h.style.overflow="hidden"}catch(e){}})();`;
 
 export function IgnitionGate() {
   return <script dangerouslySetInnerHTML={{ __html: gate }} />;
@@ -55,11 +55,14 @@ if(!o||h.getAttribute("data-ignition")!=="idle")return;
 var N1=${N1},N2=${N2},B=${BETA},R1=${g1.pitchRadius},R2=${g2.pitchRadius},TIP=${g1.tipRadius},WMAX=26,SPOOL=1150,LAUNCH=1000;
 var btn=o.querySelector("[data-ign-start]"),skip=o.querySelector("[data-ign-skip]"),rpm=o.querySelector(".ign-rpm"),choices=o.querySelectorAll("[data-ign-sound]");
 var emit=function(n){try{window.dispatchEvent(new CustomEvent("amigodev:ignition",{detail:n}))}catch(e){}};
-var th=0,w=0.5,state="idle",t0=0,tl=0,last=0,raf=0,x1=0,x2=0,v1=0,v2=0,thl=0,tpl=0,inerted=[];
+var th=0,w=0.5,state="idle",t0=0,tl=0,last=0,raf=0,x1=0,x2=0,v1=0,v2=0,thl=0,tpl=0;
 var mesh=function(a){return B+Math.PI-Math.PI/N2-(N1/N2)*(a-B)};
 var set=function(k,v){o.style.setProperty(k,v)};
 var rad=function(a){return a.toFixed(4)+"rad"};
-var lock=function(on){var kids=[].slice.call(d.body.children);var main=d.getElementById("main");if(main)kids=kids.concat([].slice.call(main.children));kids.forEach(function(el){if(el===o||el===main||el.contains(o)||el.tagName==="SCRIPT")return;if(on){if(!el.inert){el.inert=true;inerted.push(el)}}});if(!on){inerted.forEach(function(el){el.inert=false});inerted=[]}};
+// Keep focus on the cover while it is up (Tab cycles through its buttons; focus that lands outside comes back).
+var focusables=function(){return [].slice.call(o.querySelectorAll("button")).filter(function(b){return b.offsetParent!==null})};
+var trapTab=function(e){if(e.key!=="Tab")return;var f=focusables();if(!f.length)return;var i=f.indexOf(d.activeElement),n=e.shiftKey?(i<=0?f.length-1:i-1):(i<0||i===f.length-1?0:i+1);e.preventDefault();f[n].focus()};
+var trapIn=function(e){if(state!=="done"&&!o.contains(e.target)){var f=focusables();f[0]&&f[0].focus({preventScroll:true})}};
 function draw(){
  var tp=state==="launch"?tpl+(x2/R2):mesh(th);
  set("--ign-a1",rad(th));set("--ign-x1",x1.toFixed(2)+"px");
@@ -87,9 +90,9 @@ function start(){
  try{navigator.vibrate&&navigator.vibrate([10,60,14,40,20])}catch(e){}
 }
 function finish(){
- cancelAnimationFrame(raf);state="done";lock(false);
+ cancelAnimationFrame(raf);state="done";d.removeEventListener("keydown",trapTab,true);d.removeEventListener("focusin",trapIn,true);
  h.setAttribute("data-ignition","off");h.setAttribute("data-ignited","");h.style.overflow="";
- try{sessionStorage.setItem("${STORAGE}","done");localStorage.setItem("${ENTERED}","1")}catch(e){}
+ try{sessionStorage.setItem("${STORAGE}","done")}catch(e){}
  var m=d.getElementById("main");if(m)m.focus({preventScroll:true});
  setTimeout(function(){h.removeAttribute("data-ignited")},1200);
  d.removeEventListener("keydown",key,true);
@@ -106,9 +109,8 @@ function choose(on){
 btn&&btn.addEventListener("click",start);
 skip&&skip.addEventListener("click",finish);
 d.addEventListener("keydown",key,true);
-lock(true);draw();raf=requestAnimationFrame(frame);
-// This runs before the rest of the page is parsed: lock it again once it all exists.
-if(d.readyState==="loading")d.addEventListener("DOMContentLoaded",function(){if(state!=="done")lock(true)});
+d.addEventListener("keydown",trapTab,true);d.addEventListener("focusin",trapIn,true);
+draw();raf=requestAnimationFrame(frame);
 try{(choices[0]||btn).focus({preventScroll:true})}catch(e){}
 })();`;
 
@@ -118,6 +120,8 @@ export function Ignition() {
     <div
       id="ignition"
       className="ign"
+      // Its controller sets the gears' CSS variables before React hydrates.
+      suppressHydrationWarning
       role="dialog"
       aria-modal="true"
       aria-labelledby="ign-title"

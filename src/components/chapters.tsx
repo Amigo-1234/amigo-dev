@@ -6,6 +6,7 @@ import { cn } from "@/lib/cn";
 
 import { Caption, Halftone, Panel, Registration } from "./comic";
 import { ShotFrame } from "./ui";
+import { VillainFile } from "./villain";
 
 /*
  * Projects as comic chapters (homepage) and back issues (the archive). Server
@@ -109,11 +110,10 @@ export function Chapter({
           </ol>
         </Panel>
 
-        {/* The interesting part: the hardest problem and how it was solved. */}
+        {/* The interesting part: the hardest problem, as the issue's villain, and how it was beaten. */}
         {challenge && (
           <Panel data-print="panel" className="chapter__twist">
-            <p className="chapter__label">The hard part · {challenge.title}</p>
-            <p className="chapter__body">{challenge.solution}</p>
+            <VillainFile challenge={challenge} />
           </Panel>
         )}
 

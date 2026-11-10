@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 
 import { ArchitectureDiagram } from "@/components/architecture-diagram";
 import { Stamp } from "@/components/chapters";
+import { VillainFile } from "@/components/villain";
 import { Caption, Halftone, Panel, Registration } from "@/components/comic";
 import { JsonLd, ShotFrame, Tag } from "@/components/ui";
 import { getAdjacentProject, getPreviousProject, getProject, projects } from "@/content/projects";
@@ -66,7 +67,7 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
     { id: "decisions", title: "Engineering decisions" },
     { id: "architecture", title: "Architecture" },
     { id: "features", title: "Key features" },
-    { id: "challenges", title: "Technical challenges" },
+    { id: "challenges", title: "Rogues' gallery" },
     ...(project.timeline ? [{ id: "evolution", title: "Evolution" }] : []),
     { id: "outcome", title: "Outcome" },
   ];
@@ -266,20 +267,13 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
         )}
 
         <Section n={step("challenges")} title={title("challenges")} id="challenges">
-          <ol className="space-y-6">
+          <p className="max-w-prose text-fg-muted">
+            The technical challenges, each one cast as a villain: what it threatened, and how I beat it.
+          </p>
+          <ol className="mt-6 space-y-6">
             {project.challenges.map((c) => (
               <li key={c.title} data-print="panel" className="panel panel--red p-6 md:p-8">
-                <h3 className="font-serif text-3xl leading-none">{c.title}</h3>
-                <div className="mt-5 grid gap-5 md:grid-cols-2">
-                  <div>
-                    <p className="label">Problem</p>
-                    <p className="mt-2 text-fg-muted">{c.problem}</p>
-                  </div>
-                  <div>
-                    <p className="label text-accent">What I did</p>
-                    <p className="mt-2 text-fg-muted">{c.solution}</p>
-                  </div>
-                </div>
+                <VillainFile challenge={c} heading="h3" size="full" />
               </li>
             ))}
           </ol>

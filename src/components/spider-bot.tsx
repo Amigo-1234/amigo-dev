@@ -39,7 +39,7 @@ function Leg({ leg, mirror = false }: { leg: (typeof LEGS)[number]; mirror?: boo
 
 export function SpiderBotArt({ className, line = true }: { className?: string; line?: boolean }) {
   return (
-    <svg viewBox="-56 -24 112 112" aria-hidden="true" className={className}>
+    <svg viewBox="-56 -24 112 112" aria-hidden="true" className={className} data-eyes="">
       {line && <path d="M0 -24 V0" className="bot__silk" />}
 
       <g className="bot__legs-l">
@@ -68,8 +68,8 @@ export function SpiderBotArt({ className, line = true }: { className?: string; l
       <g className="bot__eyes">
         <circle cx="-4.2" cy="43" r="3.6" className="bot__lens" />
         <circle cx="4.2" cy="43" r="3.6" className="bot__lens" />
-        <circle cx="-5.2" cy="41.8" r="1.1" className="bot__glint" />
-        <circle cx="3.2" cy="41.8" r="1.1" className="bot__glint" />
+        <circle cx="-5.2" cy="41.8" r="1.1" className="bot__glint pupil" />
+        <circle cx="3.2" cy="41.8" r="1.1" className="bot__glint pupil" />
         <circle cx="-9" cy="38.5" r="1.4" className="bot__lens bot__lens--small" />
         <circle cx="9" cy="38.5" r="1.4" className="bot__lens bot__lens--small" />
       </g>

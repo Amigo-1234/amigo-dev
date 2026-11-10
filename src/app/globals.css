@@ -4526,3 +4526,273 @@ html.js .comic-page[data-inactive] {
     display: none !important;
   }
 }
+
+/* ------------------------------------------------------------------ */
+/* Villains of the issue (components/villain.tsx)                     */
+/* ------------------------------------------------------------------ */
+.villain {
+  position: relative;
+  display: grid;
+  grid-template-columns: 6.5rem minmax(0, 1fr);
+  gap: 1.1rem;
+  align-items: start;
+}
+.villain--full {
+  grid-template-columns: 9rem minmax(0, 1fr);
+  gap: 1.6rem;
+}
+@media (max-width: 30rem) {
+  .villain,
+  .villain--full {
+    grid-template-columns: 5.25rem minmax(0, 1fr);
+    gap: 0.9rem;
+  }
+}
+/* The mugshot: a line-up wall, taped on at an angle. */
+.villain__mug {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  border: 2px solid var(--frame);
+  background:
+    repeating-linear-gradient(to bottom, transparent 0 calc(20% - 1px), color-mix(in srgb, var(--fg) 20%, transparent) calc(20% - 1px) 20%),
+    var(--ink-sunken);
+  box-shadow: 4px 4px 0 var(--accent);
+  transform: rotate(-2deg);
+}
+.villain__mug .villain-art {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin-top: 4%;
+}
+.villain__plate {
+  position: absolute;
+  inset: auto 0 0;
+  padding: 0.2rem 0.3rem;
+  overflow: hidden;
+  background: var(--fg);
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: 0.5rem;
+  letter-spacing: 0.08em;
+  text-align: center;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.villain__name {
+  margin-top: 0.35rem;
+  padding-right: 2.4rem;
+  font-size: 2rem;
+  line-height: 0.95;
+}
+.villain--full .villain__name {
+  font-size: 2.6rem;
+}
+@media (max-width: 30rem) {
+  .villain__name,
+  .villain--full .villain__name {
+    padding-right: 0;
+    font-size: 1.75rem;
+  }
+  /* No room beside the name on a phone: stamp the mugshot instead. */
+  .villain .villain__stamp {
+    top: 4.4rem;
+    right: auto;
+    left: 3.4rem;
+    width: 2.7rem;
+    height: 2.7rem;
+    font-size: 0.85rem;
+  }
+}
+.villain__aka {
+  margin-top: 0.4rem;
+  color: var(--fg-subtle);
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.villain__threat,
+.villain__ko {
+  margin-top: 0.8rem;
+  color: var(--fg-muted);
+  line-height: 1.55;
+}
+.villain__tag {
+  display: inline-block;
+  margin-right: 0.5rem;
+  padding: 0.05rem 0.4rem;
+  border: 2px solid var(--frame);
+  color: var(--fg);
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  vertical-align: 0.1em;
+  transform: rotate(-1.5deg);
+}
+.villain__tag--ko {
+  background: var(--sfx);
+  border-color: var(--sfx-fg);
+  color: var(--sfx-fg);
+}
+.villain__stamp {
+  position: absolute;
+  top: -0.5rem;
+  right: -0.5rem;
+  display: grid;
+  place-items: center;
+  width: 3.4rem;
+  height: 3.4rem;
+  background: var(--accent);
+  color: #fff;
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  clip-path: polygon(50% 0, 61% 30%, 95% 18%, 72% 45%, 100% 62%, 66% 66%, 72% 100%, 50% 76%, 26% 100%, 32% 68%, 0 64%, 28% 46%, 6% 18%, 38% 30%);
+  transform: rotate(10deg);
+}
+
+.villain-art__legs {
+  fill: none;
+  stroke: var(--fg);
+  stroke-width: 4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.villain-art__bulb circle {
+  fill: var(--accent);
+  stroke: var(--fg);
+  stroke-width: 2.5;
+}
+.villain-art__horn {
+  fill: var(--ink-raised);
+  stroke: var(--fg);
+  stroke-width: 3;
+  stroke-linejoin: round;
+}
+.villain-art__shell {
+  stroke: #0b0b0d;
+  stroke-width: 3.5;
+}
+.villain-art__crack {
+  fill: none;
+  stroke: #0b0b0d;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.villain-art__spot {
+  fill: #0b0b0d;
+  opacity: 0.35;
+}
+.villain-art__head {
+  fill: #1a1a1f;
+  stroke: var(--fg);
+  stroke-width: 3.5;
+}
+.villain-art__brow {
+  fill: none;
+  stroke: var(--fg);
+  stroke-width: 4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.villain-art__eye {
+  stroke: #0b0b0d;
+  stroke-width: 2;
+}
+.villain-art__pupil {
+  --reach: 3px;
+  fill: #0b0b0d;
+}
+.villain-art__teeth {
+  fill: none;
+  stroke: #fbf8f2;
+  stroke-width: 2.2;
+  stroke-linejoin: round;
+}
+@media (prefers-reduced-motion: no-preference) {
+  /* Hover the mugshot and the villain glitches, out of register. */
+  .villain__mug:hover .villain-art {
+    animation: villain-glitch 0.32s steps(2) 2;
+  }
+}
+@keyframes villain-glitch {
+  0%,
+  100% {
+    filter: none;
+    translate: 0 0;
+  }
+  50% {
+    filter: drop-shadow(3px 0 0 var(--accent)) drop-shadow(-3px 0 0 var(--blueprint));
+    translate: 2px -1px;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Eyes that follow the pointer (components/eye-tracker.tsx)          */
+/* ------------------------------------------------------------------ */
+[data-eyes] .pupil {
+  transform: translate(calc(var(--ex, 0) * var(--reach, 3px)), calc(var(--ey, 0) * var(--reach, 3px)));
+  transition: transform 0.2s ease-out;
+}
+.slinger__iris {
+  --reach: 4px;
+}
+.bot__glint {
+  --reach: 1.6px;
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-eyes] .pupil {
+    transform: none;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Web shots (components/web-shooter.tsx)                             */
+/* ------------------------------------------------------------------ */
+.webshot {
+  position: fixed;
+  inset: 0;
+  z-index: 65;
+  overflow: hidden;
+  pointer-events: none;
+}
+.webshot__line {
+  fill: none;
+  stroke: var(--fg);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+.webshot__web {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.webshot__ink {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 4;
+  stroke-linecap: round;
+  opacity: 0.5;
+}
+.webshot__silk {
+  fill: none;
+  stroke: var(--fg);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+}
+.webshot__word {
+  fill: var(--sfx);
+  stroke: var(--sfx-fg);
+  stroke-width: 4;
+  paint-order: stroke;
+  font-family: var(--font-display);
+  font-size: 20px;
+  letter-spacing: 0.02em;
+  transform-box: fill-box;
+  transform-origin: center;
+}

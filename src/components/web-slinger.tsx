@@ -14,7 +14,7 @@ import { compactPath } from "@/lib/svg";
  *   sit    on a rooftop ledge at y = 240, legs over the edge, typing on a
  *          laptop that lights his face (the footer)
  *
- * Pure SVG and decorative.
+ * Pure SVG and decorative. The irises follow the pointer (EyeTracker).
  */
 
 const emblem = compactPath(gearPath(gearGeometry(8, 3.4), 4));
@@ -165,7 +165,7 @@ export function WebSlingerArt({ className, pose: name = "swing" }: { className?:
   );
 
   return (
-    <svg viewBox={sitting ? "-20 20 240 310" : "-20 -40 240 390"} aria-hidden="true" className={className}>
+    <svg viewBox={sitting ? "-20 20 240 310" : "-20 -40 240 390"} aria-hidden="true" className={className} data-eyes="">
       {/* The web line, from the raised hand up out of frame. */}
       {!sitting && <path d="M150 24 V-40" className="slinger__line" />}
 
@@ -231,7 +231,7 @@ export function WebSlingerArt({ className, pose: name = "swing" }: { className?:
         {p.eyes.map(([cx, cy]) => (
           <g key={cx}>
             <circle cx={cx} cy={cy} r="8.6" className="slinger__lens" />
-            <circle cx={cx} cy={cy + (sitting ? 2 : 0)} r="3.8" className="slinger__iris" />
+            <circle cx={cx} cy={cy + (sitting ? 2 : 0)} r="3.8" className="slinger__iris pupil" />
             <circle cx={cx - 3} cy={cy - 3.6} r="1.7" className="slinger__glint" />
           </g>
         ))}

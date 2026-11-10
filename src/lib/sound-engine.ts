@@ -16,7 +16,7 @@
  * Everything sits low in the mix; it is a score, not a song.
  */
 
-type Sfx = "click" | "tick" | "gear" | "whoosh" | "panel" | "spool" | "clank" | "open" | "close";
+type Sfx = "click" | "tick" | "gear" | "whoosh" | "panel" | "spool" | "clank" | "open" | "close" | "thwip";
 
 const BPM = 100;
 const STEP = 60 / BPM / 4; // a sixteenth note, in seconds
@@ -387,6 +387,25 @@ const EFFECTS: Record<Sfx, (t: number) => void> = {
     }
   },
   close: (t) => EFFECTS.whoosh(t),
+  // A web shot: a quick hiss falling in pitch, then the strand snapping tight.
+  thwip: (t) => {
+    const c = ctx!;
+    const src = c.createBufferSource();
+    src.buffer = noise;
+    const f = c.createBiquadFilter();
+    f.type = "bandpass";
+    f.Q.value = 6;
+    f.frequency.setValueAtTime(vary(5200), t);
+    f.frequency.exponentialRampToValueAtTime(vary(900), t + 0.12);
+    const g = c.createGain();
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.exponentialRampToValueAtTime(0.22, t + 0.012);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + 0.14);
+    src.connect(f).connect(g).connect(sfxBus);
+    src.start(t, Math.random() * 0.4);
+    src.stop(t + 0.16);
+    tone(t + 0.11, sfxBus, "triangle", vary(320), 0.08, 0.002, 0.07);
+  },
 };
 
 /* ---------------------------------------------------------------- */
